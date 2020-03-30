@@ -19,7 +19,9 @@ namespace Cinema
 
             Console.WriteLine("Welkom in mijn login test ding :D <3");
             Console.WriteLine("(1) Login\n" +
-                              "(2) New Account");
+                              "(2) New Account\n" +
+                              "(3) Turn off"
+                              );
             Console.Write("> ");
             string menuChoice = Console.ReadLine();
 
@@ -35,8 +37,9 @@ namespace Cinema
                 User userCheck = JsonConvert.DeserializeObject<User>(login);
                 if (userCheck.username == user.username && userCheck.password == user.password)
                 {
-                    Console.WriteLine("SUCCES> User");
                     user.privileges = "user";
+                    Console.WriteLine("You're login was succesfull");
+                    LogedIn.LogedInMain();
                 }
                 else
                 {
@@ -68,6 +71,10 @@ namespace Cinema
                     user.privileges = "user";
 
                 }
+            }
+            else if (menuChoice == "3")
+            {
+                Environment.Exit(-1);
             }
             else
             {
