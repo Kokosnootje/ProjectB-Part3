@@ -1,16 +1,14 @@
 ﻿using System;
-
-using Newtonsoft.Json;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace Cinema
 {
-    class User
+    public class Employee
     {
         public string username { get; set; }
         public string password { get; set; }
-        public string privileges { get; set; }
-      
+    }
     public class Movie
     {
         public string title { get; set; }
@@ -20,15 +18,11 @@ namespace Cinema
         public string theatreNumber { get; set; }
         public string startTime { get; set; }
         public string rating { get; set; }
-
     }
     class Program
     {
         static void Main(string[] args)
         {
-
-            Login.loginMain();
-
             Movie movie = new Movie
             {
                 title = "Blade",
@@ -63,7 +57,6 @@ namespace Cinema
             }
             */
             //Console.WriteLine(json);
-
         }
     }
 }
