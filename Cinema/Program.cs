@@ -8,6 +8,9 @@ namespace Cinema
     {
         static void Main(string[] args)
         {
+            // Mainmenu koppelen
+            Mainmenu.Menu();
+
             Database.DatabaseProgram db = new Database.DatabaseProgram();
             db.DatabaseMain();
         }
