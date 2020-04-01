@@ -23,11 +23,14 @@ namespace Cinema
             else if (menuNumber == "2")
             {
                 /// Movies
-                Console.WriteLine("Movies");
+                //Geef pagina met films weer
+                Console.WriteLine("\nDit is de films pagina");
+                // Run database
+                Database.DatabaseProgram db = new Database.DatabaseProgram();
+                db.DatabaseMain();
                 Console.WriteLine("Press ESC to go to Home");
                 if (Console.ReadKey().Key != ConsoleKey.Escape)
                 {
-
                 }
                 else
                 {
@@ -41,7 +44,10 @@ namespace Cinema
                 Console.WriteLine("Press ESC to go to Home");
                 if (Console.ReadKey().Key != ConsoleKey.Escape)
                 {
-                    
+                    //Geef contact pagina weer
+                    Console.WriteLine("\nDit is de Contact pagina van de bioscoop.\n\nAdres\nWeena 455\n3013AL Rotterdam\n\nOpeningstijden\nma - zo: 10.00 - 22.00\n\nTelefoon\n010-456-13-52");
+                    //Aanroepen contact.cs
+                    Contact.contact();
                 }
                 else
                 {
@@ -56,7 +62,7 @@ namespace Cinema
                 Console.WriteLine("Press ESC to go to Home");
                 if (Console.ReadKey().Key != ConsoleKey.Escape)
                 {
-
+                    Console.WriteLine("\nDit is de snacks menu pagina. Hieronder staan alle snacks met bijbehorende prijzen.");
                 }
                 else
                 {

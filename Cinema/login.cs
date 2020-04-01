@@ -16,8 +16,6 @@ namespace Cinema
             };
             string login;
 
-
-            Console.WriteLine("Welkom in mijn login test ding :D <3");
             Console.WriteLine("(1) Login\n" +
                               "(2) New Account\n" +
                               "(3) Turn off"
