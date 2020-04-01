@@ -1,6 +1,6 @@
 ﻿using System;
-using Newtonsoft.Json;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace Cinema
 {
@@ -14,7 +14,8 @@ namespace Cinema
     {
         static void Main(string[] args)
         {
-            Login.loginMain();
+            // Mainmenu koppelen
+            Mainmenu.Menu();
         }
     }
 }
