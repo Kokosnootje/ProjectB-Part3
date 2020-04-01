@@ -10,12 +10,32 @@ namespace Cinema
         {
             User user = new User()
             {
-                username = "temp",
-                password = "temp",
-                privileges = "temp"
+                username = "user",
+                password = "user",
+                privileges = "user"
+            };
+            User admin = new User()
+            {
+                username = "admin",
+                password = "admin",
+                privileges = "admin"
             };
             string login;
 
+            // Write variable "user" to JSON file
+            File.WriteAllText(@"users.json", JsonConvert.SerializeObject(user));
+            using (StreamWriter file = File.CreateText(@"users.json"))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(file, user);
+            }
+            // Write variable "admin" to JSON file
+            File.WriteAllText(@"admins.json", JsonConvert.SerializeObject(admin));
+            using (StreamWriter file = File.CreateText(@"admins.json"))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(file, admin);
+            }
 
             Console.WriteLine("Welkom in mijn login test ding :D <3");
             Console.WriteLine("(1) Login\n" +
