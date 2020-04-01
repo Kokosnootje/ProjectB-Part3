@@ -20,7 +20,7 @@ public class Database
         public void DatabaseMain()
         {
             // Indication that database code has begun
-            Console.WriteLine("DatabaseMain begins running");
+            // Console.WriteLine("DatabaseMain begins running");
 
             // Will eventually change to user input, currently manual variable of the database
             Movie[] movies = new Movie[]
@@ -95,6 +95,15 @@ public class Database
                 serializer.Serialize(file, movies);
             }
 
+            // Turn the JSON variable "movies" into a string and read it
+            string json = JsonConvert.SerializeObject(movies, Formatting.Indented);
+            Console.WriteLine(json);
+
+            // Indication that any database code has stopped
+            // Console.WriteLine("DatabaseMain has stopped running");
+        }
+        public void DatabaseShow()
+        {
             /*
             // read file into a string and deserialize JSON to a type
             Movie movie1 = JsonConvert.DeserializeObject<Movie>(File.ReadAllText(@"Database.json"));
@@ -105,12 +114,6 @@ public class Database
                 JsonSerializer serializer = new JsonSerializer();
                 Movie movie2 = (Movie)serializer.Deserialize(file, typeof(Movie));
             }*/
-
-            string json = JsonConvert.SerializeObject(movies, Formatting.Indented);
-            Console.WriteLine(json);
-
-            // Indication that any database code has stopped
-            Console.WriteLine("DatabaseMain has stopped running");
         }
     }
 }

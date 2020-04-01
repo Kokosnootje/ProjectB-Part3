@@ -10,16 +10,38 @@ namespace Cinema
         {
             User user = new User()
             {
-                username = "temp",
-                password = "temp",
-                privileges = "temp"
+                username = "user",
+                password = "user",
+                privileges = "user"
+            };
+            User admin = new User()
+            {
+                username = "admin",
+                password = "admin",
+                privileges = "admin"
             };
             string login;
 
+            // Write variable "user" to JSON file
+            File.WriteAllText(@"users.json", JsonConvert.SerializeObject(user));
+            using (StreamWriter file = File.CreateText(@"users.json"))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(file, user);
+            }
+            // Write variable "admin" to JSON file
+            File.WriteAllText(@"admins.json", JsonConvert.SerializeObject(admin));
+            using (StreamWriter file = File.CreateText(@"admins.json"))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(file, admin);
+            }
 
             Console.WriteLine("Welkom in mijn login test ding :D <3");
             Console.WriteLine("(1) Login\n" +
-                              "(2) New Account");
+                              "(2) New Account\n" +
+                              "(3) Turn off"
+                              );
             Console.Write("> ");
             string menuChoice = Console.ReadLine();
 
@@ -35,8 +57,9 @@ namespace Cinema
                 User userCheck = JsonConvert.DeserializeObject<User>(login);
                 if (userCheck.username == user.username && userCheck.password == user.password)
                 {
-                    Console.WriteLine("SUCCES> User");
                     user.privileges = "user";
+                    Console.WriteLine("You're login was succesfull");
+                    LogedIn.LogedInMain();
                 }
                 else
                 {
@@ -68,6 +91,10 @@ namespace Cinema
                     user.privileges = "user";
 
                 }
+            }
+            else if (menuChoice == "3")
+            {
+                Environment.Exit(-1);
             }
             else
             {
