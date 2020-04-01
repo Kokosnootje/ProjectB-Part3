@@ -20,7 +20,7 @@ public class Database
         public void DatabaseMain()
         {
             // Indication that database code has begun
-            Console.WriteLine("DatabaseMain begins running");
+            // Console.WriteLine("DatabaseMain begins running");
 
             // Will eventually change to user input, currently manual variable of the database
             Movie[] movies = new Movie[]
@@ -100,7 +100,7 @@ public class Database
             Console.WriteLine(json);
 
             // Indication that any database code has stopped
-            Console.WriteLine("DatabaseMain has stopped running");
+            // Console.WriteLine("DatabaseMain has stopped running");
         }
         public void DatabaseShow()
         {

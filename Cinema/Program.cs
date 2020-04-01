@@ -16,9 +16,6 @@ namespace Cinema
         {
             // Mainmenu koppelen
             Mainmenu.Menu();
-
-            Database.DatabaseProgram db = new Database.DatabaseProgram();
-            db.DatabaseMain();
         }
     }
 }

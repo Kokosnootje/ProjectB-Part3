@@ -20,6 +20,9 @@ namespace Cinema
                 {
                     //Geef pagina met films weer
                     Console.WriteLine("\nDit is de films pagina");
+                    // Run database
+                    Database.DatabaseProgram db = new Database.DatabaseProgram();
+                    db.DatabaseMain();
                     //Aanroepen films.cs
 
                 }
@@ -41,6 +44,7 @@ namespace Cinema
                 {
                     //Geef inlog pagina weer
                     Console.WriteLine("\nDit is de account pagina. Heeft u al een account? (ja of nee)");
+                    Login.loginMain();
                     //Aanroepen account.cs       
                 }
                 else
