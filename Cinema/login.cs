@@ -36,7 +36,7 @@ namespace Cinema
                 if (userCheck.username == user.username && userCheck.password == user.password)
                 {
                     user.privileges = "user";
-                    Console.WriteLine("You're login was succesfull");
+                    Console.WriteLine("Your login was succesfull");
                     LogedIn.LogedInMain();
                 }
                 else
@@ -45,8 +45,10 @@ namespace Cinema
                     userCheck = JsonConvert.DeserializeObject<User>(login);
                     if (userCheck.username == user.username && userCheck.password == user.password)
                     {
-                        Console.WriteLine("SUCCES> Admin");
+                        
                         user.privileges = "admin";
+                        Console.WriteLine("Your login was succesfull");
+                        LogedIn.LogedInAdmin();
                     }
                     else
                     {
