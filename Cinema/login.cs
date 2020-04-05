@@ -37,9 +37,9 @@ namespace Cinema
                 serializer.Serialize(file, admin);
             }
 
-            Console.WriteLine("(1) Login\n" +
-                              "(2) New Account\n" +
-                              "(3) Turn off"
+            Console.WriteLine("[1] Login\n" +
+                              "[2] New Account\n" +
+                              "[3] Turn off"
                               );
             Console.Write("> ");
             string menuChoice = Console.ReadLine();
