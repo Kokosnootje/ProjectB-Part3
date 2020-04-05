@@ -97,13 +97,30 @@ public class Database
 
             // Turn the JSON variable "movies" into a string and read it
             string json = JsonConvert.SerializeObject(movies, Formatting.Indented);
-            Console.WriteLine(json);
+            //Console.WriteLine(json);
+
+
+            // Deserialize the json, loop through the movies and select needed variables
+            using (StreamReader file = File.OpenText(@"Database.json"))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                Movie[] newMovies = JsonConvert.DeserializeObject<Movie[]>(json);
+                foreach (var item in newMovies)
+                {
+                    Console.WriteLine("Title: "+item.title+" || "+"Genre: "+item.genre);
+                }
+            }
+
+
+            //Movie newMovie = JsonConvert.DeserializeObject<Movie>(File.ReadAllText(@"Database.json"));
+            //Console.WriteLine("Title is: "+newMovie.title);
 
             // Indication that any database code has stopped
             // Console.WriteLine("DatabaseMain has stopped running");
         }
         public void DatabaseShow()
         {
+                       
             /*
             // read file into a string and deserialize JSON to a type
             Movie movie1 = JsonConvert.DeserializeObject<Movie>(File.ReadAllText(@"Database.json"));
