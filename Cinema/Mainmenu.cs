@@ -8,7 +8,7 @@ namespace Cinema
     {
         public static void Menu()
         {
-            Console.WriteLine("\nKies een van de volgende opties om verder te gaan:\nFilms (=1)\nSnacks menu (=2)\nContact (=3)\nMijn account (=4)");
+            Console.WriteLine("\nKies een van de volgende opties om verder te gaan:\n[1] Films\n[2] Snacks menu\n[3] Contact\n[4] Mijn account");
             int optieMenu1;
             var optieMenu1Placeholder = Console.ReadKey();
 

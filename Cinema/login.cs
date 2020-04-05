@@ -37,10 +37,9 @@ namespace Cinema
                 serializer.Serialize(file, admin);
             }
 
-            Console.WriteLine("Welkom in mijn login test ding :D <3");
-            Console.WriteLine("(1) Login\n" +
-                              "(2) New Account\n" +
-                              "(3) Turn off"
+            Console.WriteLine("[1] Login\n" +
+                              "[2] New Account\n" +
+                              "[3] Turn off"
                               );
             Console.Write("> ");
             string menuChoice = Console.ReadLine();
@@ -58,7 +57,7 @@ namespace Cinema
                 if (userCheck.username == user.username && userCheck.password == user.password)
                 {
                     user.privileges = "user";
-                    Console.WriteLine("You're login was succesfull");
+                    Console.WriteLine("Your login was succesfull");
                     LogedIn.LogedInMain();
                 }
                 else
@@ -67,8 +66,10 @@ namespace Cinema
                     userCheck = JsonConvert.DeserializeObject<User>(login);
                     if (userCheck.username == user.username && userCheck.password == user.password)
                     {
-                        Console.WriteLine("SUCCES> Admin");
+                        
                         user.privileges = "admin";
+                        Console.WriteLine("Your login was succesfull");
+                        LogedIn.LogedInAdmin();
                     }
                     else
                     {

@@ -2,31 +2,36 @@
 using System.IO;
 using Newtonsoft.Json;
 using System.Net.Mail;
-public class Database
+
+namespace Cinema
 {
-    public class Movie
+    public class Database
     {
-        public string title { get; set; }
-        public string genre { get; set; }
-        public string duration { get; set; }
-        public string language { get; set; }
-        public string theatreNumber { get; set; }
-        public string startTime { get; set; }
-        public string rating { get; set; }
-    }
-
-    public class DatabaseProgram
-    {
-        public void DatabaseMain()
+        public class Movie
         {
-            // Indication that database code has begun
-            // Console.WriteLine("DatabaseMain begins running");
+            public string title { get; set; }
+            public string genre { get; set; }
+            public string duration { get; set; }
+            public string language { get; set; }
+            public string theatreNumber { get; set; }
+            public string startTime { get; set; }
+            public string rating { get; set; }
+            public string id { get; set; }
+        }
 
-            // Will eventually change to user input, currently manual variable of the database
-            Movie[] movies = new Movie[]
+        public class DatabaseProgram
+        {
+            public void DatabaseMain()
             {
+                // Indication that database code has begun
+                // Console.WriteLine("DatabaseMain begins running");
+
+                // Will eventually change to user input, currently manual variable of the database
+                Movie[] movies = new Movie[]
+                {
                 new Movie
                 {
+                    id = "1",
                     title = "Blade",
                     genre = "Action",
                     duration = "1:30:00",
@@ -37,6 +42,7 @@ public class Database
                 },
                 new Movie
                 {
+                    id = "2",
                     title = "Lord of the Rings",
                     genre = "Adventure",
                     duration = "2:30:00",
@@ -47,6 +53,7 @@ public class Database
                 },
                 new Movie
                 {
+                    id = "3",
                     title = "Alladdin",
                     genre = "Adventure",
                     duration = "1:45:00",
@@ -57,6 +64,7 @@ public class Database
                 },
                 new Movie
                 {
+                    id = "4",
                     title = "IT",
                     genre = "Horror",
                     duration = "2:00:00",
@@ -67,6 +75,7 @@ public class Database
                 },
                 new Movie
                 {
+                    id = "5",
                     title = "Deadpool",
                     genre = "Action",
                     duration = "1:30:00",
@@ -77,6 +86,7 @@ public class Database
                 },
                 new Movie
                 {
+                    id = "6",
                     title = "The Lion King",
                     genre = "Cartoon",
                     duration = "1:15:00",
@@ -85,19 +95,19 @@ public class Database
                     startTime = "10:00",
                     rating = "E"
                 }
-            };
+                };
 
-            // Write the "movies" variable to a JSON file
-            File.WriteAllText(@"Database.json", JsonConvert.SerializeObject(movies));
-            using (StreamWriter file = File.CreateText(@"Database.json"))
-            {
-                JsonSerializer serializer = new JsonSerializer();
-                serializer.Serialize(file, movies);
-            }
+                // Write the "movies" variable to a JSON file
+                File.WriteAllText(@"Database.json", JsonConvert.SerializeObject(movies));
+                using (StreamWriter file = File.CreateText(@"Database.json"))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    serializer.Serialize(file, movies);
+                }
 
-            // Turn the JSON variable "movies" into a string and read it
-            string json = JsonConvert.SerializeObject(movies, Formatting.Indented);
-            Console.WriteLine(json);
+                // Turn the JSON variable "movies" into a string and read it
+                string json = JsonConvert.SerializeObject(movies, Formatting.Indented);
+                //Console.WriteLine(json);
 
             // Send mail to confirm reservation (Once we have that...)
             DatabaseMail();
@@ -111,12 +121,57 @@ public class Database
             // read file into a string and deserialize JSON to a type
             Movie movie1 = JsonConvert.DeserializeObject<Movie>(File.ReadAllText(@"Database.json"));
 
-            // deserialize JSON directly from a file
-            using (StreamReader file = File.OpenText(@"Database.json"))
+                // Deserialize the json, loop through the movies and select needed variables
+                using (StreamReader file = File.OpenText(@"Database.json"))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    Movie[] newMovies = JsonConvert.DeserializeObject<Movie[]>(json);
+                    foreach (var item in newMovies)
+                    {
+                        Console.WriteLine("[" + item.id + "] " + "Title: " + item.title + " || " + "Genre: " + item.genre);
+                    }
+                
+
+                    //Kiezen om een film verder te bekijken
+                    Console.WriteLine("\n\nWelke film wilt u bekijken?");
+                    int menuNumber = Convert.ToInt32(Console.ReadLine()) - 1;
+                    
+                    //Alles weergeven van gekozen film
+                    Console.WriteLine("\nTitle: " + newMovies[menuNumber].title + "\nGenre: " + newMovies[menuNumber].genre + "\nDuration: " + newMovies[menuNumber].duration + "\nLanguage: " + newMovies[menuNumber].language + "\nTheatre Number: " + newMovies[menuNumber].theatreNumber + "\nStart Time: " + newMovies[menuNumber].startTime + "\nRating: " + newMovies[menuNumber].rating);
+                    
+                    //Menu voor verdere keuzes zoals reserveren
+                    Console.WriteLine("\n\nWat wilt u nu doen?\n[1] Film (" + newMovies[menuNumber].title + ") reserveren\n");
+                    string filmMenuNumber = Console.ReadLine();
+                    if (filmMenuNumber == "1")
+                    {
+                        Reserveren.Reserveer();
+                    }
+                    
+
+                
+                }
+
+
+                //Movie newMovie = JsonConvert.DeserializeObject<Movie>(File.ReadAllText(@"Database.json"));
+                //Console.WriteLine("Title is: "+newMovie.title);
+
+                // Indication that any database code has stopped
+                // Console.WriteLine("DatabaseMain has stopped running");
+            }
+            public void DatabaseShow()
             {
-                JsonSerializer serializer = new JsonSerializer();
-                Movie movie2 = (Movie)serializer.Deserialize(file, typeof(Movie));
-            }*/
+
+                /*
+                // read file into a string and deserialize JSON to a type
+                Movie movie1 = JsonConvert.DeserializeObject<Movie>(File.ReadAllText(@"Database.json"));
+
+                // deserialize JSON directly from a file
+                using (StreamReader file = File.OpenText(@"Database.json"))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    Movie movie2 = (Movie)serializer.Deserialize(file, typeof(Movie));
+                }*/
+            }
         }
 
         public void DatabaseMail()
