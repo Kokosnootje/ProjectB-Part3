@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using Newtonsoft.Json;
-
+using System.Net.Mail;
 public class Database
 {
     public class Movie
@@ -99,6 +99,9 @@ public class Database
             string json = JsonConvert.SerializeObject(movies, Formatting.Indented);
             Console.WriteLine(json);
 
+            // Send mail to confirm reservation (Once we have that...)
+            DatabaseMail();
+
             // Indication that any database code has stopped
             // Console.WriteLine("DatabaseMain has stopped running");
         }
@@ -114,6 +117,27 @@ public class Database
                 JsonSerializer serializer = new JsonSerializer();
                 Movie movie2 = (Movie)serializer.Deserialize(file, typeof(Movie));
             }*/
+        }
+
+        public void DatabaseMail()
+        {
+            // Server settings
+            SmtpClient SmtpServer = new SmtpClient();
+            SmtpServer.Port = 587;
+            SmtpServer.Host = "smtp.gmail.com";
+            SmtpServer.EnableSsl = true;
+            SmtpServer.DeliveryMethod = SmtpDeliveryMethod.Network;
+            SmtpServer.UseDefaultCredentials = false;
+            SmtpServer.Credentials = new System.Net.NetworkCredential("mailcinemaconfirmation@gmail.com", "ProjectB");
+
+            // Mail reciever and the body of the mail
+            MailMessage mail = new MailMessage();
+            mail.From = new MailAddress("mailcinemaconfirmation@gmail.com");
+            mail.To.Add("kokosnootje77@gmail.com");
+            mail.Subject = "Reservering bevestiging";
+            mail.Body = "Beste klant. Uw reservering is ontvangen en verwerkt. Laat deze mail zien in de bioscoop als toegangsbewijs. Geniet van de film!";
+
+            SmtpServer.Send(mail);
         }
     }
 }
