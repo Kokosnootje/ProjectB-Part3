@@ -25,9 +25,10 @@ namespace Cinema
                 /// Movies
                 //Geef pagina met films weer
                 Console.WriteLine("\nDit is de films pagina");
-                // Run database
+                // Run films database
                 Database.DatabaseProgram db = new Database.DatabaseProgram();
                 db.DatabaseMain();
+
                 Console.WriteLine("Press ESC to go to Home");
                 if (Console.ReadKey().Key != ConsoleKey.Escape)
                 {
@@ -120,6 +121,10 @@ namespace Cinema
             {
                 // Add movie function
                 Console.WriteLine("On this page you can add a Movie!");
+
+                // Film toevoegen
+
+                // Terug naar menu
                 Console.WriteLine("Press ESC to go to Home");
                 if (Console.ReadKey().Key != ConsoleKey.Escape)
                 {
@@ -131,7 +136,7 @@ namespace Cinema
             }
             else if (menuNumber == "4")
             {
-                // De;ete movie function
+                // Delete movie function
                 Console.WriteLine("On this page you can Delete a Movie!");
                 Console.WriteLine("Press ESC to go to Home");
                 if (Console.ReadKey().Key != ConsoleKey.Escape)
@@ -158,7 +163,10 @@ namespace Cinema
             else if (menuNumber == "6")
             {
                 // Reservations Pagina
-                Console.WriteLine("On this page you can add a reservations!");
+                Console.WriteLine("On this page you can add a reservations!");                             
+                
+                
+                
                 Console.WriteLine("Press ESC to go to Home");
                 if (Console.ReadKey().Key != ConsoleKey.Escape)
                 {
@@ -167,6 +175,7 @@ namespace Cinema
                 {
                     LogedIn.LogedInAdmin();
                 }
+
             }
             else if (menuNumber == "7")
             {
