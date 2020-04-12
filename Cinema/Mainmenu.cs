@@ -22,7 +22,7 @@ namespace Cinema
                     Console.WriteLine("\nDit is de films pagina");
                     // Run database
                     Database.DatabaseProgram db = new Database.DatabaseProgram();
-                    db.DatabaseMain();
+                    db.DatabaseShow();
                     //Aanroepen films.cs
 
                 }
