@@ -2,6 +2,7 @@
 using System.IO;
 using Newtonsoft.Json;
 using System.Net.Mail;
+using System.Collections.Generic;
 
 namespace Cinema
 {
@@ -23,9 +24,6 @@ namespace Cinema
         {
             public void DatabaseMain()
             {
-                // Indication that database code has begun
-                // Console.WriteLine("DatabaseMain begins running");
-
                 // Will eventually change to user input, currently manual variable of the database
                 Movie[] movies = new Movie[]
                 {
@@ -105,27 +103,16 @@ namespace Cinema
                     serializer.Serialize(file, movies);
                 }
 
-                // Turn the JSON variable "movies" into a string and read it
-                string json = JsonConvert.SerializeObject(movies, Formatting.Indented);
-                //Console.WriteLine(json);
-
-                // Send mail to confirm reservation (Once we have that...)
-                DatabaseMail();
-
                 // Indication that any database code has stopped
                 // Console.WriteLine("DatabaseMain has stopped running");
             }
             public void DatabaseShow()
             {
-                /*
-                // read file into a string and deserialize JSON to a type
-                Movie movie1 = JsonConvert.DeserializeObject<Movie>(File.ReadAllText(@"Database.json"));
-
-                    // Deserialize the json, loop through the movies and select needed variables
-                    using (StreamReader file = File.OpenText(@"Database.json"))
+                // Deserialize the json, loop through the movies and select needed variables
+                using (StreamReader file = File.OpenText(@"Database.json"))
                     {
                         JsonSerializer serializer = new JsonSerializer();
-                        Movie[] newMovies = JsonConvert.DeserializeObject<Movie[]>(json);
+                        Movie[] newMovies = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Database.json"));
                         foreach (var item in newMovies)
                         {
                             Console.WriteLine("[" + item.id + "] " + "Title: " + item.title + " || " + "Genre: " + item.genre);
@@ -150,26 +137,9 @@ namespace Cinema
 
                     //Movie newMovie = JsonConvert.DeserializeObject<Movie>(File.ReadAllText(@"Database.json"));
                     //Console.WriteLine("Title is: "+newMovie.title);
-
-                    // Indication that any database code has stopped
-                    // Console.WriteLine("DatabaseMain has stopped running");
-                }
-                public void DatabaseShow()
-                {
-
-                    /*
-                    // read file into a string and deserialize JSON to a type
-                    Movie movie1 = JsonConvert.DeserializeObject<Movie>(File.ReadAllText(@"Database.json"));
-
-                    // deserialize JSON directly from a file
-                    using (StreamReader file = File.OpenText(@"Database.json"))
-                    {
-                        JsonSerializer serializer = new JsonSerializer();
-                        Movie movie2 = (Movie)serializer.Deserialize(file, typeof(Movie));
-                    }*/
             }
 
-            public void DatabaseMail()
+            public void ConfirmationMail()
             {
                 // Server settings
                 SmtpClient SmtpServer = new SmtpClient();

@@ -9,6 +9,11 @@ namespace Cinema
         public static void Reserveer()
         {
             Console.WriteLine("Reserveren gelukt");
+
+            // Send mail to confirm reservation (Once we have that...)
+            Database.DatabaseProgram db = new Database.DatabaseProgram();
+            db.ConfirmationMail();
+            
         }
     }
 }
