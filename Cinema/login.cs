@@ -23,7 +23,7 @@ namespace Cinema
                 password = "",
                 privileges = ""
             };
-           
+
 
             // Write variable "user" to JSON file
             File.WriteAllText(@"users.json", JsonConvert.SerializeObject(user));
@@ -33,11 +33,11 @@ namespace Cinema
                 serializer.Serialize(file, user);
             }
             // Write variable "admin" to JSON file
-            File.WriteAllText(@"admins.json", JsonConvert.SerializeObject(admin));
+            File.WriteAllText(@"admins.json", JsonConvert.SerializeObject(File.ReadAllText(@"admin.json")));
             using (StreamWriter file = File.CreateText(@"admins.json"))
             {
                 JsonSerializer serializer = new JsonSerializer();
-                serializer.Serialize(file, admin);
+                serializer.Serialize(file, File.ReadAllText(@"admin.json"));
             }
 
             Console.WriteLine("[1] Login\n" +
@@ -46,7 +46,7 @@ namespace Cinema
                               );
             Console.Write("> ");
             string menuChoice = Console.ReadLine();
-          
+
 
             ///Het login programmaatje.
             while (true)
@@ -57,8 +57,7 @@ namespace Cinema
                 Console.Write("Password: ");
                 user.password = Console.ReadLine();
 
-                login = File.ReadAllText(@"users.json");
-                User userCheck = JsonConvert.DeserializeObject<User>(login);
+                User userCheck = JsonConvert.DeserializeObject<User>(File.ReadAllText(@"users.json"));
                 if (userCheck.username == user.username && userCheck.password == user.password)
                 {
                     user.privileges = "user";
@@ -66,8 +65,12 @@ namespace Cinema
                     LogedIn.LogedInMain();
                 }
                 else
-
-                        
-                        user.privileges = "admin";
-                        Console.WriteLine("Your login was succesfull");
-                        LogedIn.LogedInAdmin();
+                {
+                    user.privileges = "admin";
+                    Console.WriteLine("Your login was succesfull");
+                    LogedIn.LogedInAdmin();
+                }
+            }
+        }
+    }
+}
