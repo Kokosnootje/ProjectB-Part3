@@ -27,7 +27,7 @@ namespace Cinema
                 Console.WriteLine("\nDit is de films pagina");
                 // Run films database
                 Database.DatabaseProgram db = new Database.DatabaseProgram();
-                db.DatabaseMain();
+                db.DatabaseShow();
 
                 Console.WriteLine("Press ESC to go to Home");
                 if (Console.ReadKey().Key != ConsoleKey.Escape)

@@ -1,6 +1,8 @@
 ﻿using System;
 using Newtonsoft.Json;
 using System.IO;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Cinema
 {
@@ -8,19 +10,20 @@ namespace Cinema
     {
         public static void loginMain()
         {
+            ///Variabelen
+            string username;
+            string password;
+            string tempPassword;
+
+            Dictionary<string, string> login;
+
             User user = new User()
             {
-                username = "user",
-                password = "user",
-                privileges = "user"
+                username = "",
+                password = "",
+                privileges = ""
             };
-            User admin = new User()
-            {
-                username = "admin",
-                password = "admin",
-                privileges = "admin"
-            };
-            string login;
+           
 
             // Write variable "user" to JSON file
             File.WriteAllText(@"users.json", JsonConvert.SerializeObject(user));
@@ -43,8 +46,10 @@ namespace Cinema
                               );
             Console.Write("> ");
             string menuChoice = Console.ReadLine();
+          
 
-            if (menuChoice == "1")
+            ///Het login programmaatje.
+            while (true)
             {
                 Console.WriteLine("Fill in Username and Password");
                 Console.Write("Username: ");
@@ -61,58 +66,8 @@ namespace Cinema
                     LogedIn.LogedInMain();
                 }
                 else
-                {
-                    login = File.ReadAllText(@"admins.json");
-                    userCheck = JsonConvert.DeserializeObject<User>(login);
-                    if (userCheck.username == user.username && userCheck.password == user.password)
-                    {
+
                         
                         user.privileges = "admin";
                         Console.WriteLine("Your login was succesfull");
                         LogedIn.LogedInAdmin();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Failed to login");
-                    }
-                }
-            }
-            else if (menuChoice == "2")
-            {
-                Console.WriteLine("Fill in Username and Password");
-                Console.Write("Username: ");
-                user.username = Console.ReadLine();
-                Console.Write("Password: ");
-                user.password = Console.ReadLine();
-                Console.WriteLine("Re-enter password");
-                Console.Write("Password: ");
-                string validate = Console.ReadLine();
-                if (user.password == validate)
-                {
-                    user.privileges = "user";
-
-                }
-            }
-            else if (menuChoice == "3")
-            {
-                Environment.Exit(-1);
-            }
-            else
-            {
-                Console.WriteLine("Please pick a valid option!");
-            }
-
-
-
-
-
-
-            ///MISSCHIEN OOIT NOG NODIG VOOR ANDERE DINGEN ;)
-            ///string login = JsonConvert.SerializeObject(user);
-
-            ///File.WriteAllText(@"login.json", login);
-
-            ///Console.WriteLine("stored!");
-        }
-    }
-}
