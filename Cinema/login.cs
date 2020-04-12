@@ -13,7 +13,7 @@ namespace Cinema
             ///Variabelen
             string username;
             string password;
-            string tempPassword;
+            string tempPassword = null;
 
             Dictionary<string, string> login;
 
@@ -46,10 +46,14 @@ namespace Cinema
                     password = null;
                     while (true)
                     {
+                        ///dit stukje maakt het invullen van een wachtwoord "onzichtbaar"
                         var key = System.Console.ReadKey(true);
                         if (key.Key == ConsoleKey.Enter)
                             break;
-                        password += key.KeyChar;
+                        else if (key.Key == ConsoleKey.Backspace && password.Length > 0)
+                            password = password.Remove(password.Length - 1);
+                        else if (key.Key != ConsoleKey.Backspace)
+                            password += key.KeyChar;
                     }
 
                     ///Login Check account database for normal users
@@ -76,10 +80,14 @@ namespace Cinema
                     password = null;
                     while (true)
                     {
+                        ///dit stukje maakt het invullen van een wachtwoord "onzichtbaar"
                         var key = System.Console.ReadKey(true);
                         if (key.Key == ConsoleKey.Enter)
                             break;
-                        password += key.KeyChar;
+                        else if (key.Key == ConsoleKey.Backspace && password.Length > 0)
+                            password = password.Remove(password.Length - 1);
+                        else if (key.Key != ConsoleKey.Backspace)
+                            password += key.KeyChar;
                     }
 
                     ///Login Check account database for admin users
@@ -116,7 +124,7 @@ namespace Cinema
                             password += key.KeyChar;
                     }
                     Console.Write("\nRe-enter password\n> ");
-                    tempPassword = null;
+
                     while (true)
                     {
                         var key = System.Console.ReadKey(true);
@@ -182,7 +190,7 @@ namespace Cinema
 
                 else
                 {
-                    Console.WriteLine("Please pick a valid option!");
+                    Console.WriteLine("Kies een van de bovenstaande opties!");
                 }
             }
         }
