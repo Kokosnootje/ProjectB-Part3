@@ -10,7 +10,7 @@ namespace Cinema
         {
             Console.WriteLine("Reserveren gelukt");
 
-            // Send mail to confirm reservation (Once we have that...)
+            // Send mail to confirm reservation
             Database.DatabaseProgram db = new Database.DatabaseProgram();
             db.ConfirmationMail();
             
