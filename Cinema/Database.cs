@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Newtonsoft.Json;
+using System.Net.Mail;
 
 namespace Cinema
 {
@@ -108,57 +109,85 @@ namespace Cinema
                 string json = JsonConvert.SerializeObject(movies, Formatting.Indented);
                 //Console.WriteLine(json);
 
-
-                // Deserialize the json, loop through the movies and select needed variables
-                using (StreamReader file = File.OpenText(@"Database.json"))
-                {
-                    JsonSerializer serializer = new JsonSerializer();
-                    Movie[] newMovies = JsonConvert.DeserializeObject<Movie[]>(json);
-                    foreach (var item in newMovies)
-                    {
-                        Console.WriteLine("[" + item.id + "] " + "Title: " + item.title + " || " + "Genre: " + item.genre);
-                    }
-                
-
-                    //Kiezen om een film verder te bekijken
-                    Console.WriteLine("\n\nWelke film wilt u bekijken?");
-                    int menuNumber = Convert.ToInt32(Console.ReadLine()) - 1;
-                    
-                    //Alles weergeven van gekozen film
-                    Console.WriteLine("\nTitle: " + newMovies[menuNumber].title + "\nGenre: " + newMovies[menuNumber].genre + "\nDuration: " + newMovies[menuNumber].duration + "\nLanguage: " + newMovies[menuNumber].language + "\nTheatre Number: " + newMovies[menuNumber].theatreNumber + "\nStart Time: " + newMovies[menuNumber].startTime + "\nRating: " + newMovies[menuNumber].rating);
-                    
-                    //Menu voor verdere keuzes zoals reserveren
-                    Console.WriteLine("\n\nWat wilt u nu doen?\n[1] Film (" + newMovies[menuNumber].title + ") reserveren\n");
-                    string filmMenuNumber = Console.ReadLine();
-                    if (filmMenuNumber == "1")
-                    {
-                        Reserveren.Reserveer();
-                    }
-                    
-
-                
-                }
-
-
-                //Movie newMovie = JsonConvert.DeserializeObject<Movie>(File.ReadAllText(@"Database.json"));
-                //Console.WriteLine("Title is: "+newMovie.title);
+                // Send mail to confirm reservation (Once we have that...)
+                DatabaseMail();
 
                 // Indication that any database code has stopped
                 // Console.WriteLine("DatabaseMain has stopped running");
             }
             public void DatabaseShow()
             {
-
                 /*
                 // read file into a string and deserialize JSON to a type
                 Movie movie1 = JsonConvert.DeserializeObject<Movie>(File.ReadAllText(@"Database.json"));
 
-                // deserialize JSON directly from a file
-                using (StreamReader file = File.OpenText(@"Database.json"))
+                    // Deserialize the json, loop through the movies and select needed variables
+                    using (StreamReader file = File.OpenText(@"Database.json"))
+                    {
+                        JsonSerializer serializer = new JsonSerializer();
+                        Movie[] newMovies = JsonConvert.DeserializeObject<Movie[]>(json);
+                        foreach (var item in newMovies)
+                        {
+                            Console.WriteLine("[" + item.id + "] " + "Title: " + item.title + " || " + "Genre: " + item.genre);
+                        }
+                
+
+                        //Kiezen om een film verder te bekijken
+                        Console.WriteLine("\n\nWelke film wilt u bekijken?");
+                        int menuNumber = Convert.ToInt32(Console.ReadLine()) - 1;
+                    
+                        //Alles weergeven van gekozen film
+                        Console.WriteLine("\nTitle: " + newMovies[menuNumber].title + "\nGenre: " + newMovies[menuNumber].genre + "\nDuration: " + newMovies[menuNumber].duration + "\nLanguage: " + newMovies[menuNumber].language + "\nTheatre Number: " + newMovies[menuNumber].theatreNumber + "\nStart Time: " + newMovies[menuNumber].startTime + "\nRating: " + newMovies[menuNumber].rating);
+                    
+                        //Menu voor verdere keuzes zoals reserveren
+                        Console.WriteLine("\n\nWat wilt u nu doen?\n[1] Film (" + newMovies[menuNumber].title + ") reserveren\n");
+                        string filmMenuNumber = Console.ReadLine();
+                        if (filmMenuNumber == "1")
+                        {
+                            Reserveren.Reserveer();
+                        }
+                    }
+
+                    //Movie newMovie = JsonConvert.DeserializeObject<Movie>(File.ReadAllText(@"Database.json"));
+                    //Console.WriteLine("Title is: "+newMovie.title);
+
+                    // Indication that any database code has stopped
+                    // Console.WriteLine("DatabaseMain has stopped running");
+                }
+                public void DatabaseShow()
                 {
-                    JsonSerializer serializer = new JsonSerializer();
-                    Movie movie2 = (Movie)serializer.Deserialize(file, typeof(Movie));
-                }*/
+
+                    /*
+                    // read file into a string and deserialize JSON to a type
+                    Movie movie1 = JsonConvert.DeserializeObject<Movie>(File.ReadAllText(@"Database.json"));
+
+                    // deserialize JSON directly from a file
+                    using (StreamReader file = File.OpenText(@"Database.json"))
+                    {
+                        JsonSerializer serializer = new JsonSerializer();
+                        Movie movie2 = (Movie)serializer.Deserialize(file, typeof(Movie));
+                    }*/
+            }
+
+            public void DatabaseMail()
+            {
+                // Server settings
+                SmtpClient SmtpServer = new SmtpClient();
+                SmtpServer.Port = 587;
+                SmtpServer.Host = "smtp.gmail.com";
+                SmtpServer.EnableSsl = true;
+                SmtpServer.DeliveryMethod = SmtpDeliveryMethod.Network;
+                SmtpServer.UseDefaultCredentials = false;
+                SmtpServer.Credentials = new System.Net.NetworkCredential("mailcinemaconfirmation@gmail.com", "ProjectB");
+
+                // Mail reciever and the body of the mail
+                MailMessage mail = new MailMessage();
+                mail.From = new MailAddress("mailcinemaconfirmation@gmail.com");
+                mail.To.Add("kokosnootje77@gmail.com");
+                mail.Subject = "Reservering bevestiging";
+                mail.Body = "Beste klant. Uw reservering is ontvangen en verwerkt. Laat deze mail zien in de bioscoop als toegangsbewijs. Geniet van de film!";
+
+                SmtpServer.Send(mail);
             }
         }
     }
