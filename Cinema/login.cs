@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.IO;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Cinema
 {
@@ -108,7 +109,10 @@ namespace Cinema
                         var key = System.Console.ReadKey(true);
                         if (key.Key == ConsoleKey.Enter)
                             break;
-                        password += key.KeyChar;
+                        else if (key.Key == ConsoleKey.Backspace && password.Length > 0)
+                            password = password.Remove(password.Length - 1);                        
+                        else if (key.Key != ConsoleKey.Backspace)
+                            password += key.KeyChar;
                     }
                     Console.Write("\nRe-enter password\n> ");
                     tempPassword = null;
@@ -117,20 +121,54 @@ namespace Cinema
                         var key = System.Console.ReadKey(true);
                         if (key.Key == ConsoleKey.Enter)
                             break;
-                        tempPassword += key.KeyChar;
+                        if (key.Key == ConsoleKey.Backspace && tempPassword.Length > 0)
+                            tempPassword = tempPassword.Remove(tempPassword.Length - 1);
+                        else if (key.Key != ConsoleKey.Backspace)
+                            tempPassword += key.KeyChar;
                     }
                     if (password == tempPassword)
                     {
-                        login = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(@"admins.json"));
-                        login.Add(username, password);
-                        using (StreamWriter file = File.CreateText(@"users.json"))
+                        if (username.Length > 4)
                         {
-                            JsonSerializer serializer = new JsonSerializer();
-                            serializer.Serialize(file, login);
+                            if (password.Length > 4)
+                            {
+                                if (Regex.IsMatch(username, @"^[a-zA-Z0-9]+$") && Regex.IsMatch(password, @"^[a-zA-Z0-9]+$"))
+                                {
+                                    login = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(@"users.json"));
+                                    if (login.ContainsKey(username) == false)
+                                    {
+                                        login.Add(username, password);
+                                        using (StreamWriter file = File.CreateText(@"users.json"))
+                                        {
+                                            JsonSerializer serializer = new JsonSerializer();
+                                            serializer.Serialize(file, login);
+                                        }
+                                        Console.WriteLine("Account is aangemaakt!");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Er bestaat al een account met deze naam!");
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Gebruikersnaam en wachtwoord mag enkel (hoofd)letters en cijfers bevatten!");
+                                }                                                                                                    
+                            }
+                            else
+                            {
+                                Console.WriteLine("Wachtwoord moet minimaal 5 karakters lang zijn!");
+                            }
                         }
-                        Console.WriteLine("Account is aangemaakt!");
+                        else
+                        {
+                            Console.WriteLine("Gebruikersnaam moet minimaal 5 karakters lang zijn!");
+                        }                      
                     }
-                    else { Console.WriteLine("Wachtwoorden komen niet overeen!"); }
+                    else 
+                    { 
+                        Console.WriteLine("Wachtwoorden komen niet overeen!"); 
+                    }
                 }
 
 
