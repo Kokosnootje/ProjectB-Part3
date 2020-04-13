@@ -24,8 +24,8 @@ namespace Cinema
                 privileges = ""
             };
 
-
-
+            variables.isLoggedIn = true;
+            Console.WriteLine(variables.isLoggedIn);
             ///Het login programmaatje.
             while (true)
             {
