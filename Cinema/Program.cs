@@ -15,6 +15,7 @@ namespace Cinema
     public class variables
     {
         public static bool isLoggedIn = false;
+        public static int Film = 0;
     }
 
     class Program

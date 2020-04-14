@@ -103,6 +103,7 @@ namespace Cinema
                 };
 
                 // Write the "movies" variable to a JSON file
+
                 File.WriteAllText(@"Database.json", JsonConvert.SerializeObject(movies));
                 using (StreamWriter file = File.CreateText(@"Database.json"))
                 {
@@ -112,34 +113,29 @@ namespace Cinema
             }
             public void DatabaseShow()
             {
-                // Update JSON file with most recent data
-                DatabaseMain();
-
-                // Deserialize the json, loop through the movies and select needed variables
-                using (StreamReader file = File.OpenText(@"Database.json"))
+                JsonSerializer serializer = new JsonSerializer();
+                Movie[] newMovies = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Database.json"));
+                foreach (var item in newMovies)
                 {
-                    JsonSerializer serializer = new JsonSerializer();
-                    Movie[] newMovies = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Database.json"));
-                    foreach (var item in newMovies)
-                    {
-                        Console.WriteLine("[" + item.id + "] " + "Title: " + item.title + " || " + "Genre: " + item.genre);
-                    }
-
-                    //Kiezen om een film verder te bekijken
-                    Console.WriteLine("\n\nWelke film wilt u bekijken?");
-                    int menuNumber = Convert.ToInt32(Console.ReadLine()) - 1;
-                    
-                    //Alles weergeven van gekozen film
-                    Console.WriteLine("\nTitle: " + newMovies[menuNumber].title + "\nGenre: " + newMovies[menuNumber].genre + "\nDuration: " + newMovies[menuNumber].duration + "\nLanguage: " + newMovies[menuNumber].language + "\nTheatre Number: " + newMovies[menuNumber].theatreNumber + "\nStart Time: " + newMovies[menuNumber].startTime + "\nRating: " + newMovies[menuNumber].rating + "\nPrice: " + newMovies[menuNumber].price);
-                    
-                    //Menu voor verdere keuzes zoals reserveren
-                    Console.WriteLine("\n\nWat wilt u nu doen?\n[1] Film (" + newMovies[menuNumber].title + ") reserveren\n");
-                    string filmMenuNumber = Console.ReadLine();
-                    if (filmMenuNumber == "1")
-                    {
-                        Reserveren.Reserveer();
-                    }
+                    Console.WriteLine("[" + item.id + "] " + "Title: " + item.title + " || " + "Genre: " + item.genre);
                 }
+
+                //Kiezen om een film verder te bekijken
+                Console.WriteLine("\n\nWelke film wilt u bekijken?");
+                int menuNumber = Convert.ToInt32(Console.ReadLine()) - 1;
+                    
+                //Alles weergeven van gekozen film
+                Console.WriteLine("\nTitle: " + newMovies[menuNumber].title + "\nGenre: " + newMovies[menuNumber].genre + "\nDuration: " + newMovies[menuNumber].duration + "\nLanguage: " + newMovies[menuNumber].language + "\nTheatre Number: " + newMovies[menuNumber].theatreNumber + "\nStart Time: " + newMovies[menuNumber].startTime + "\nRating: " + newMovies[menuNumber].rating + "\nPrice: " + newMovies[menuNumber].price);
+                variables.Film = menuNumber + 1;
+
+                //Menu voor verdere keuzes zoals reserveren
+                Console.WriteLine("\n\nWat wilt u nu doen?\n[1] Film (" + newMovies[menuNumber].title + ") reserveren\n");
+                string filmMenuNumber = Console.ReadLine();
+                if (filmMenuNumber == "1")
+                {
+                    Reserveren.Reserveer();
+                }
+
             }
 
             public void ConfirmationMail()
