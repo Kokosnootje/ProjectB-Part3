@@ -29,8 +29,7 @@ namespace Cinema
                 else if (optieMenu1 == 2)
                 {
                     //Geef pagina met snacks menu weer
-                    Console.WriteLine("\nDit is de snacks menu pagina. Hieronder staan alle snacks met bijbehorende prijzen.");
-                    //Aanroepen snacksmenu.cs
+                    snacksMenu.snacksMenuOpvragen();
                 }
                 else if (optieMenu1 == 3)
                 {
