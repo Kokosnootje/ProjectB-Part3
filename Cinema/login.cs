@@ -29,10 +29,10 @@ namespace Cinema
             ///Het login programmaatje.
             while (true)
             {
-                Console.WriteLine("\n(1) Login\n" +
-                                  "(2) Admin Login\n" +
-                                  "(3) Nieuw account\n" +
-                                  "(4) Terug"
+                Console.WriteLine("\n[1] Login\n" +
+                                  "[2] Admin Login\n" +
+                                  "[3] Nieuw account\n" +
+                                  "[4] Terug"
                                   );
                 Console.Write("> ");
                 string menuChoice = Console.ReadLine();
