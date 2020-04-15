@@ -152,9 +152,22 @@ namespace Cinema
                 // Mail reciever and the body of the mail
                 MailMessage mail = new MailMessage();
                 mail.From = new MailAddress("mailcinemaconfirmation@gmail.com");
-                mail.To.Add("kokosnootje77@gmail.com");
+                mail.To.Add("jaspervangent@ziggo.nl");
                 mail.Subject = "Reservering bevestiging";
-                mail.Body = "Beste klant. Uw reservering is ontvangen en verwerkt. Laat deze mail zien in de bioscoop als toegangsbewijs. Geniet van de film!";
+
+                //Json bestand met films openen en lezen
+                JsonSerializer serializer = new JsonSerializer();
+                Database.Movie[] newMovies = JsonConvert.DeserializeObject<Database.Movie[]>(File.ReadAllText(@"Database.json"));
+                foreach (var item in newMovies)
+                {
+                    if (item.id == variables.Film)
+                    {
+                        mail.Body = "Beste klant. Uw reservering is ontvangen en verwerkt. Laat deze mail zien in de bioscoop als toegangsbewijs. Geniet van de film!" +
+                            "\n\nReservering voor film: "+ item.title + 
+                            "\n\nAf te rekenen bij kassa: €"+ variables.totaalPrijs +
+                            "\n\nZaal nummer: " + item.theatreNumber;
+                    }
+                }
 
                 SmtpServer.Send(mail);
             }

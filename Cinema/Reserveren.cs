@@ -28,6 +28,7 @@ namespace Cinema
 
                         //totaalprijs berekenen
                         double totaalPrijs = aantalKaartjes * item.price;
+                        variables.totaalPrijs = totaalPrijs;
 
                         //Om € teken zichtbaar te maken
                         Console.OutputEncoding = System.Text.Encoding.UTF8;

@@ -16,6 +16,7 @@ namespace Cinema
     {
         public static bool isLoggedIn = false;
         public static int Film = 0;
+        public static double totaalPrijs = 0;
     }
 
     class Program
