@@ -42,7 +42,7 @@ namespace Cinema
                             Console.WriteLine("\n\nBedankt voor uw reservering. Wij hebben u een bevestigingsmail gestuurd.\n");
                             // Send mail to confirm reservation
                             Database.DatabaseProgram db = new Database.DatabaseProgram();
-                            db.ConfirmationMail();
+                            // db.ConfirmationMail();
                         }
                         if(optie == 2)
                         {

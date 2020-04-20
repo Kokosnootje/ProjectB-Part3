@@ -113,6 +113,9 @@ namespace Cinema
             }
             public void DatabaseShow()
             {
+                // Update JSON file with most recent data
+                DatabaseMain();
+
                 JsonSerializer serializer = new JsonSerializer();
                 Movie[] newMovies = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Database.json"));
                 foreach (var item in newMovies)
