@@ -24,8 +24,8 @@ namespace Cinema
                 privileges = ""
             };
 
-            variables.isLoggedIn = true;
-            Console.WriteLine(variables.isLoggedIn);
+            Variables.isLoggedIn = true;
+            Console.WriteLine(Variables.isLoggedIn);
             ///Het login programmaatje.
             while (true)
             {
@@ -183,8 +183,12 @@ namespace Cinema
 
                 else if (menuChoice == "4") ///Exit
                 {
-                    ///Environment.Exit(-1);
-                    return;
+                    Variables.isLoggedIn = false;
+                    // Terug naar menu
+                    if (Variables.isLoggedIn)
+                        LogedIn.LogedInMain();
+                    else
+                        Mainmenu.Menu();
                 }
 
 
