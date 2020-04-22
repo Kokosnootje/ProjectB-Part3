@@ -11,7 +11,7 @@ namespace Cinema
         public static void Reserveer()
         {
             //Check of user is ingelogd
-            if (variables.isLoggedIn)
+            if (Variables.isLoggedIn)
             {
                 Console.WriteLine("\nU bent ingelogd en kunt reserveren\n\n");
                 
@@ -20,7 +20,7 @@ namespace Cinema
                 Database.Movie[] newMovies = JsonConvert.DeserializeObject<Database.Movie[]>(File.ReadAllText(@"Database.json"));
                 foreach (var item in newMovies)
                 {
-                    if(item.id == variables.Film)
+                    if(item.id == Variables.Film)
                     {
                         //aantal kaartjes vaststellen
                         Console.WriteLine("Hoeveel kaartjes wilt u bestellen voor de film " + item.title + "?\n");
@@ -28,7 +28,7 @@ namespace Cinema
 
                         //totaalprijs berekenen
                         double totaalPrijs = aantalKaartjes * item.price;
-                        variables.totaalPrijs = totaalPrijs;
+                        Variables.totaalPrijs = totaalPrijs;
 
                         //Om € teken zichtbaar te maken
                         Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -46,16 +46,11 @@ namespace Cinema
                         }
                         if(optie == 2)
                         {
-                            //wanneer men is ingelogd terug naar ingelogd scherm
-                            if(variables.isLoggedIn)
-                            {
+                            // Terug naar menu
+                            if (Variables.isLoggedIn)
                                 LogedIn.LogedInMain();
-                            }
-                            //wanneer men niet is ingelogd naar login scherm
                             else
-                            {
-                                Login.loginMain();
-                            }
+                                Mainmenu.Menu();
                         }
 
                     }
