@@ -33,14 +33,14 @@ namespace Cinema
                 {
                     // Wanneer de input niet tussen 1 en 4 ligt
                     Console.WriteLine("\nGelieve een nummer tussen 1 en 4 in te toetsen");
-                    Mainmenu.Menu();
+                    contact();
                 }
             }
             catch
             {
                 // Wanneer de input geen int is
-                Console.WriteLine("\nEr is geen nummer ingevoerd");
-                Mainmenu.Menu();
+                Console.WriteLine("\nEr ging iets fout. Probeer opnieuw.");
+                contact();
             }
          }
     }
