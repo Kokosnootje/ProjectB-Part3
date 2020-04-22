@@ -24,15 +24,15 @@ namespace Cinema
                 privileges = ""
             };
 
-            variables.isLoggedIn = true;
-            Console.WriteLine(variables.isLoggedIn);
+            Variables.isLoggedIn = true;
+            Console.WriteLine(Variables.isLoggedIn);
             ///Het login programmaatje.
             while (true)
             {
-                Console.WriteLine("\n(1) Login\n" +
-                                  "(2) Admin Login\n" +
-                                  "(3) Nieuw account\n" +
-                                  "(4) Terug"
+                Console.WriteLine("\n[1] Login\n" +
+                                  "[2] Admin Login\n" +
+                                  "[3] Nieuw account\n" +
+                                  "[4] Terug"
                                   );
                 Console.Write("> ");
                 string menuChoice = Console.ReadLine();
@@ -183,8 +183,12 @@ namespace Cinema
 
                 else if (menuChoice == "4") ///Exit
                 {
-                    ///Environment.Exit(-1);
-                    return;
+                    Variables.isLoggedIn = false;
+                    // Terug naar menu
+                    if (Variables.isLoggedIn)
+                        LogedIn.LogedInMain();
+                    else
+                        Mainmenu.Menu();
                 }
 
 
