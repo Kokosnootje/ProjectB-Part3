@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 
@@ -15,6 +16,7 @@ namespace Cinema
     public class Variables
     {
         public static bool isLoggedIn = false;
+        public static string username = "";
         public static int Film = 0;
         public static double totaalPrijs = 0;
     }

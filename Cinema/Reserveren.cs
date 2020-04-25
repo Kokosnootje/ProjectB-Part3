@@ -39,6 +39,13 @@ namespace Cinema
                         int optie = Convert.ToInt32(Console.ReadLine());
                         if(optie == 1)
                         {
+                            Dictionary<string, List<string>> login = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText(@"users.json"));
+                            login[Variables.username].Add(item.title);
+                            using (StreamWriter file = File.CreateText(@"users.json"))
+                            {
+                                JsonSerializer serialize = new JsonSerializer();
+                                serialize.Serialize(file, login);
+                            }
                             Console.WriteLine("\n\nBedankt voor uw reservering. Wij hebben u een bevestigingsmail gestuurd.\n");
                             // Send mail to confirm reservation
                             Database.DatabaseProgram db = new Database.DatabaseProgram();
