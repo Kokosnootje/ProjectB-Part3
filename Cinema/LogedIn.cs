@@ -18,8 +18,8 @@ namespace Cinema
                 //Geef pagina met films weer
                 Console.WriteLine("\nDit is de films pagina");
                 // Run films database
-                Database.DatabaseProgram db = new Database.DatabaseProgram();
-                db.DatabaseShow();
+                Movies.MovieProgram db = new Movies.MovieProgram();
+                db.MovieShow();
 
                 Console.WriteLine("Press ESC to go to Home");
                 if (Console.ReadKey().Key != ConsoleKey.Escape)
@@ -43,7 +43,7 @@ namespace Cinema
             else if (menuNumber == "4")
             {
                 ///Geeft alle gereserveerde films weer
-                var login = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText(@"admins.json"));
+                var login = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText(@"users.json"));
                 foreach (string item in login[Variables.username])
                 {
                     if (item != login[Variables.username][0])
@@ -51,6 +51,7 @@ namespace Cinema
                         Console.WriteLine(item);
                     }
                 }
+                LogedInMain();
             
             }
             else if (menuNumber == "5")
@@ -77,8 +78,8 @@ namespace Cinema
                 //Geef pagina met films weer
                 Console.WriteLine("\nDit is de films pagina");
                 // Run database
-                Database.DatabaseProgram db = new Database.DatabaseProgram();
-                db.DatabaseShow();
+                Movies.MovieProgram db = new Movies.MovieProgram();
+                db.MovieShow();
             }
             else if (menuNumber == "2")
             {
