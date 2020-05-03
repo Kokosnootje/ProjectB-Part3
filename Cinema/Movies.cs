@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Cinema
 {
-    public class Database
+    public class Movies
     {
         public class Movie
         {
@@ -21,9 +21,9 @@ namespace Cinema
             public double price { get; set; }
         }
 
-        public class DatabaseProgram
+        public class MovieProgram
         {
-            public void DatabaseMain()
+            public void MovieMain()
             {
                 // Will eventually change to user input, currently manual variable of the database
                 Movie[] movies = new Movie[]
@@ -104,22 +104,22 @@ namespace Cinema
 
                 // Write the "movies" variable to a JSON file
 
-                File.WriteAllText(@"Database.json", JsonConvert.SerializeObject(movies));
-                using (StreamWriter file = File.CreateText(@"Database.json"))
+                File.WriteAllText(@"Movies.json", JsonConvert.SerializeObject(movies));
+                using (StreamWriter file = File.CreateText(@"Movies.json"))
                 {
                     JsonSerializer serializer = new JsonSerializer();
                     serializer.Serialize(file, movies);
                 }
             }
-            public void DatabaseShow()
+            public void MovieShow()
             {
                 // Update JSON file with most recent data
-                DatabaseMain();
+                MovieMain();
                 bool choosingMovie = true;
                 while (choosingMovie)
                 {
                     JsonSerializer serializer = new JsonSerializer();
-                    Movie[] newMovies = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Database.json"));
+                    Movie[] newMovies = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Movies.json"));
                     foreach (var item in newMovies)
                     {
                         Console.WriteLine("[" + item.id + "] " + "Title: " + item.title + " || " + "Genre: " + item.genre);
@@ -192,7 +192,7 @@ namespace Cinema
 
                 //Json bestand met films openen en lezen
                 JsonSerializer serializer = new JsonSerializer();
-                Database.Movie[] newMovies = JsonConvert.DeserializeObject<Database.Movie[]>(File.ReadAllText(@"Database.json"));
+                Movies.Movie[] newMovies = JsonConvert.DeserializeObject<Movies.Movie[]>(File.ReadAllText(@"Movies.json"));
                 foreach (var item in newMovies)
                 {
                     if (item.id == Variables.Film)
