@@ -1,13 +1,22 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Cinema
 {
     public class Reserveren
     {
+        public class Reserveringen
+        {
+            public int id { get; set; }
+            public string movie_title { get; set; }
+            public string username { get; set; }
+        }
+        
         public static void Reserveer()
         {
             //Check of user is ingelogd
@@ -39,6 +48,7 @@ namespace Cinema
                         int optie = Convert.ToInt32(Console.ReadLine());
                         if(optie == 1)
                         {
+
                             Dictionary<string, List<string>> login = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText(@"users.json"));
                             login[Variables.username].Add(item.title);
                             using (StreamWriter file = File.CreateText(@"users.json"))
@@ -47,6 +57,23 @@ namespace Cinema
                                 serialize.Serialize(file, login);
                             }
                             Console.WriteLine("\n\nBedankt voor uw reservering. Wij hebben u een bevestigingsmail gestuurd.\n");
+
+                            //Opslaan in reserveringen database
+                            Reserveringen[] newReservering = JsonConvert.DeserializeObject<Reserveringen[]>(File.ReadAllText(@"Reserveringen.json"));
+                            newReservering[0].id = 1;
+                            newReservering[0].movie_title = newMovies[Variables.Film].title;
+                            newReservering[0].username = Variables.username;
+
+
+                            using (StreamWriter file = File.CreateText(@"Reserveringen.json"))
+                            {
+                                JsonSerializer serialize = new JsonSerializer();
+                                serialize.Serialize(file, newReservering);
+                            }
+
+                            Console.WriteLine("\n"+newReservering[0].username+"\n");
+
+
                             // Send mail to confirm reservation
                             Movies.MovieProgram db = new Movies.MovieProgram();
                             // db.ConfirmationMail();
