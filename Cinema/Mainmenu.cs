@@ -20,8 +20,8 @@ namespace Cinema
                     //Geef pagina met films weer
                     Console.WriteLine("\nDit is de films pagina");
                     // Run database
-                    Database.DatabaseProgram db = new Database.DatabaseProgram();
-                    db.DatabaseShow();
+                    Movies.MovieProgram db = new Movies.MovieProgram();
+                    db.MovieShow();
                     //Aanroepen films.cs
 
                 }
