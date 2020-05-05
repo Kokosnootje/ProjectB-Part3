@@ -17,7 +17,7 @@ namespace Cinema
                 
                 //Json bestand met films openen en lezen
                 JsonSerializer serializer = new JsonSerializer();
-                Database.Movie[] newMovies = JsonConvert.DeserializeObject<Database.Movie[]>(File.ReadAllText(@"Database.json"));
+                Movies.Movie[] newMovies = JsonConvert.DeserializeObject<Movies.Movie[]>(File.ReadAllText(@"Movies.json"));
                 foreach (var item in newMovies)
                 {
                     if(item.id == Variables.Film)
@@ -39,9 +39,16 @@ namespace Cinema
                         int optie = Convert.ToInt32(Console.ReadLine());
                         if(optie == 1)
                         {
+                            Dictionary<string, List<string>> login = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText(@"users.json"));
+                            login[Variables.username].Add(item.title);
+                            using (StreamWriter file = File.CreateText(@"users.json"))
+                            {
+                                JsonSerializer serialize = new JsonSerializer();
+                                serialize.Serialize(file, login);
+                            }
                             Console.WriteLine("\n\nBedankt voor uw reservering. Wij hebben u een bevestigingsmail gestuurd.\n");
                             // Send mail to confirm reservation
-                            Database.DatabaseProgram db = new Database.DatabaseProgram();
+                            Movies.MovieProgram db = new Movies.MovieProgram();
                             // db.ConfirmationMail();
                         }
                         if(optie == 2)

@@ -1,6 +1,7 @@
 ﻿using System;
+using Newtonsoft.Json;
+using System.IO;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Cinema
 {
@@ -8,7 +9,7 @@ namespace Cinema
     {
         public static void LogedInMain()
         {
-            Console.WriteLine("\nKies een van de volgende opties om verder te gaan:\n[1] Films\n[2] Snacks menu\n[3] Contact\n[4] Uitloggen");
+            Console.WriteLine("\nKies een van de volgende opties om verder te gaan:\n[1] Films\n[2] Snacks menu\n[3] Contact\n[4] Mijn reserveringen\n[5] Uitloggen");
             Console.Write("> ");
             string menuNumber = Console.ReadLine();
             if (menuNumber == "1")
@@ -17,8 +18,8 @@ namespace Cinema
                 //Geef pagina met films weer
                 Console.WriteLine("\nDit is de films pagina");
                 // Run films database
-                Database.DatabaseProgram db = new Database.DatabaseProgram();
-                db.DatabaseShow();
+                Movies.MovieProgram db = new Movies.MovieProgram();
+                db.MovieShow();
 
                 Console.WriteLine("Press ESC to go to Home");
                 if (Console.ReadKey().Key != ConsoleKey.Escape)
@@ -41,6 +42,20 @@ namespace Cinema
             }
             else if (menuNumber == "4")
             {
+                ///Geeft alle gereserveerde films weer
+                var login = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText(@"users.json"));
+                foreach (string item in login[Variables.username])
+                {
+                    if (item != login[Variables.username][0])
+                    {
+                        Console.WriteLine(item);
+                    }
+                }
+                LogedInMain();
+            
+            }
+            else if (menuNumber == "5")
+            {
                 /// Movies
                 Console.WriteLine("Succesvol uitgelogd!");
                 Login.loginMain();
@@ -48,7 +63,7 @@ namespace Cinema
             else
             {
                 Console.WriteLine("Ongeldige invoer. Probeer opnieuw.");
-                LogedIn.LogedInMain();
+                LogedInMain();
             }
 
         }
@@ -63,8 +78,8 @@ namespace Cinema
                 //Geef pagina met films weer
                 Console.WriteLine("\nDit is de films pagina");
                 // Run database
-                Database.DatabaseProgram db = new Database.DatabaseProgram();
-                db.DatabaseShow();
+                Movies.MovieProgram db = new Movies.MovieProgram();
+                db.MovieShow();
             }
             else if (menuNumber == "2")
             {
