@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Cinema": {
+      "commandName": "Project",
+      "workingDirectory": "C:\\Users\\jaspe\\source\\repos\\ProjectB-Part3\\Cinema"
+    }
+  }
+}

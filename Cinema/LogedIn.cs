@@ -1,6 +1,7 @@
 ﻿using System;
+using Newtonsoft.Json;
+using System.IO;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Cinema
 {
@@ -8,26 +9,17 @@ namespace Cinema
     {
         public static void LogedInMain()
         {
-            Console.WriteLine("Type the number where you want to go");
-            Console.WriteLine("[1] Home");
-            Console.WriteLine("[2] Movies");
-            Console.WriteLine("[3] Contact");
-            Console.WriteLine("[4] Snacks");
-            Console.WriteLine("[5] Log out");
+            Console.WriteLine("\nKies een van de volgende opties om verder te gaan:\n[1] Films\n[2] Snacks menu\n[3] Contact\n[4] Mijn reserveringen\n[5] Uitloggen");
             Console.Write("> ");
             string menuNumber = Console.ReadLine();
             if (menuNumber == "1")
-            {
-                LogedIn.LogedInMain();
-            }
-            else if (menuNumber == "2")
             {
                 /// Movies
                 //Geef pagina met films weer
                 Console.WriteLine("\nDit is de films pagina");
                 // Run films database
-                Database.DatabaseProgram db = new Database.DatabaseProgram();
-                db.DatabaseShow();
+                Movies.MovieProgram db = new Movies.MovieProgram();
+                db.MovieShow();
 
                 Console.WriteLine("Press ESC to go to Home");
                 if (Console.ReadKey().Key != ConsoleKey.Escape)
@@ -37,90 +29,62 @@ namespace Cinema
                 {
                     LogedIn.LogedInMain();
                 }
+            }
+            else if (menuNumber == "2")
+            {
+                //Geef pagina met snacks menu weer
+                snacksMenu.snacksMenuOpvragen();
             }
             else if (menuNumber == "3")
             {
-                /// Movies
-                Console.WriteLine("Contact");
-                Console.WriteLine("Press ESC to go to Home");
-                if (Console.ReadKey().Key != ConsoleKey.Escape)
-                {
-                    //Geef contact pagina weer
-                    Console.WriteLine("\nDit is de Contact pagina van de bioscoop.\n\nAdres\nWeena 455\n3013AL Rotterdam\n\nOpeningstijden\nma - zo: 10.00 - 22.00\n\nTelefoon\n010-456-13-52");
-                    //Aanroepen contact.cs
-                    Contact.contact();
-                }
-                else
-                {
-                    LogedIn.LogedInMain();
-                }
-
+                //Aanroepen contact.cs
+                Contact.contact();
             }
             else if (menuNumber == "4")
             {
-                /// Movies
-                Console.WriteLine("Snacks");
-                Console.WriteLine("Press ESC to go to Home");
-                if (Console.ReadKey().Key != ConsoleKey.Escape)
+                ///Geeft alle gereserveerde films weer
+                var login = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText(@"users.json"));
+                foreach (string item in login[Variables.username])
                 {
-                    Console.WriteLine("\nDit is de snacks menu pagina. Hieronder staan alle snacks met bijbehorende prijzen.");
+                    if (item != login[Variables.username][0])
+                    {
+                        Console.WriteLine(item);
+                    }
                 }
-                else
-                {
-                    LogedIn.LogedInMain();
-                }
+                LogedInMain();
+            
             }
             else if (menuNumber == "5")
             {
                 /// Movies
-                Console.WriteLine("Succesfully loged out");
+                Console.WriteLine("Succesvol uitgelogd!");
                 Login.loginMain();
             }
             else
             {
-                Console.WriteLine("Please enter a valid option!");
-                LogedIn.LogedInMain();
+                Console.WriteLine("Ongeldige invoer. Probeer opnieuw.");
+                LogedInMain();
             }
 
         }
         public static void LogedInAdmin()
         {
-            Console.WriteLine("Type the number where you want to go");
-            Console.WriteLine("[1] Home");
-            Console.WriteLine("[2] Movies");
-            Console.WriteLine("[3] Add Movie");
-            Console.WriteLine("[4] Delete Movie");
-            Console.WriteLine("[5] Reservations");
-            Console.WriteLine("[6] Add Reservations");
-            Console.WriteLine("[7] Delete Reservations");
-            Console.WriteLine("[8] Log out");
+            Console.WriteLine("\nKies een van de volgende opties om verder te gaan:\n[1] Films\n[2] Voeg film toe\n[3] Verwijder film\n[4] Reserveringen\n[5] Voeg reservering toe\n[6] Verwijder reservering\n[7] Log uit");
             Console.Write("> ");
             string menuNumber = Console.ReadLine();
             if (menuNumber == "1")
-            {
-                LogedIn.LogedInAdmin();
-            }
-            else if (menuNumber == "2")
             {
                 /// Movies
                 //Geef pagina met films weer
                 Console.WriteLine("\nDit is de films pagina");
                 // Run database
-                Database.DatabaseProgram db = new Database.DatabaseProgram();
-                db.DatabaseMain();
-                Console.WriteLine("Press ESC to go to Home");
-                if (Console.ReadKey().Key != ConsoleKey.Escape)
-                {
-                }
-                else
-                {
-                    LogedIn.LogedInAdmin();
-                }
+                Movies.MovieProgram db = new Movies.MovieProgram();
+                db.MovieShow();
             }
-            else if (menuNumber == "3")
+            else if (menuNumber == "2")
             {
                 // Add movie function
-                Console.WriteLine("On this page you can add a Movie!");
+                Console.WriteLine("Op deze pagina kunt u films toevoegen");
 
                 // Film toevoegen
 
@@ -134,10 +98,23 @@ namespace Cinema
                     LogedIn.LogedInAdmin();
                 }
             }
-            else if (menuNumber == "4")
+            else if (menuNumber == "3")
             {
                 // Delete movie function
-                Console.WriteLine("On this page you can Delete a Movie!");
+                Console.WriteLine("Op deze pagina kunt u films verwijderen");
+                Console.WriteLine("Press ESC to go to Home");
+                if (Console.ReadKey().Key != ConsoleKey.Escape)
+                {
+                }
+                else
+                {
+                    LogedIn.LogedInAdmin();
+                }
+            }
+            else if (menuNumber == "4")
+            {
+                // Reservations Pagina
+                Console.WriteLine("Op deze pagina zijn alle reserveringen te zien");
                 Console.WriteLine("Press ESC to go to Home");
                 if (Console.ReadKey().Key != ConsoleKey.Escape)
                 {
@@ -150,24 +127,11 @@ namespace Cinema
             else if (menuNumber == "5")
             {
                 // Reservations Pagina
-                Console.WriteLine("On this page you can see all the reservations!");
-                Console.WriteLine("Press ESC to go to Home");
-                if (Console.ReadKey().Key != ConsoleKey.Escape)
-                {
-                }
-                else
-                {
-                    LogedIn.LogedInAdmin();
-                }
-            }
-            else if (menuNumber == "6")
-            {
-                // Reservations Pagina
-                Console.WriteLine("On this page you can add a reservations!");                             
+                Console.WriteLine("Op deze pagina kunt u reserveringen toevoegen");                             
                 
                 
                 
-                Console.WriteLine("Press ESC to go to Home");
+                Console.WriteLine("Druk op ESC om terug te gaan");
                 if (Console.ReadKey().Key != ConsoleKey.Escape)
                 {
                 }
@@ -177,11 +141,11 @@ namespace Cinema
                 }
 
             }
-            else if (menuNumber == "7")
+            else if (menuNumber == "6")
             {
                 // Reservations Pagina
-                Console.WriteLine("On this page you can delete a reservations!");
-                Console.WriteLine("Press ESC to go to Home");
+                Console.WriteLine("Op deze pagina kunt u reserveringen verwijderen");
+                Console.WriteLine("Druk op ESC om terug te gaan");
                 if (Console.ReadKey().Key != ConsoleKey.Escape)
                 {
                 }
@@ -190,15 +154,15 @@ namespace Cinema
                     LogedIn.LogedInAdmin();
                 }
             }
-            else if (menuNumber == "8")
+            else if (menuNumber == "7")
             {
                 /// Movies
-                Console.WriteLine("Succesfully loged out");
+                Console.WriteLine("Succesvol uitgelogd!");
                 Login.loginMain();
             }
             else
             {
-                Console.WriteLine("Please enter a valid option!");
+                Console.WriteLine("Ongeldige invoer. Probeer opnieuw.");
                 LogedIn.LogedInAdmin();
             }
         }

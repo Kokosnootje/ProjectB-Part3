@@ -4,6 +4,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
+
 namespace Cinema
 {
     public class Login
@@ -15,24 +16,26 @@ namespace Cinema
             string password;
             string tempPassword = null;
 
-            Dictionary<string, string> login;
+            Dictionary<string, List<string>> login;
+
+            List<string> userData = new List<string>();
 
             User user = new User()
             {
                 username = "",
                 password = "",
-                privileges = ""
+                privileges = "",
             };
 
-            variables.isLoggedIn = true;
-            Console.WriteLine(variables.isLoggedIn);
+            Variables.isLoggedIn = true;
+            Console.WriteLine(Variables.isLoggedIn);
             ///Het login programmaatje.
             while (true)
             {
-                Console.WriteLine("\n(1) Login\n" +
-                                  "(2) Admin Login\n" +
-                                  "(3) Nieuw account\n" +
-                                  "(4) Terug"
+                Console.WriteLine("\n[1] Login\n" +
+                                  "[2] Admin Login\n" +
+                                  "[3] Nieuw account\n" +
+                                  "[4] Terug"
                                   );
                 Console.Write("> ");
                 string menuChoice = Console.ReadLine();
@@ -57,14 +60,16 @@ namespace Cinema
                     }
 
                     ///Login Check account database for normal users
-                    login = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(@"users.json"));
-                    foreach (KeyValuePair<string, string> entry in login)
+                    login = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText(@"users.json"));
+                    foreach (KeyValuePair<string, List<string>> entry in login)
                     {
-                        if (entry.Key == username && entry.Value == password)
+                        if (entry.Key == username && entry.Value[0] == password)
                         {
                             user.username = entry.Key;
-                            user.password = entry.Value;
+                            user.password = entry.Value[0];
                             user.privileges = "user";
+                            Variables.isLoggedIn = true;
+                            Variables.username = entry.Key;
                             Console.WriteLine("login was succesvol");
                             LogedIn.LogedInMain();
                         }
@@ -91,13 +96,13 @@ namespace Cinema
                     }
 
                     ///Login Check account database for admin users
-                    login = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(@"admins.json"));
-                    foreach (KeyValuePair<string, string> entry in login)
+                    login = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText(@"admins.json"));
+                    foreach (KeyValuePair<string, List<string>> entry in login)
                     {
-                        if (entry.Key == username && entry.Value == password)
+                        if (entry.Key == username && entry.Value[0] == password)
                         {
                             user.username = entry.Key;
-                            user.password = entry.Value;
+                            user.password = entry.Value[0];
                             user.privileges = "admin";
                             Console.WriteLine("login was succesvol");
                             LogedIn.LogedInMain();
@@ -135,6 +140,7 @@ namespace Cinema
                         else if (key.Key != ConsoleKey.Backspace)
                             tempPassword += key.KeyChar;
                     }
+
                     if (password == tempPassword)
                     {
                         if (username.Length > 4)
@@ -143,10 +149,11 @@ namespace Cinema
                             {
                                 if (Regex.IsMatch(username, @"^[a-zA-Z0-9]+$") && Regex.IsMatch(password, @"^[a-zA-Z0-9]+$"))
                                 {
-                                    login = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(@"users.json"));
+                                    login = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText(@"users.json"));
                                     if (login.ContainsKey(username) == false)
                                     {
-                                        login.Add(username, password);
+                                        userData.Add(password);
+                                        login.Add(username, userData);
                                         using (StreamWriter file = File.CreateText(@"users.json"))
                                         {
                                             JsonSerializer serializer = new JsonSerializer();
@@ -190,7 +197,7 @@ namespace Cinema
 
                 else
                 {
-                    Console.WriteLine("Kies een van de bovenstaande opties!");
+                    Console.WriteLine("Please pick a valid option!");
                 }
             }
         }
