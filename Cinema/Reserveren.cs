@@ -58,20 +58,29 @@ namespace Cinema
                             }
                             Console.WriteLine("\n\nBedankt voor uw reservering. Wij hebben u een bevestigingsmail gestuurd.\n");
 
-                            //Opslaan in reserveringen database
+                            //Deserialize json file
                             Reserveringen[] newReservering = JsonConvert.DeserializeObject<Reserveringen[]>(File.ReadAllText(@"Reserveringen.json"));
-                            newReservering[0].id = 1;
-                            newReservering[0].movie_title = newMovies[Variables.Film].title;
-                            newReservering[0].username = Variables.username;
+                            
+                            //Maak nieuwe reservering... Weet niet of dit deel goed is ook
+                            Reserveringen reservering = new Reserveringen
+                            {
+                                id = 1,
+                                movie_title = "blade",
+                                username = "user"
+                            };
 
+                            //Voeg nieuwe reservering toe aan gedeserializede json file
+                            //snap nog niet hoe ik dit ga doen
 
+                            //Schrijf alles weer in json file
                             using (StreamWriter file = File.CreateText(@"Reserveringen.json"))
                             {
                                 JsonSerializer serialize = new JsonSerializer();
-                                serialize.Serialize(file, newReservering);
+                                serialize.Serialize(file, reservering);
                             }
 
-                            Console.WriteLine("\n"+newReservering[0].username+"\n");
+                            //Reserveringen[] newReservering = JsonConvert.DeserializeObject<Reserveringen[]>(File.ReadAllText(@"Reserveringen.json"));
+                            //Console.WriteLine("\n"+ newReservering[0].username+"\n");
 
 
                             // Send mail to confirm reservation
