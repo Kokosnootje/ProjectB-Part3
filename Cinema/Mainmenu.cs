@@ -17,13 +17,41 @@ namespace Cinema
                 int.Parse(optieMenu);
                 if (optieMenu == "1")
                 {
-                    //Geef pagina met films weer
-                    Console.WriteLine("\nDit is de films pagina");
-                    // Run database
-                    Movies.MovieProgram db = new Movies.MovieProgram();
-                    db.MovieShow();
-                    //Aanroepen films.cs
+                    bool tempMenu = true;
+                    while (tempMenu == true)
+                    {
 
+                        // Run database
+                        Movies.MovieProgram db = new Movies.MovieProgram();
+                        Console.WriteLine("\n[1] alle films bekijken\n[2] Film zoeken\n[3] Film reserveren\n[q] Ga terug");
+                        Console.Write("> ");
+                        optieMenu = Console.ReadLine();
+
+                        if (optieMenu == "1")
+                        {
+                            //Geef pagina met films weer
+                            db.MovieShow();
+                        }
+
+                        else if (optieMenu == "2")
+                        {
+                            db.filterMovie();
+                        }
+                        else if (optieMenu == "3")
+                        {
+                            Console.WriteLine("U kunt alleen een film reserveren als u bent ingelogd");
+                        }
+
+                        else if (optieMenu == "q")
+                        {
+                            tempMenu = false;
+                            Menu();
+                        }
+                        else
+                        {
+                            optieMenu = "";
+                        }
+                    }
                 }
                 else if (optieMenu == "2")
                 {

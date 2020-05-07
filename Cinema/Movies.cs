@@ -111,67 +111,112 @@ namespace Cinema
                     serializer.Serialize(file, movies);
                 }
             }
-            public void MovieShow()
+            public void MovieShow() //laat alles films zien die we hebben
             {
                 // Update JSON file with most recent data
                 MovieMain();
-                bool choosingMovie = true;
-                while (choosingMovie)
-                {
-                    JsonSerializer serializer = new JsonSerializer();
-                    Movie[] newMovies = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Movies.json"));
-                    foreach (var item in newMovies)
-                    {
-                        Console.WriteLine("[" + item.id + "] " + "Title: " + item.title + " || " + "Genre: " + item.genre);
-                    }
-                    Console.WriteLine("[" + (newMovies.Length + 1) + "] Ga terug naar het hoofdmenu");
-                
-                    //Kiezen om een film verder te bekijken
-                    Console.WriteLine("\nWelke film wilt u bekijken?");
-                
-                    try
-                    {
-                        int menuNumber = Convert.ToInt32(Console.ReadLine()) - 1;
 
-                        if (menuNumber == newMovies.Length)
+
+                JsonSerializer serializer = new JsonSerializer();
+                Movie[] newMovies = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Movies.json"));
+                foreach (var item in newMovies)
+                {
+                    Console.WriteLine("[" + item.id + "] " + "Title: " + item.title + " || " + "Genre: " + item.genre);
+                }
+            }
+
+            public void filterMovie()
+            {
+                string filter = "";
+                Console.WriteLine("Zoeken op:\n[1] Genre\n[2] Titel (NOG NIET AF!)");
+                Console.Write("> ");
+                string menuChoice = Console.ReadLine();
+                if (menuChoice == "1")
+                {
+                    Console.WriteLine("Welk genre wilt u zien?:\n[1] Action\n[2] Adventure\n[3] Cartoon\n[4] Horror");
+                    filter = Console.ReadLine();
+                    if (filter == "1")
+                    {
+                        filter = "Action";
+                    }
+                    else if (filter == "2")
+                    {
+                        filter = "Adventure";
+                    }
+                    else if (filter == "3")
+                    {
+                        filter = "Cartoon";
+                    }
+                    else if (filter == "4")
+                    {
+                        filter = "Horror";
+                    }
+                }
+                else if (menuChoice == "2")
+                {
+                    filter = "NOG NIET AF";
+                }
+                JsonSerializer serializer = new JsonSerializer();
+                Movie[] newMovies = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Movies.json"));
+                foreach (var item in newMovies)
+                {
+                    if (item.genre == filter)
+                        Console.WriteLine("[" + item.id + "] " + "Title: " + item.title + " || " + "Genre: " + item.genre);
+                }
+
+            }
+
+            public void pickMovie()
+            {
+                MovieMain();
+
+
+                JsonSerializer serializer = new JsonSerializer();
+                Movie[] newMovies = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Movies.json"));                
+                Console.WriteLine("Welke film wilt u reserveren? voer het nummer van de film in");
+                try
+                {
+                    int menuNumber = Convert.ToInt32(Console.ReadLine()) - 1;
+
+                    if (menuNumber == newMovies.Length)
+                    {
+                        
+                        // Terug naar menu
+                        if (Variables.isLoggedIn)
+                            LogedIn.LogedInMain();
+                        else
+                            Mainmenu.Menu();
+                    }
+                    else
+                    {
+                        //Alles weergeven van gekozen film
+                        Console.WriteLine("\nTitle: " + newMovies[menuNumber].title + "\nGenre: " + newMovies[menuNumber].genre + "\nDuration: " + newMovies[menuNumber].duration + "\nLanguage: " + newMovies[menuNumber].language + "\nTheatre Number: " + newMovies[menuNumber].theatreNumber + "\nStart Time: " + newMovies[menuNumber].startTime + "\nRating: " + newMovies[menuNumber].rating + "\nPrice: " + newMovies[menuNumber].price);
+                        Variables.Film = menuNumber + 1;
+
+                        //Menu voor verdere keuzes zoals reserveren
+                        Console.WriteLine("\nWat wilt u nu doen?\n[1] Film (" + newMovies[menuNumber].title + ") reserveren\n[2] Ga terug");
+                        string filmMenuNumber = Console.ReadLine();
+                        if (filmMenuNumber == "1")
                         {
-                            choosingMovie = false;
-                            // Terug naar menu
-                            if (Variables.isLoggedIn)
-                                LogedIn.LogedInMain();
-                            else
-                                Mainmenu.Menu();
+                            Reserveren.Reserveer();
+                        }
+                        else if (filmMenuNumber == "2")
+                        {
+                            Console.WriteLine("\n");
+                            
                         }
                         else
                         {
-                            //Alles weergeven van gekozen film
-                            Console.WriteLine("\nTitle: " + newMovies[menuNumber].title + "\nGenre: " + newMovies[menuNumber].genre + "\nDuration: " + newMovies[menuNumber].duration + "\nLanguage: " + newMovies[menuNumber].language + "\nTheatre Number: " + newMovies[menuNumber].theatreNumber + "\nStart Time: " + newMovies[menuNumber].startTime + "\nRating: " + newMovies[menuNumber].rating + "\nPrice: " + newMovies[menuNumber].price);
-                            Variables.Film = menuNumber + 1;
-
-                            //Menu voor verdere keuzes zoals reserveren
-                            Console.WriteLine("\nWat wilt u nu doen?\n[1] Film (" + newMovies[menuNumber].title + ") reserveren\n[2] Kies een andere film");
-                            string filmMenuNumber = Console.ReadLine();
-                            if (filmMenuNumber == "1")
-                            {
-                                Reserveren.Reserveer();
-                            }
-                            else if (filmMenuNumber == "2")
-                            {
-                                Console.WriteLine("\n");
-                                continue;
-                            }
-                            else
-                            {
-                                Console.WriteLine("\nOngeldige invoer. Probeer opnieuw.\n");
-                            }
+                            Console.WriteLine("\nOngeldige invoer. Probeer opnieuw.\n");
                         }
                     }
-                    catch
-                    {
-                        Console.WriteLine("\nOngeldige invoer. Probeer opnieuw.\n");
-                    }
+                }
+                catch
+                {
+                    Console.WriteLine("\nOngeldige invoer. Probeer opnieuw.\n");
                 }
             }
+        
 
             public void ConfirmationMail()
             {
