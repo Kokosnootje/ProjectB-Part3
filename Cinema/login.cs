@@ -96,16 +96,16 @@ namespace Cinema
                     }
 
                     ///Login Check account database for admin users
-                    login = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText(@"admins.json"));
-                    foreach (KeyValuePair<string, List<string>> entry in login)
+                    var loginAdmin = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(@"admins.json"));
+                    foreach (KeyValuePair<string, string> entry in loginAdmin)
                     {
-                        if (entry.Key == username && entry.Value[0] == password)
+                        if (entry.Key == username && entry.Value == password)
                         {
                             user.username = entry.Key;
-                            user.password = entry.Value[0];
+                            user.password = entry.Value;
                             user.privileges = "admin";
                             Console.WriteLine("login was succesvol");
-                            LogedIn.LogedInMain();
+                            LogedIn.LogedInAdmin();
                         }
                     }
                 }
