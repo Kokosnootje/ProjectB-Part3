@@ -12,8 +12,9 @@ namespace Cinema
     {      
         public static void Reserveer()
         {
-            Dictionary<string, List<string>> Reserveringen;
-            List<string> reserveringData = new List<string>();
+            Dictionary<string, List<List<string>>> Reserveringen;
+            List<List<string>> reserveringen = new List<List<string>>();
+            List<string> newReservering = new List<string>();
 
             //Check of user is ingelogd
             if (Variables.isLoggedIn)
@@ -46,11 +47,21 @@ namespace Cinema
                         {
 
                             //Deserialize json file
-                            Reserveringen = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText(@"Reserveringen.json"));
+                            Reserveringen = JsonConvert.DeserializeObject<Dictionary<string, List<List<string>>>>(File.ReadAllText(@"Reserveringen.json"));
 
                             //Voeg reservering toe
-                            reserveringData.Add(item.title);
-                            Reserveringen.Add(Variables.username, reserveringData);
+                            if (Reserveringen.ContainsKey(Variables.username) == true)
+                            {
+                                newReservering.Add(item.title);
+                                Reserveringen[Variables.username].Add(newReservering);
+                            }
+                            
+                            else
+                            {
+                                newReservering.Add(item.title);
+                                reserveringen.Add(newReservering);
+                                Reserveringen.Add(Variables.username, reserveringen);
+                            }
 
                             //Schrijf terug naar json file
                             using (StreamWriter file = File.CreateText(@"Reserveringen.json"))
