@@ -24,100 +24,8 @@ namespace Cinema
 
         public class MovieProgram
         {
-            public void MovieMain()
-            {
-                // Will eventually change to user input, currently manual variable of the database
-                Movie[] movies = new Movie[]
-                {
-                new Movie
-                {
-                    id = 1,
-                    title = "Blade",
-                    genre = "Action",
-                    duration = TimeSpan.Parse("1:30:00"),
-                    language = "English",
-                    theatreNumber = 1,
-                    startTime = DateTime.Parse("13:00:00 PM"),
-                    rating = "PG13",
-                    price = 19.99
-                },
-                new Movie
-                {
-                    id = 2,
-                    title = "Lord of the Rings",
-                    genre = "Adventure",
-                    duration = TimeSpan.Parse("2:30:00"),
-                    language = "English",
-                    theatreNumber = 2,
-                    startTime = DateTime.Parse("14:00:00 PM"),
-                    rating = "PG13",
-                    price = 19.99
-                },
-                new Movie
-                {
-                    id = 3,
-                    title = "Alladdin",
-                    genre = "Adventure",
-                    duration = TimeSpan.Parse("1:45:00"),
-                    language = "Dutch",
-                    theatreNumber = 1,
-                    startTime = DateTime.Parse("14:30"),
-                    rating = "E",
-                    price = 19.99
-                },
-                new Movie
-                {
-                    id = 4,
-                    title = "IT",
-                    genre = "Horror",
-                    duration = TimeSpan.Parse("2:00:00"),
-                    language = "English",
-                    theatreNumber = 3,
-                    startTime = DateTime.Parse("09:00"),
-                    rating = "PG13",
-                    price = 19.99
-                },
-                new Movie
-                {
-                    id = 5,
-                    title = "Deadpool",
-                    genre = "Action",
-                    duration = TimeSpan.Parse("1:30:00"),
-                    language = "English (Dutch Subtitles)",
-                    theatreNumber = 1,
-                    startTime = DateTime.Parse("19:00"),
-                    rating = "R",
-                    price = 24.99
-                },
-                new Movie
-                {
-                    id = 6,
-                    title = "The Lion King",
-                    genre = "Cartoon",
-                    duration = TimeSpan.Parse("1:15:00"),
-                    language = "Dutch",
-                    theatreNumber = 2,
-                    startTime = DateTime.Parse("10:00"),
-                    rating = "E",
-                    price = 09.99
-                }
-                };
-
-                // Write the "movies" variable to a JSON file
-
-                File.WriteAllText(@"Movies.json", JsonConvert.SerializeObject(movies));
-                using (StreamWriter file = File.CreateText(@"Movies.json"))
-                {
-                    JsonSerializer serializer = new JsonSerializer();
-                    serializer.Serialize(file, movies);
-                }
-            }
             public void MovieShow() //laat alles films zien die we hebben
             {
-                // Update JSON file with most recent data
-                MovieMain();
-
-
                 JsonSerializer serializer = new JsonSerializer();
                 Movie[] newMovies = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Movies.json"));
                 foreach (var item in newMovies)
@@ -169,9 +77,6 @@ namespace Cinema
 
             public void pickMovie()
             {
-                MovieMain();
-
-
                 JsonSerializer serializer = new JsonSerializer();
                 Movie[] newMovies = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Movies.json"));                
                 Console.WriteLine("Welke film wilt u reserveren? voer het nummer van de film in");
