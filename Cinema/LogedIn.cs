@@ -104,18 +104,11 @@ namespace Cinema
             {
                 // Add movie function
                 Console.WriteLine("Op deze pagina kunt u films toevoegen");
-
-                // Film toevoegen
-
-                // Terug naar menu
-                Console.WriteLine("Press ESC to go to Home");
-                if (Console.ReadKey().Key != ConsoleKey.Escape)
-                {
-                }
-                else
-                {
-                    LogedIn.LogedInAdmin();
-                }
+                Movies.MovieProgram db = new Movies.MovieProgram();
+                db.addMovie();
+                              
+                LogedIn.LogedInAdmin();
+                
             }
             else if (menuNumber == "3")
             {
