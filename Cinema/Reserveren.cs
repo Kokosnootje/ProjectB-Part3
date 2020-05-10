@@ -9,16 +9,12 @@ using System.Text;
 namespace Cinema
 {
     public class Reserveren
-    {
-        public class Reserveringen
-        {
-            public int id { get; set; }
-            public string movie_title { get; set; }
-            public string username { get; set; }
-        }
-        
+    {      
         public static void Reserveer()
         {
+            Dictionary<string, List<string>> Reserveringen;
+            List<string> reserveringData = new List<string>();
+
             //Check of user is ingelogd
             if (Variables.isLoggedIn)
             {
@@ -49,44 +45,27 @@ namespace Cinema
                         if(optie == 1)
                         {
 
-                            Dictionary<string, List<string>> login = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText(@"users.json"));
-                            login[Variables.username].Add(item.title);
-                            using (StreamWriter file = File.CreateText(@"users.json"))
-                            {
-                                JsonSerializer serialize = new JsonSerializer();
-                                serialize.Serialize(file, login);
-                            }
-                            Console.WriteLine("\n\nBedankt voor uw reservering. Wij hebben u een bevestigingsmail gestuurd.\n");
-
                             //Deserialize json file
-                            Reserveringen[] newReservering = JsonConvert.DeserializeObject<Reserveringen[]>(File.ReadAllText(@"Reserveringen.json"));
-                            
-                            //Maak nieuwe reservering... Weet niet of dit deel goed is ook
-                            Reserveringen reservering = new Reserveringen
-                            {
-                                id = 1,
-                                movie_title = "blade",
-                                username = "user"
-                            };
+                            Reserveringen = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText(@"Reserveringen.json"));
 
-                            //Voeg nieuwe reservering toe aan gedeserializede json file
-                            //snap nog niet hoe ik dit ga doen
+                            //Voeg reservering toe
+                            reserveringData.Add(item.title);
+                            Reserveringen.Add(Variables.username, reserveringData);
 
-                            //Schrijf alles weer in json file
+                            //Schrijf terug naar json file
                             using (StreamWriter file = File.CreateText(@"Reserveringen.json"))
                             {
                                 JsonSerializer serialize = new JsonSerializer();
-                                serialize.Serialize(file, reservering);
+                                serialize.Serialize(file, Reserveringen);
                             }
-
-                            //Reserveringen[] newReservering = JsonConvert.DeserializeObject<Reserveringen[]>(File.ReadAllText(@"Reserveringen.json"));
-                            //Console.WriteLine("\n"+ newReservering[0].username+"\n");
-
+                            Console.WriteLine("Reservering geregistreerd\n");
 
                             // Send mail to confirm reservation
                             Movies.MovieProgram db = new Movies.MovieProgram();
                             // db.ConfirmationMail();
+                            Console.WriteLine("\n\nBedankt voor uw reservering. Wij hebben u een bevestigingsmail gestuurd.\n");
                         }
+
                         if(optie == 2)
                         {
                             // Terug naar menu
