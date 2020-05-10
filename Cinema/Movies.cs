@@ -79,7 +79,7 @@ namespace Cinema
             {
                 JsonSerializer serializer = new JsonSerializer();
                 Movie[] newMovies = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Movies.json"));                
-                Console.WriteLine("Welke film wilt u reserveren? voer het nummer van de film in");
+                Console.WriteLine("Welke film wilt u reserveren?");
                 try
                 {
                     int menuNumber = Convert.ToInt32(Console.ReadLine()) - 1;
@@ -108,7 +108,7 @@ namespace Cinema
                         }
                         else if (filmMenuNumber == "2")
                         {
-                            Console.WriteLine("\n");
+                            Mainmenu.Menu();
                             
                         }
                         else
