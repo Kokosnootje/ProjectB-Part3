@@ -49,13 +49,15 @@ namespace Cinema
                             //Deserialize json file
                             Reserveringen = JsonConvert.DeserializeObject<Dictionary<string, List<List<string>>>>(File.ReadAllText(@"Reserveringen.json"));
 
-                            //Voeg reservering toe
+                            //Kijk of persoon al bestaat in reserveringen database
                             if (Reserveringen.ContainsKey(Variables.username) == true)
                             {
+                                //Indien dit het geval is, voeg nieuwe reservering toe aan persoon
                                 newReservering.Add(item.title);
                                 Reserveringen[Variables.username].Add(newReservering);
                             }
                             
+                            //Maak anders persoon aan in database en voeg reservering toe
                             else
                             {
                                 newReservering.Add(item.title);
