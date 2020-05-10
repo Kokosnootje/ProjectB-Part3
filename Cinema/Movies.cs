@@ -212,8 +212,11 @@ namespace Cinema
                         }
                     }
                 }
-                catch
+                catch(Exception e)
                 {
+                    // HAAL DIT WEG ZODRA APP KLAAR IS!
+                    Console.WriteLine(e);
+
                     Console.WriteLine("\nOngeldige invoer. Probeer opnieuw.\n");
                 }
             }
