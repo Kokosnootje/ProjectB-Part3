@@ -17,7 +17,7 @@ namespace Cinema
             public TimeSpan duration { get; set; }
             public string language { get; set; }
             public int theatreNumber { get; set; }
-            public DateTime startTime { get; set; }
+            public string startTime { get; set; }
             public string rating { get; set; }
             public double price { get; set; }
         }
@@ -143,7 +143,7 @@ namespace Cinema
                 newMovie.Add("language", Console.ReadLine());
                 Console.Write("Wat is het zaal nummer van deze film?:\n >");
                 newMovie.Add("theatreNumber", Console.ReadLine());
-                Console.Write(" hoe laat start de film?: (gebruik dit format => 2020-05-07T13:00:00)\n >");
+                Console.Write(" hoe laat start de film?: (gebruik dit format => 13:00:00)\n >");
                 newMovie.Add("startTime", Console.ReadLine());
                 Console.Write("Welke rating heeft deze film?: (Voorbeeld => PG13)\n >");
                 newMovie.Add("rating", Console.ReadLine());
