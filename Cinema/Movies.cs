@@ -3,6 +3,7 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Net.Mail;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Cinema
 {
@@ -217,6 +218,40 @@ namespace Cinema
                 }
             }
         
+            public void addMovie()
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                List<Dictionary<string, string>> movieList = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(File.ReadAllText(@"Movies.json"));
+
+                Dictionary<string, string> newMovie = new Dictionary<string, string>();
+                newMovie.Add("id", Convert.ToString(movieList.Count + 1));
+                Console.Write("Wat is de titel van de film?:\n >");
+                newMovie.Add("title", Console.ReadLine());
+                Console.Write("Wat is het genre?:\n >");
+                newMovie.Add("genre", Console.ReadLine());
+                Console.Write("hoe lang duurt de film?: (gebruik dit format => 00:00:00)\n >");
+                newMovie.Add("duration", Console.ReadLine());
+                Console.Write("In welke taal is de film?:\n >");
+                newMovie.Add("language", Console.ReadLine());
+                Console.Write("Wat is het zaal nummer van deze film?:\n >");
+                newMovie.Add("theatreNumber", Console.ReadLine());
+                Console.Write(" hoe laat start de film?: (gebruik dit format => 2020-05-07T13:00:00)\n >");
+                newMovie.Add("startTime", Console.ReadLine());
+                Console.Write("Welke rating heeft deze film?: (Voorbeeld => PG13)\n >");
+                newMovie.Add("rating", Console.ReadLine());
+                Console.Write("hoe veel kost deze film?: (Voorbeeld => 12.99)\n >");
+                newMovie.Add("price", Console.ReadLine());
+
+                movieList.Add(newMovie);
+                using (StreamWriter file = File.CreateText(@"Movies.json"))
+                {   
+                    JsonSerializer serializerz = new JsonSerializer();
+                    serializerz.Serialize(file, movieList);
+                    Console.WriteLine("Film is toegevoegd.");
+                }
+
+            }
+
 
             public void ConfirmationMail()
             {
