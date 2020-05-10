@@ -9,16 +9,13 @@ using System.Text;
 namespace Cinema
 {
     public class Reserveren
-    {
-        public class Reserveringen
-        {
-            public int id { get; set; }
-            public string movie_title { get; set; }
-            public string username { get; set; }
-        }
-        
+    {      
         public static void Reserveer()
         {
+            Dictionary<string, List<List<string>>> Reserveringen;
+            List<List<string>> reserveringen = new List<List<string>>();
+            List<string> newReservering = new List<string>();
+
             //Check of user is ingelogd
             if (Variables.isLoggedIn)
             {
@@ -49,44 +46,37 @@ namespace Cinema
                         if(optie == 1)
                         {
 
-                            Dictionary<string, List<string>> login = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText(@"users.json"));
-                            login[Variables.username].Add(item.title);
-                            using (StreamWriter file = File.CreateText(@"users.json"))
-                            {
-                                JsonSerializer serialize = new JsonSerializer();
-                                serialize.Serialize(file, login);
-                            }
-                            Console.WriteLine("\n\nBedankt voor uw reservering. Wij hebben u een bevestigingsmail gestuurd.\n");
-
                             //Deserialize json file
-                            Reserveringen[] newReservering = JsonConvert.DeserializeObject<Reserveringen[]>(File.ReadAllText(@"Reserveringen.json"));
-                            
-                            //Maak nieuwe reservering... Weet niet of dit deel goed is ook
-                            Reserveringen reservering = new Reserveringen
+                            Reserveringen = JsonConvert.DeserializeObject<Dictionary<string, List<List<string>>>>(File.ReadAllText(@"Reserveringen.json"));
+
+                            //Voeg reservering toe
+                            if (Reserveringen.ContainsKey(Variables.username) == true)
                             {
-                                id = 1,
-                                movie_title = "blade",
-                                username = "user"
-                            };
+                                newReservering.Add(item.title);
+                                Reserveringen[Variables.username].Add(newReservering);
+                            }
+                            
+                            else
+                            {
+                                newReservering.Add(item.title);
+                                reserveringen.Add(newReservering);
+                                Reserveringen.Add(Variables.username, reserveringen);
+                            }
 
-                            //Voeg nieuwe reservering toe aan gedeserializede json file
-                            //snap nog niet hoe ik dit ga doen
-
-                            //Schrijf alles weer in json file
+                            //Schrijf terug naar json file
                             using (StreamWriter file = File.CreateText(@"Reserveringen.json"))
                             {
                                 JsonSerializer serialize = new JsonSerializer();
-                                serialize.Serialize(file, reservering);
+                                serialize.Serialize(file, Reserveringen);
                             }
-
-                            //Reserveringen[] newReservering = JsonConvert.DeserializeObject<Reserveringen[]>(File.ReadAllText(@"Reserveringen.json"));
-                            //Console.WriteLine("\n"+ newReservering[0].username+"\n");
-
+                            Console.WriteLine("Reservering geregistreerd\n");
 
                             // Send mail to confirm reservation
                             Movies.MovieProgram db = new Movies.MovieProgram();
                             // db.ConfirmationMail();
+                            Console.WriteLine("\n\nBedankt voor uw reservering. Wij hebben u een bevestigingsmail gestuurd.\n");
                         }
+
                         if(optie == 2)
                         {
                             // Terug naar menu
