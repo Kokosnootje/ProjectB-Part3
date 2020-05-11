@@ -11,36 +11,48 @@ namespace Cinema
         {
             Console.WriteLine("\nKies een van de volgende opties om verder te gaan:\n[1] Films\n[2] Snacks menu\n[3] Contact\n[4] Mijn reserveringen\n[5] Uitloggen");
             Console.Write("> ");
-            string menuNumber = Console.ReadLine();
-            if (menuNumber == "1")
+            string optieMenu = Console.ReadLine();
+            if (optieMenu == "1")
             {
-                /// Movies
-                //Geef pagina met films weer
-                Console.WriteLine("\nDit is de films pagina");
-                // Run films database
-                Movies.MovieProgram db = new Movies.MovieProgram();
-                db.MovieShow();
+                {
 
-                Console.WriteLine("Press ESC to go to Home");
-                if (Console.ReadKey().Key != ConsoleKey.Escape)
-                {
-                }
-                else
-                {
-                    LogedIn.LogedInMain();
+                    // Run database
+                    Movies.MovieProgram db = new Movies.MovieProgram();
+                    //Films menu
+                    Console.WriteLine("\n[1] alle films bekijken\n[2] Film zoeken\n[3] Ga terug");
+                    Console.Write("> ");
+                    optieMenu = Console.ReadLine();
+
+                    if (optieMenu == "1")
+                    {
+                        //Geef pagina met films weer
+                        db.MovieShow();
+                        db.pickMovie();
+                    }
+
+                    else if (optieMenu == "2")
+                    {
+                        db.filterMovie();
+                    }
+
+
+                    else if (optieMenu == "3")
+                    {
+                        LogedIn.LogedInMain();
+                    }
                 }
             }
-            else if (menuNumber == "2")
+            else if (optieMenu == "2")
             {
                 //Geef pagina met snacks menu weer
                 snacksMenu.snacksMenuOpvragen();
             }
-            else if (menuNumber == "3")
+            else if (optieMenu == "3")
             {
                 //Aanroepen contact.cs
                 Contact.contact();
             }
-            else if (menuNumber == "4")
+            else if (optieMenu == "4")
             {
                 ///Geeft alle gereserveerde films weer
                 var login = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText(@"users.json"));
@@ -54,7 +66,7 @@ namespace Cinema
                 LogedInMain();
             
             }
-            else if (menuNumber == "5")
+            else if (optieMenu == "5")
             {
                 /// Movies
                 Console.WriteLine("Succesvol uitgelogd!");
@@ -85,18 +97,11 @@ namespace Cinema
             {
                 // Add movie function
                 Console.WriteLine("Op deze pagina kunt u films toevoegen");
-
-                // Film toevoegen
-
-                // Terug naar menu
-                Console.WriteLine("Press ESC to go to Home");
-                if (Console.ReadKey().Key != ConsoleKey.Escape)
-                {
-                }
-                else
-                {
-                    LogedIn.LogedInAdmin();
-                }
+                Movies.MovieProgram db = new Movies.MovieProgram();
+                db.addMovie();
+                              
+                LogedIn.LogedInAdmin();
+                
             }
             else if (menuNumber == "3")
             {

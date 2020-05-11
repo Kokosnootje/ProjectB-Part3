@@ -27,12 +27,10 @@ namespace Cinema
                 privileges = "",
             };
 
-            Variables.isLoggedIn = true;
-            Console.WriteLine(Variables.isLoggedIn);
             ///Het login programmaatje.
             while (true)
             {
-                Console.WriteLine("\n[1] Login\n" +
+                Console.WriteLine("[1] Login\n" +
                                   "[2] Admin Login\n" +
                                   "[3] Nieuw account\n" +
                                   "[4] Terug"
@@ -96,16 +94,16 @@ namespace Cinema
                     }
 
                     ///Login Check account database for admin users
-                    login = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText(@"admins.json"));
-                    foreach (KeyValuePair<string, List<string>> entry in login)
+                    var loginAdmin = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(@"admins.json"));
+                    foreach (KeyValuePair<string, string> entry in loginAdmin)
                     {
-                        if (entry.Key == username && entry.Value[0] == password)
+                        if (entry.Key == username && entry.Value == password)
                         {
                             user.username = entry.Key;
-                            user.password = entry.Value[0];
+                            user.password = entry.Value;
                             user.privileges = "admin";
                             Console.WriteLine("login was succesvol");
-                            LogedIn.LogedInMain();
+                            LogedIn.LogedInAdmin();
                         }
                     }
                 }
@@ -190,8 +188,7 @@ namespace Cinema
 
                 else if (menuChoice == "4") ///Exit
                 {
-                    ///Environment.Exit(-1);
-                    return;
+                    Mainmenu.Menu();
                 }
 
 

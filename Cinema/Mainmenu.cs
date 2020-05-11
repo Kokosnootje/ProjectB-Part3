@@ -17,13 +17,45 @@ namespace Cinema
                 int.Parse(optieMenu);
                 if (optieMenu == "1")
                 {
-                    //Geef pagina met films weer
-                    Console.WriteLine("\nDit is de films pagina");
-                    // Run database
-                    Movies.MovieProgram db = new Movies.MovieProgram();
-                    db.MovieShow();
-                    //Aanroepen films.cs
+                    bool tempMenu = true;
+                    while (tempMenu == true)
+                    {
 
+                        // Run database
+                        Movies.MovieProgram db = new Movies.MovieProgram();
+                        //Films menu
+                        Console.WriteLine("\n[1] alle films bekijken\n[2] Film zoeken\n[3] Ga terug");
+                        Console.Write("> ");
+                        optieMenu = Console.ReadLine();
+
+                        if (optieMenu == "1")
+                        {
+                            //Geef pagina met films weer
+                            db.MovieShow();
+                            Console.WriteLine("\n\nKies een van de volgende opties:\n[1] Film reserveren\n[2] Terug");
+                            string optieMenu3 = Console.ReadLine();
+                            if (optieMenu3 == "1")
+                            {
+                                db.pickMovie();
+                            }
+                            else if (optieMenu3 == "2")
+                            {
+                                Mainmenu.Menu();
+                            }
+                        }
+
+                        else if (optieMenu == "2")
+                        {
+                            db.filterMovie();
+                        }
+
+
+                        else if (optieMenu == "3")
+                        {
+                            Mainmenu.Menu();
+                        }
+                        
+                    }
                 }
                 else if (optieMenu == "2")
                 {
@@ -38,7 +70,7 @@ namespace Cinema
                 else if (optieMenu == "4")
                 {
                     //Geef inlog pagina weer
-                    Console.WriteLine("\nDit is de account pagina.");
+                    Console.WriteLine("\nDit is de account pagina. Kies een van de volgende opties:");
                     Login.loginMain();
                     //Aanroepen account.cs
                 }
@@ -49,8 +81,11 @@ namespace Cinema
                     Mainmenu.Menu();
                 }
             }
-            catch
+            catch(Exception e)
             {
+                // HAAL DIT WEG ZODRA APP KLAAR IS!
+                Console.WriteLine(e);
+
                 // Wanneer er iets ingevoerd word wat niet klopt.
                 Console.WriteLine("\nOngeldige invoer. Probeer opnieuw.");
                 Mainmenu.Menu();
