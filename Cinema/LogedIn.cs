@@ -106,8 +106,8 @@ namespace Cinema
             else if (menuNumber == "3")
             {
                 // Delete movie function
-                Console.WriteLine("Op deze pagina kunt u films verwijderen");
-                Console.WriteLine("Press ESC to go to Home");
+                Movies.MovieProgram db = new Movies.MovieProgram();
+                db.DeleteMovie();
                 if (Console.ReadKey().Key != ConsoleKey.Escape)
                 {
                 }
