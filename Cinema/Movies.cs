@@ -80,7 +80,7 @@ namespace Cinema
             {
                 JsonSerializer serializer = new JsonSerializer();
                 Movie[] newMovies = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Movies.json"));                
-                Console.WriteLine("Welke film wilt u reserveren? voer het nummer van de film in");
+                Console.WriteLine("Welke film wilt u reserveren?");
                 try
                 {
                     int menuNumber = Convert.ToInt32(Console.ReadLine()) - 1;
@@ -109,7 +109,7 @@ namespace Cinema
                         }
                         else if (filmMenuNumber == "2")
                         {
-                            Console.WriteLine("\n");
+                            Mainmenu.Menu();
                             
                         }
                         else
@@ -144,7 +144,7 @@ namespace Cinema
                 newMovie.Add("language", Console.ReadLine());
                 Console.Write("Wat is het zaal nummer van deze film?:\n >");
                 newMovie.Add("theatreNumber", Console.ReadLine());
-                Console.Write(" hoe laat start de film?: (gebruik dit format => 2020-05-07T13:00:00)\n >");
+                Console.Write(" hoe laat start de film?: (gebruik dit format => 13:00:00)\n >");
                 newMovie.Add("startTime", Console.ReadLine());
                 Console.Write("Welke rating heeft deze film?: (Voorbeeld => PG13)\n >");
                 newMovie.Add("rating", Console.ReadLine());
