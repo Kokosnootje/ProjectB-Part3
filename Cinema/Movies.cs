@@ -172,24 +172,33 @@ namespace Cinema
                     string answer = Console.ReadLine();
                     if (String.IsNullOrEmpty(answer) || !int.TryParse(answer, out deleteThis))
                     {
-                        Console.WriteLine("Please enter a number.");
+                        Console.WriteLine("Vul een getal in.");
                     }
                     else
                     {
                         deleteThis = Convert.ToInt32(answer);
-                        deleteMovieAnswer = true;
+                        JsonSerializer serializer = new JsonSerializer();
+                        List<Dictionary<string, string>> movieList = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(File.ReadAllText(@"Movies.json"));
+                        
+                        if (deleteThis > movieList.Count || deleteThis <= 0)
+                        {
+                            Console.WriteLine("Getal komt niet overeen met een filmnummer. Probeer opnieuw.");
+                        }
+                        else
+                        {
+                            movieList.RemoveAt(deleteThis - 1);
+
+                            using (StreamWriter file = File.CreateText(@"Movies.json"))
+                            {
+                                JsonSerializer serializerz = new JsonSerializer();
+                                serializerz.Serialize(file, movieList);
+                                Console.WriteLine("Film is verwijderd.");
+                            }
+                            deleteMovieAnswer = true;
+                        }
                     }
                 }
-                JsonSerializer serializer = new JsonSerializer();
-                List<Dictionary<string, string>> movieList = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(File.ReadAllText(@"Movies.json"));
-                movieList.RemoveAt(deleteThis - 1);
-
-                using (StreamWriter file = File.CreateText(@"Movies.json"))
-                {
-                    JsonSerializer serializerz = new JsonSerializer();
-                    serializerz.Serialize(file, movieList);
-                    Console.WriteLine("Film is verwijderd.");
-                }
+                
             }
 
             public void ConfirmationMail()
