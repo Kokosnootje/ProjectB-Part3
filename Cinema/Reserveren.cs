@@ -109,7 +109,7 @@ namespace Cinema
             else
             {
                 Console.WriteLine("U bent niet ingelogd\n");
-                Console.WriteLine("Press ESC to go to login\n");
+                Console.WriteLine("Druk op ESC om in te loggen\n");
                 if (Console.ReadKey().Key != ConsoleKey.Escape)
                 {
                 }
