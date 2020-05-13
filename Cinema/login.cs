@@ -40,10 +40,10 @@ namespace Cinema
 
                 if (menuChoice == "1") ///Login
                 {
-                    Console.Write("Username\n> ");
+                    Console.Write("Gebruikersnaam\n> ");
                     username = Console.ReadLine();
-                    Console.Write("Password\n> ");
-                    System.Console.Write("password: ");
+                    Console.Write("Wachtwoord\n> ");
+                    System.Console.Write("Wachtwoord: ");
                     password = null;
                     while (true)
                     {
@@ -194,7 +194,7 @@ namespace Cinema
 
                 else
                 {
-                    Console.WriteLine("Please pick a valid option!");
+                    Console.WriteLine("\nOngeldige invoer. Probeer opnieuw.");
                 }
             }
         }
