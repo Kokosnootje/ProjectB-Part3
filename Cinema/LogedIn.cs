@@ -137,9 +137,8 @@ namespace Cinema
             }
             else if (menuNumber == "3")
             {
-                // Delete movie function
+                Console.WriteLine("Op deze pagina kunt u films verwijderen");
                 Movies.MovieProgram db = new Movies.MovieProgram();
-                db.DeleteMovie();
                 if (Console.ReadKey().Key != ConsoleKey.Escape)
                 {
                 }

@@ -161,39 +161,6 @@ namespace Cinema
                 }
 
             }
-            public void DeleteMovie()
-            {
-               /***
-                var json = File.ReadAllText(@"Movies.json");
-                try
-                {
-                    var jObject = JObject.Parse(json);
-                    JArray movies = (JArray)jObject["movies"];
-                    Console.Write("Enter Movie ID to Delete movie : ");
-                    var movieid = Console.ReadLine();
-                    var movieidint = Convert.ToInt32(movieid);
-                    if (movieidint > 0)
-                    {
-                        var movieToDeleted = movies.FirstOrDefault(obj => obj["id"].Value<int>() == movieidint);
-
-                        movies.Remove(movieToDeleted);
-
-                        string output = Newtonsoft.Json.JsonConvert.SerializeObject(jObject, Newtonsoft.Json.Formatting.Indented);
-                        File.WriteAllText(@"Movies.json", output);
-                    }
-                    else
-                    {
-                        Console.Write("Invalid movie ID, Try Again!");
-                    }
-                }
-                catch (Exception)
-                {
-
-                    throw;
-                }
-                ***/
-            }
-
             public void ConfirmationMail()
             {
                 // Server settings
