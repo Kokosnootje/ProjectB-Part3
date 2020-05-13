@@ -163,12 +163,12 @@ namespace Cinema
             }
             public void DeleteMovie()
             {
-                /***
+               /***
                 var json = File.ReadAllText(@"Movies.json");
                 try
                 {
-                    var jArray = JArray.Parse(json);
-                    JArray movies = (JArray)jArray["id"];
+                    var jObject = JObject.Parse(json);
+                    JArray movies = (JArray)jObject["movies"];
                     Console.Write("Enter Movie ID to Delete movie : ");
                     var movieid = Console.ReadLine();
                     var movieidint = Convert.ToInt32(movieid);
@@ -178,7 +178,7 @@ namespace Cinema
 
                         movies.Remove(movieToDeleted);
 
-                        string output = Newtonsoft.Json.JsonConvert.SerializeObject(jArray, Newtonsoft.Json.Formatting.Indented);
+                        string output = Newtonsoft.Json.JsonConvert.SerializeObject(jObject, Newtonsoft.Json.Formatting.Indented);
                         File.WriteAllText(@"Movies.json", output);
                     }
                     else

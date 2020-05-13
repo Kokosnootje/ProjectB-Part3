@@ -60,7 +60,8 @@ namespace Cinema
                 else if (optieMenu == "2")
                 {
                     //Geef pagina met snacks menu weer
-                    snacksMenu.snacksMenuOpvragen();
+                    Snacks.SnacksProgram snackdb = new Snacks.SnacksProgram();
+                    snackdb.SnacksShow();
                 }
                 else if (optieMenu == "3")
                 {
