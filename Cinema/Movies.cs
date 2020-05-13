@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using System.Net.Mail;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Newtonsoft.Json.Linq;
 using System.Linq;
 
 namespace Cinema
