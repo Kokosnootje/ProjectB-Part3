@@ -1,15 +1,21 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Cinema
 {
     public class Reserveren
-    {
+    {      
         public static void Reserveer()
         {
+            Dictionary<string, List<List<string>>> Reserveringen;
+            List<List<string>> reserveringen = new List<List<string>>();
+            List<string> newReservering = new List<string>();
+
             //Check of user is ingelogd
             if (Variables.isLoggedIn)
             {
@@ -39,18 +45,38 @@ namespace Cinema
                         int optie = Convert.ToInt32(Console.ReadLine());
                         if(optie == 1)
                         {
-                            Dictionary<string, List<string>> login = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText(@"users.json"));
-                            login[Variables.username].Add(item.title);
-                            using (StreamWriter file = File.CreateText(@"users.json"))
+
+                            //Deserialize json file
+                            Reserveringen = JsonConvert.DeserializeObject<Dictionary<string, List<List<string>>>>(File.ReadAllText(@"Reserveringen.json"));
+
+                            //Voeg reservering toe
+                            if (Reserveringen.ContainsKey(Variables.username) == true)
+                            {
+                                newReservering.Add(item.title);
+                                Reserveringen[Variables.username].Add(newReservering);
+                            }
+                            
+                            else
+                            {
+                                newReservering.Add(item.title);
+                                reserveringen.Add(newReservering);
+                                Reserveringen.Add(Variables.username, reserveringen);
+                            }
+
+                            //Schrijf terug naar json file
+                            using (StreamWriter file = File.CreateText(@"Reserveringen.json"))
                             {
                                 JsonSerializer serialize = new JsonSerializer();
-                                serialize.Serialize(file, login);
+                                serialize.Serialize(file, Reserveringen);
                             }
-                            Console.WriteLine("\n\nBedankt voor uw reservering. Wij hebben u een bevestigingsmail gestuurd.\n");
+                            Console.WriteLine("Reservering geregistreerd\n");
+
                             // Send mail to confirm reservation
                             Movies.MovieProgram db = new Movies.MovieProgram();
                             // db.ConfirmationMail();
+                            Console.WriteLine("\n\nBedankt voor uw reservering. Wij hebben u een bevestigingsmail gestuurd.\n");
                         }
+
                         if(optie == 2)
                         {
                             // Terug naar menu
