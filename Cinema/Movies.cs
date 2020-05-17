@@ -38,12 +38,13 @@ namespace Cinema
             public void filterMovie()
             {
                 string filter = "";
-                Console.WriteLine("Zoeken op:\n[1] Genre\n[2] Titel (NOG NIET AF!)");
+                Console.WriteLine("Zoeken op:\n[1] Genre\n[2] Titel\n[3] Taal");
                 Console.Write("> ");
                 string menuChoice = Console.ReadLine();
                 if (menuChoice == "1")
                 {
                     Console.WriteLine("Welk genre wilt u zien?:\n[1] Action\n[2] Adventure\n[3] Cartoon\n[4] Horror");
+                    Console.Write("> ");
                     filter = Console.ReadLine();
                     if (filter == "1")
                     {
@@ -64,13 +65,29 @@ namespace Cinema
                 }
                 else if (menuChoice == "2")
                 {
-                    filter = "NOG NIET AF";
+                    Console.WriteLine("Type de naam of een gedeelte daar van hier in");
+                    Console.Write("> ");
+                    filter = Console.ReadLine();
+                }
+                else if (menuChoice == "3")
+                {
+                    Console.WriteLine("In welke taal wilt u een film zien?:\n[1] Engels\n[2] Nederlands");
+                    Console.Write("> ");
+                    filter = Console.ReadLine();
+                    if (filter == "1")
+                    {
+                        filter = "English";
+                    }
+                    else if (filter == "2")
+                    {
+                        filter = "Dutch";
+                    }
                 }
                 JsonSerializer serializer = new JsonSerializer();
                 Movie[] newMovies = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Movies.json"));
                 foreach (var item in newMovies)
                 {
-                    if (item.genre == filter)
+                    if (filter == item.genre || item.title.Contains(filter) || item.language.Contains(filter))
                         Console.WriteLine("[" + item.id + "] " + "Title: " + item.title + " || " + "Genre: " + item.genre);
                 }
 
