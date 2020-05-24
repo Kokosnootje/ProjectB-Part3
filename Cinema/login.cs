@@ -27,12 +27,10 @@ namespace Cinema
                 privileges = "",
             };
 
-            Variables.isLoggedIn = true;
-            Console.WriteLine(Variables.isLoggedIn);
             ///Het login programmaatje.
             while (true)
             {
-                Console.WriteLine("\n[1] Login\n" +
+                Console.WriteLine("[1] Login\n" +
                                   "[2] Admin Login\n" +
                                   "[3] Nieuw account\n" +
                                   "[4] Terug"
@@ -42,10 +40,10 @@ namespace Cinema
 
                 if (menuChoice == "1") ///Login
                 {
-                    Console.Write("Username\n> ");
+                    Console.Write("Gebruikersnaam\n> ");
                     username = Console.ReadLine();
-                    Console.Write("Password\n> ");
-                    System.Console.Write("password: ");
+                    Console.Write("Wachtwoord\n> ");
+                    System.Console.Write("Wachtwoord: ");
                     password = null;
                     while (true)
                     {
@@ -190,14 +188,13 @@ namespace Cinema
 
                 else if (menuChoice == "4") ///Exit
                 {
-                    ///Environment.Exit(-1);
-                    return;
+                    Mainmenu.Menu();
                 }
 
 
                 else
                 {
-                    Console.WriteLine("Please pick a valid option!");
+                    Console.WriteLine("\nOngeldige invoer. Probeer opnieuw.");
                 }
             }
         }

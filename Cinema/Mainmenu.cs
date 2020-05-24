@@ -23,7 +23,8 @@ namespace Cinema
 
                         // Run database
                         Movies.MovieProgram db = new Movies.MovieProgram();
-                        Console.WriteLine("\n[1] alle films bekijken\n[2] Film zoeken\n[3] Film reserveren\n[q] Ga terug");
+                        //Films menu
+                        Console.WriteLine("\n[1] alle films bekijken\n[2] Film zoeken\n[3] Ga terug");
                         Console.Write("> ");
                         optieMenu = Console.ReadLine();
 
@@ -31,32 +32,36 @@ namespace Cinema
                         {
                             //Geef pagina met films weer
                             db.MovieShow();
+                            Console.WriteLine("\n\nKies een van de volgende opties:\n[1] Film reserveren\n[2] Terug");
+                            string optieMenu3 = Console.ReadLine();
+                            if (optieMenu3 == "1")
+                            {
+                                db.pickMovie();
+                            }
+                            else if (optieMenu3 == "2")
+                            {
+                                Mainmenu.Menu();
+                            }
                         }
 
                         else if (optieMenu == "2")
                         {
                             db.filterMovie();
                         }
+
+
                         else if (optieMenu == "3")
                         {
-                            Console.WriteLine("U kunt alleen een film reserveren als u bent ingelogd");
+                            Mainmenu.Menu();
                         }
-
-                        else if (optieMenu == "q")
-                        {
-                            tempMenu = false;
-                            Menu();
-                        }
-                        else
-                        {
-                            optieMenu = "";
-                        }
+                        
                     }
                 }
                 else if (optieMenu == "2")
                 {
                     //Geef pagina met snacks menu weer
-                    snacksMenu.snacksMenuOpvragen();
+                    Snacks.SnacksProgram snackdb = new Snacks.SnacksProgram();
+                    snackdb.SnacksShow();
                 }
                 else if (optieMenu == "3")
                 {
@@ -66,7 +71,7 @@ namespace Cinema
                 else if (optieMenu == "4")
                 {
                     //Geef inlog pagina weer
-                    Console.WriteLine("\nDit is de account pagina.");
+                    Console.WriteLine("\nDit is de account pagina. Kies een van de volgende opties:");
                     Login.loginMain();
                     //Aanroepen account.cs
                 }

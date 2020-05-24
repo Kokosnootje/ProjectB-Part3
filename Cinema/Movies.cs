@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System.Net.Mail;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace Cinema
 {
@@ -17,7 +18,7 @@ namespace Cinema
             public TimeSpan duration { get; set; }
             public string language { get; set; }
             public int theatreNumber { get; set; }
-            public DateTime startTime { get; set; }
+            public string startTime { get; set; }
             public string rating { get; set; }
             public double price { get; set; }
         }
@@ -96,7 +97,7 @@ namespace Cinema
             {
                 JsonSerializer serializer = new JsonSerializer();
                 Movie[] newMovies = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Movies.json"));                
-                Console.WriteLine("Welke film wilt u reserveren? voer het nummer van de film in");
+                Console.WriteLine("Welke film wilt u reserveren?");
                 try
                 {
                     int menuNumber = Convert.ToInt32(Console.ReadLine()) - 1;
@@ -125,7 +126,7 @@ namespace Cinema
                         }
                         else if (filmMenuNumber == "2")
                         {
-                            Console.WriteLine("\n");
+                            Mainmenu.Menu();
                             
                         }
                         else
@@ -160,7 +161,7 @@ namespace Cinema
                 newMovie.Add("language", Console.ReadLine());
                 Console.Write("Wat is het zaal nummer van deze film?:\n >");
                 newMovie.Add("theatreNumber", Console.ReadLine());
-                Console.Write(" hoe laat start de film?: (gebruik dit format => 2020-05-07T13:00:00)\n >");
+                Console.Write(" hoe laat start de film?: (gebruik dit format => 13:00:00)\n >");
                 newMovie.Add("startTime", Console.ReadLine());
                 Console.Write("Welke rating heeft deze film?: (Voorbeeld => PG13)\n >");
                 newMovie.Add("rating", Console.ReadLine());
@@ -177,6 +178,44 @@ namespace Cinema
 
             }
 
+            public void deleteMovie()
+            {
+                int deleteThis = 0;
+                bool deleteMovieAnswer = false;
+                while (!deleteMovieAnswer)
+                {
+                    Console.WriteLine("Welke film moet verwijderd worden?:");
+                    MovieShow();
+                    string answer = Console.ReadLine();
+                    if (String.IsNullOrEmpty(answer) || !int.TryParse(answer, out deleteThis))
+                    {
+                        Console.WriteLine("Vul een getal in.");
+                    }
+                    else
+                    {
+                        deleteThis = Convert.ToInt32(answer);
+                        JsonSerializer serializer = new JsonSerializer();
+                        List<Dictionary<string, string>> movieList = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(File.ReadAllText(@"Movies.json"));
+
+                        if (deleteThis > movieList.Count || deleteThis <= 0)
+                        {
+                            Console.WriteLine("Getal komt niet overeen met een filmnummer. Probeer opnieuw.");
+                        }
+                        else
+                        {
+                            movieList.RemoveAt(deleteThis - 1);
+
+                            using (StreamWriter file = File.CreateText(@"Movies.json"))
+                            {
+                                JsonSerializer serializerz = new JsonSerializer();
+                                serializerz.Serialize(file, movieList);
+                                Console.WriteLine("Film is verwijderd.");
+                            }
+                            deleteMovieAnswer = true;
+                        }
+                    }
+                }
+            }
 
             public void ConfirmationMail()
             {

@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Cinema
 {
@@ -14,13 +15,12 @@ namespace Cinema
             string optieMenu = Console.ReadLine();
             if (optieMenu == "1")
             {
-                bool tempMenu = true;
-                while (tempMenu == true)
                 {
 
                     // Run database
                     Movies.MovieProgram db = new Movies.MovieProgram();
-                    Console.WriteLine("\n[1] alle films bekijken\n[2] Film zoeken\n[3] Film reserveren\n[q] Ga terug");
+                    //Films menu
+                    Console.WriteLine("\n[1] alle films bekijken\n[2] Film zoeken\n[3] Ga terug");
                     Console.Write("> ");
                     optieMenu = Console.ReadLine();
 
@@ -28,31 +28,57 @@ namespace Cinema
                     {
                         //Geef pagina met films weer
                         db.MovieShow();
+                        db.pickMovie();
                     }
 
                     else if (optieMenu == "2")
                     {
                         db.filterMovie();
                     }
+
+
                     else if (optieMenu == "3")
                     {
-                        db.pickMovie();
-                    }
-
-                    else if (optieMenu == "q")
-                    {
-                        tempMenu = false;
-                    }
-                    else
-                    {
-                        optieMenu = "";
+                        LogedIn.LogedInMain();
                     }
                 }
             }
             else if (optieMenu == "2")
             {
                 //Geef pagina met snacks menu weer
-                snacksMenu.snacksMenuOpvragen();
+                Snacks.SnacksProgram snackdb = new Snacks.SnacksProgram();
+                snackdb.SnacksShow();
+                string optieSnacksMenu;
+                Console.WriteLine("\n\nWilt u terug naar het menu?\n[1] Ja\n[2] Nee");
+                optieSnacksMenu = Console.ReadLine();
+                try
+                {
+                    if (optieSnacksMenu == "1")
+                    {
+                        // Terug naar menu
+                        if (Variables.isLoggedIn)
+                            LogedIn.LogedInMain();
+                        else
+                            Mainmenu.Menu();
+                    }
+                    else if (optieSnacksMenu == "2")
+                    {
+                        // Exit
+                    }
+                    else
+                    {
+                        // Wanneer de input niet tussen 1 en 4 ligt
+                        Console.WriteLine("\nGelieve een nummer tussen 1 en 2 in te toetsen");
+                        snackdb.SnacksShow();
+                    }
+                }
+                catch
+                {
+                    // Wanneer de input geen int is
+                    Console.WriteLine("\nEr is iets fout gegaan. Probeer opnieuw.");
+                    snackdb.SnacksShow();
+                }
+
             }
             else if (optieMenu == "3")
             {
@@ -62,13 +88,18 @@ namespace Cinema
             else if (optieMenu == "4")
             {
                 ///Geeft alle gereserveerde films weer
-                var login = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText(@"users.json"));
-                foreach (string item in login[Variables.username])
+                var reserveringen = JsonConvert.DeserializeObject<Dictionary<string, List<List<string>>>>(File.ReadAllText(@"Reserveringen.json"));
+                foreach (var item in reserveringen[Variables.username])
                 {
-                    if (item != login[Variables.username][0])
-                    {
-                        Console.WriteLine(item);
-                    }
+                    Console.WriteLine("\n"+item[0]);
+                    Console.WriteLine("====================");
+                    Console.WriteLine("Film: "+item[0]);
+                    Console.WriteLine("Theaterzaal: " + item[1]);
+                    Console.WriteLine("Aantal kaartjes: " + item[2]);
+                    Console.WriteLine("Starttijd: " + item[3]);
+                    Console.WriteLine("Dag van de week: " + item[4]);
+
+                    Console.WriteLine("\n");
                 }
                 LogedInMain();
             
@@ -88,7 +119,7 @@ namespace Cinema
         }
         public static void LogedInAdmin()
         {
-            Console.WriteLine("\nKies een van de volgende opties om verder te gaan:\n[1] Films\n[2] Voeg film toe\n[3] Verwijder film\n[4] Reserveringen\n[5] Voeg reservering toe\n[6] Verwijder reservering\n[7] Log uit");
+            Console.WriteLine("\nKies een van de volgende opties om verder te gaan:\n[1] Films\n[2] Voeg film toe\n[3] Verwijder film\n[4] Reserveringen\n[5] Voeg reservering toe\n[6] Verwijder reservering\n[7] Snack toevoegen\n[8] Log uit");
             Console.Write("> ");
             string menuNumber = Console.ReadLine();
             if (menuNumber == "1")
@@ -114,6 +145,9 @@ namespace Cinema
             {
                 // Delete movie function
                 Console.WriteLine("Op deze pagina kunt u films verwijderen");
+                Movies.MovieProgram db = new Movies.MovieProgram();
+                db.deleteMovie();
+
                 Console.WriteLine("Press ESC to go to Home");
                 if (Console.ReadKey().Key != ConsoleKey.Escape)
                 {
@@ -168,7 +202,11 @@ namespace Cinema
             }
             else if (menuNumber == "7")
             {
-                /// Movies
+                Snacks.SnacksProgram snackdb = new Snacks.SnacksProgram();
+                snackdb.addSnack();
+            }
+            else if (menuNumber == "8")
+            {
                 Console.WriteLine("Succesvol uitgelogd!");
                 Login.loginMain();
             }
