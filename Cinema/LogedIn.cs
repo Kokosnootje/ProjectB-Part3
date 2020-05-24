@@ -87,13 +87,10 @@ namespace Cinema
             else if (optieMenu == "4")
             {
                 ///Geeft alle gereserveerde films weer
-                var login = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText(@"users.json"));
-                foreach (string item in login[Variables.username])
+                var reserveringen = JsonConvert.DeserializeObject<Dictionary<string, List<List<string>>>>(File.ReadAllText(@"Reserveringen.json"));
+                foreach (var item in reserveringen[Variables.username])
                 {
-                    if (item != login[Variables.username][0])
-                    {
-                        Console.WriteLine(item);
-                    }
+                    Console.WriteLine(item[0]);
                 }
                 LogedInMain();
             
