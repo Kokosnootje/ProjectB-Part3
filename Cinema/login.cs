@@ -16,9 +16,7 @@ namespace Cinema
             string password;
             string tempPassword = null;
 
-            Dictionary<string, List<string>> login;
-
-            List<string> userData = new List<string>();
+            Dictionary<string, string> login;
 
             User user = new User()
             {
@@ -27,10 +25,12 @@ namespace Cinema
                 privileges = "",
             };
 
+            Variables.isLoggedIn = true;
+            Console.WriteLine(Variables.isLoggedIn);
             ///Het login programmaatje.
             while (true)
             {
-                Console.WriteLine("[1] Login\n" +
+                Console.WriteLine("\n[1] Login\n" +
                                   "[2] Admin Login\n" +
                                   "[3] Nieuw account\n" +
                                   "[4] Terug"
@@ -40,10 +40,10 @@ namespace Cinema
 
                 if (menuChoice == "1") ///Login
                 {
-                    Console.Write("Gebruikersnaam\n> ");
+                    Console.Write("Username\n> ");
                     username = Console.ReadLine();
-                    Console.Write("Wachtwoord\n> ");
-                    System.Console.Write("Wachtwoord: ");
+                    Console.Write("Password\n> ");
+                    System.Console.Write("password: ");
                     password = null;
                     while (true)
                     {
@@ -58,13 +58,13 @@ namespace Cinema
                     }
 
                     ///Login Check account database for normal users
-                    login = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText(@"users.json"));
-                    foreach (KeyValuePair<string, List<string>> entry in login)
+                    login = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(@"users.json"));
+                    foreach (KeyValuePair<string, string> entry in login)
                     {
-                        if (entry.Key == username && entry.Value[0] == password)
+                        if (entry.Key == username && entry.Value == password)
                         {
                             user.username = entry.Key;
-                            user.password = entry.Value[0];
+                            user.password = entry.Value;
                             user.privileges = "user";
                             Variables.isLoggedIn = true;
                             Variables.username = entry.Key;
@@ -147,11 +147,10 @@ namespace Cinema
                             {
                                 if (Regex.IsMatch(username, @"^[a-zA-Z0-9]+$") && Regex.IsMatch(password, @"^[a-zA-Z0-9]+$"))
                                 {
-                                    login = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText(@"users.json"));
+                                    login = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(@"users.json"));
                                     if (login.ContainsKey(username) == false)
                                     {
-                                        userData.Add(password);
-                                        login.Add(username, userData);
+                                        login.Add(username, password);
                                         using (StreamWriter file = File.CreateText(@"users.json"))
                                         {
                                             JsonSerializer serializer = new JsonSerializer();
@@ -188,13 +187,14 @@ namespace Cinema
 
                 else if (menuChoice == "4") ///Exit
                 {
-                    Mainmenu.Menu();
+                    ///Environment.Exit(-1);
+                    return;
                 }
 
 
                 else
                 {
-                    Console.WriteLine("\nOngeldige invoer. Probeer opnieuw.");
+                    Console.WriteLine("Please pick a valid option!");
                 }
             }
         }
