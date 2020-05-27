@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Cinema
 {
@@ -87,13 +88,18 @@ namespace Cinema
             else if (optieMenu == "4")
             {
                 ///Geeft alle gereserveerde films weer
-                var login = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText(@"users.json"));
-                foreach (string item in login[Variables.username])
+                var reserveringen = JsonConvert.DeserializeObject<Dictionary<string, List<List<string>>>>(File.ReadAllText(@"Reserveringen.json"));
+                foreach (var item in reserveringen[Variables.username])
                 {
-                    if (item != login[Variables.username][0])
-                    {
-                        Console.WriteLine(item);
-                    }
+                    Console.WriteLine("\n"+item[0]);
+                    Console.WriteLine("====================");
+                    Console.WriteLine("Film: "+item[0]);
+                    Console.WriteLine("Theaterzaal: " + item[1]);
+                    Console.WriteLine("Aantal kaartjes: " + item[2]);
+                    Console.WriteLine("Starttijd: " + item[3]);
+                    Console.WriteLine("Dag van de week: " + item[4]);
+
+                    Console.WriteLine("\n");
                 }
                 LogedInMain();
             
