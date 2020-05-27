@@ -62,6 +62,32 @@ namespace Cinema
                     //Geef pagina met snacks menu weer
                     Snacks.SnacksProgram snackdb = new Snacks.SnacksProgram();
                     snackdb.SnacksShow();
+                    string optieSnacksMenu;
+                    Console.WriteLine("\n\nWilt u terug naar het menu?\n[1] Ja\n[2] Nee");
+                    optieSnacksMenu = Console.ReadLine();
+                    try
+                    {
+                        if (optieSnacksMenu == "1")
+                        {
+                            Mainmenu.Menu();
+                        }
+                        else if (optieSnacksMenu == "2")
+                        {
+                            // Exit
+                        }
+                        else
+                        {
+                            // Wanneer de input niet tussen 1 en 4 ligt
+                            Console.WriteLine("\nGelieve een nummer tussen 1 en 2 in te toetsen");
+                            snackdb.SnacksShow();
+                        }
+                    }
+                    catch
+                    {
+                        // Wanneer de input geen int is
+                        Console.WriteLine("\nEr is iets fout gegaan. Probeer opnieuw.");
+                        snackdb.SnacksShow();
+                    }
                 }
                 else if (optieMenu == "3")
                 {

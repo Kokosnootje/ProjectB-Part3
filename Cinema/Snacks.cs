@@ -24,9 +24,17 @@ namespace Cinema
             {
                 JsonSerializer serializer = new JsonSerializer();
                 Snack[] newSnacks = JsonConvert.DeserializeObject<Snack[]>(File.ReadAllText(@"Snacks.json"));
+                Console.WriteLine("Drinks");
                 foreach (var item in newSnacks)
                 {
-                    Console.WriteLine("[" + item.id + "] " + item.name + " || " + "prijs: " + item.price);
+                    if ("Drinks" == item.category)
+                    Console.WriteLine(item.name + " || " + "prijs: " + item.price);
+                }
+                Console.WriteLine("\nFood");
+                foreach (var item in newSnacks)
+                {
+                    if ("Food" == item.category)
+                        Console.WriteLine(item.name + " || " + "prijs: " + item.price);
                 }
             }
             public void addSnack()
@@ -36,11 +44,11 @@ namespace Cinema
 
                 Dictionary<string, string> newSnack = new Dictionary<string, string>();
                 newSnack.Add("id", Convert.ToString(snackList.Count + 1));
-                Console.Write("Wat is de categorie vand de snack (Drinks or food)?:\n >");
+                Console.Write("Wat is de categorie vand de snack (Drinks or Food)?:\n >");
                 newSnack.Add("category", Console.ReadLine());
                 Console.Write("Wat is de naam van de snack?:\n >");
                 newSnack.Add("name", Console.ReadLine());
-                Console.Write("Wat is de prijs van de snack?: (Voorbeeld => 12.99)");
+                Console.Write("Wat is de prijs van de snack?: (Voorbeeld => 12.99):\n >");
                 newSnack.Add("price", Console.ReadLine());
 
                 snackList.Add(newSnack);
