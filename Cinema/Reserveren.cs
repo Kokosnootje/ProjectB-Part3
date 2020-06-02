@@ -62,9 +62,9 @@ namespace Cinema
                             {
                                 //Indien dit het geval is, voeg nieuwe reservering toe aan persoon
                                 newReservering.Add(item.title);
-                                newReservering.Add((item.theatreNumber).ToString());
+                                //newReservering.Add((item.theatreNumber).ToString());
                                 newReservering.Add(aantalKaartjes.ToString());
-                                newReservering.Add(item.startTime.ToString());
+                                //newReservering.Add(item.startTime.ToString());
                                 newReservering.Add(dagenWeek[day]);
                                 Reserveringen[Variables.username].Add(newReservering);
                             }
@@ -73,9 +73,9 @@ namespace Cinema
                             else
                             {
                                 newReservering.Add(item.title);
-                                newReservering.Add((item.theatreNumber).ToString());
+                                //newReservering.Add((item.theatreNumber).ToString());
                                 newReservering.Add(aantalKaartjes.ToString());
-                                newReservering.Add(item.startTime.ToString());
+                                //newReservering.Add(item.startTime.ToString());
                                 reserveringen.Add(newReservering);
                                 newReservering.Add(dagenWeek[day]);
                                 Reserveringen.Add(Variables.username, reserveringen);
@@ -91,7 +91,7 @@ namespace Cinema
                             // Send mail to confirm reservation
                             Movies.MovieProgram db = new Movies.MovieProgram();
                             // db.ConfirmationMail();
-                            Console.WriteLine("\n\nBedankt voor uw reservering. U heeft op " + dagenWeek[day] + " de film " + item.title+ " gereserveerd om " + item.startTime + ". U kunt de reservering vinden bij 'Mijn Reserveringen' in het onderstaande menu. Ook hebben wij u een bevestigingsmail gestuurd.\n");
+                            Console.WriteLine("\n\nBedankt voor uw reservering. U heeft op " + dagenWeek[day] + " de film " + item.title+ /*" gereserveerd om " + item.startTime + */". U kunt de reservering vinden bij 'Mijn Reserveringen' in het onderstaande menu. Ook hebben wij u een bevestigingsmail gestuurd.\n");
                         }
 
                         if(optie == 2)
