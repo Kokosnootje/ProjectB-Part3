@@ -25,6 +25,7 @@ namespace Cinema
     {
         public static void Main(string[] args)
         {
+            Calendar.runCalendar();
             // Mainmenu koppelen
             Mainmenu.Menu();
         }
