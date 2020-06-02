@@ -28,13 +28,13 @@ namespace Cinema
                 foreach (var item in newSnacks)
                 {
                     if ("Drinks" == item.category)
-                    Console.WriteLine(item.name + " || " + "prijs: " + item.price);
+                    Console.WriteLine(item.id + " || " + item.name + " || " + "prijs: " + item.price);
                 }
                 Console.WriteLine("\nFood");
                 foreach (var item in newSnacks)
                 {
                     if ("Food" == item.category)
-                        Console.WriteLine(item.name + " || " + "prijs: " + item.price);
+                        Console.WriteLine(item.id + " || " + item.name + " || " + "prijs: " + item.price);
                 }
             }
             public void addSnack()
@@ -59,6 +59,44 @@ namespace Cinema
                     Console.WriteLine("Snack is toegevoegd.");
                 }
 
+            }
+            public void deleteSnack()
+            {
+                int deleteThis = 0;
+                bool deleteSnackAnswer = false;
+                while (!deleteSnackAnswer)
+                {
+                    Console.WriteLine("Welke snack moet verwijderd worden?:");
+                    SnacksShow();
+                    string answer = Console.ReadLine();
+                    if (String.IsNullOrEmpty(answer) || !int.TryParse(answer, out deleteThis))
+                    {
+                        Console.WriteLine("Vul een getal in.");
+                    }
+                    else
+                    {
+                        deleteThis = Convert.ToInt32(answer);
+                        JsonSerializer serializer = new JsonSerializer();
+                        List<Dictionary<string, string>> snackList = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(File.ReadAllText(@"Snacks.json"));
+
+                        if (deleteThis > snackList.Count || deleteThis <= 0)
+                        {
+                            Console.WriteLine("Getal komt niet overeen met een snack. Probeer opnieuw.");
+                        }
+                        else
+                        {
+                            snackList.RemoveAt(deleteThis - 1);
+
+                            using (StreamWriter file = File.CreateText(@"Snacks.json"))
+                            {
+                                JsonSerializer serializerz = new JsonSerializer();
+                                serializerz.Serialize(file, snackList);
+                                Console.WriteLine("snack is verwijderd.");
+                            }
+                            deleteSnackAnswer = true;
+                        }
+                    }
+                }
             }
         }
     }
