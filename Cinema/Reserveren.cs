@@ -31,17 +31,19 @@ namespace Cinema
                 int number = Convert.ToInt32(keuze)-1;
 
                 var calendar = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, List<List<string>>>>>(File.ReadAllText(@"calendar.json"));
-                
+
                 //haal titel op voor film die gereserveerd wordt
                 //werkt nog niet... titel van iedere film op de datum wordt gepakt
+                var filmLijst = new List<String>();
                 foreach (var zaal in calendar[datum]) 
                 {
                    
                     foreach (var films in zaal.Value)
                     {
-                        Console.WriteLine(films[number]);
+                        filmLijst.Add(films[0]);
                     }
                 }
+                Console.WriteLine("U heeft de volgende film gereserveerd: "+filmLijst[number]);
 
 
                 //Json bestand met films openen en lezen
