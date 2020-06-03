@@ -49,12 +49,13 @@ namespace Cinema
             }
         }
 
-        public void showfilms(string datum)
+        public static void showfilms(string datum)
         {
             //laat alle films in alle zalen zien van een specefieke datum
             //showfilms("25/05/2020"); <- Voorbeeld
             var calendar = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, List<List<string>>>>>(File.ReadAllText(@"calendar.json"));
-            Console.WriteLine($"Alle films die geplant staan op {datum}:\n");         
+            Console.WriteLine($"Alle films die gepland staan op {datum}:\n");
+            var n = 1;
             foreach (var zaal in calendar[datum]) //NOTE invalide datum crashd het programma! :(
             {
                 foreach (var films in zaal.Value)
@@ -64,8 +65,9 @@ namespace Cinema
                     {
                         str += " " + filmdata;
                     }
-                    str += "\n";
-                    Console.WriteLine(str);
+                    str += " ";
+                    Console.WriteLine("["+n+"] " + str);
+                    n += 1;
                 }
             }
 

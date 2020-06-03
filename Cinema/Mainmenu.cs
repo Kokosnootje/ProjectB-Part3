@@ -24,7 +24,7 @@ namespace Cinema
                         // Run database
                         Movies.MovieProgram db = new Movies.MovieProgram();
                         //Films menu
-                        Console.WriteLine("\n[1] alle films bekijken\n[2] Film zoeken\n[3] Ga terug");
+                        Console.WriteLine("\n[1] Alle films bekijken\n[2] Film zoeken\n[3] Ga terug");
                         Console.Write("> ");
                         optieMenu = Console.ReadLine();
 
@@ -32,13 +32,17 @@ namespace Cinema
                         {
                             //Geef pagina met films weer
                             db.MovieShow();
-                            Console.WriteLine("\n\nKies een van de volgende opties:\n[1] Film reserveren\n[2] Terug");
+                            Console.WriteLine("\n\nKies een van de volgende opties:\n[1] Film bekijken\n[2] Film reserveren\n[3] Ga terug");
                             string optieMenu3 = Console.ReadLine();
                             if (optieMenu3 == "1")
                             {
                                 db.pickMovie();
                             }
                             else if (optieMenu3 == "2")
+                            {
+                                Reserveren.Reserveer();
+                            }
+                            else if (optieMenu3 == "3")
                             {
                                 Mainmenu.Menu();
                             }
