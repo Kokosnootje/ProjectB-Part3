@@ -37,9 +37,9 @@ namespace Cinema
                 foreach (var zaal in calendar[datum]) 
                 {
                    
-                    foreach (var films in zaal.Value[number])
+                    foreach (var films in zaal.Value)
                     {
-                        Console.WriteLine(films);
+                        Console.WriteLine(films[number]);
                     }
                 }
 
