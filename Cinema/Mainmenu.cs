@@ -20,7 +20,7 @@ namespace Cinema
                     bool tempMenu = true;
                     while (tempMenu == true)
                     {
-
+                        Console.Clear();
                         // Run database
                         Movies.MovieProgram db = new Movies.MovieProgram();
                         //Films menu
@@ -30,28 +30,33 @@ namespace Cinema
 
                         if (optieMenu == "1")
                         {
+                            Console.Clear();
                             //Geef pagina met films weer
                             db.MovieShow();
                             Console.WriteLine("\n\nKies een van de volgende opties:\n[1] Film reserveren\n[2] Terug");
                             string optieMenu3 = Console.ReadLine();
                             if (optieMenu3 == "1")
                             {
+                                Console.Clear();
                                 db.pickMovie();
                             }
                             else if (optieMenu3 == "2")
                             {
+                                Console.Clear();
                                 Mainmenu.Menu();
                             }
                         }
 
                         else if (optieMenu == "2")
                         {
+                            Console.Clear();
                             db.filterMovie();
                         }
 
 
                         else if (optieMenu == "3")
                         {
+                            Console.Clear();
                             Mainmenu.Menu();
                         }
                         
@@ -59,6 +64,7 @@ namespace Cinema
                 }
                 else if (optieMenu == "2")
                 {
+                    Console.Clear();
                     //Geef pagina met snacks menu weer
                     Snacks.SnacksProgram snackdb = new Snacks.SnacksProgram();
                     snackdb.SnacksShow();
@@ -69,6 +75,7 @@ namespace Cinema
                     {
                         if (optieSnacksMenu == "1")
                         {
+                            Console.Clear();
                             Mainmenu.Menu();
                         }
                         else if (optieSnacksMenu == "2")
@@ -77,6 +84,7 @@ namespace Cinema
                         }
                         else
                         {
+                            Console.Clear();
                             // Wanneer de input niet tussen 1 en 4 ligt
                             Console.WriteLine("\nGelieve een nummer tussen 1 en 2 in te toetsen");
                             snackdb.SnacksShow();
@@ -84,6 +92,7 @@ namespace Cinema
                     }
                     catch
                     {
+                        Console.Clear();
                         // Wanneer de input geen int is
                         Console.WriteLine("\nEr is iets fout gegaan. Probeer opnieuw.");
                         snackdb.SnacksShow();
@@ -91,11 +100,13 @@ namespace Cinema
                 }
                 else if (optieMenu == "3")
                 {
+                    Console.Clear();
                     //Aanroepen contact.cs
                     Contact.contact();
                 }
                 else if (optieMenu == "4")
                 {
+                    Console.Clear();
                     //Geef inlog pagina weer
                     Console.WriteLine("\nDit is de account pagina. Kies een van de volgende opties:");
                     Login.loginMain();
@@ -103,6 +114,7 @@ namespace Cinema
                 }
                 else
                 {
+                    Console.Clear();
                     //Wanneer de input niet tussen 1 en 4 ligt
                     Console.WriteLine("\nGelieve een nummer tussen 1 en 4 in te toetsen");
                     Mainmenu.Menu();
