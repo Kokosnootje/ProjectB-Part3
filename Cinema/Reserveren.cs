@@ -59,6 +59,41 @@ namespace Cinema
                         Console.WriteLine("Hoeveel kaartjes wilt u bestellen voor de film " + item.title + "?\n");
                         int aantalKaartjes = Convert.ToInt32(Console.ReadLine());
 
+
+                        //kies stoelen
+                        Console.WriteLine("U kunt nu "+ aantalKaartjes + " stoelen selecteren.\n");
+                        Console.WriteLine("De volgende stoelen zijn beschikbaar:\n");
+                        foreach (var zaal in calendar[datum])
+                        {
+                            foreach (var films in zaal.Value)
+                            {
+                                if (films[0] == filmNaam)
+                                {
+                                    string Zaal = zaal.Key;
+                                    Zalen.removedStoelen(datum, films[1]);
+                                }
+                            }
+                        }
+
+                        
+                        int counter = 1;
+                        string row;
+                        string chair;
+                        List<string> stoelenGereserveerd = new List<string>();
+                        while (counter <= aantalKaartjes)
+                        {
+                            Console.WriteLine("\nKies stoel nummer "+ counter +": (bijvoorbeeld: 'A5')");
+                            string antwoord = Console.ReadLine();
+                            row = antwoord[0].ToString();
+                            chair = antwoord[1].ToString();
+                            stoelenGereserveerd.Add(row);
+                            stoelenGereserveerd.Add(chair);
+                            counter += 1;
+                        }
+                        
+
+
+
                         //totaalprijs berekenen
                         double totaalPrijs = aantalKaartjes * item.price;
                         Variables.totaalPrijs = totaalPrijs;
@@ -66,9 +101,6 @@ namespace Cinema
                         //Om € teken zichtbaar te maken
                         Console.OutputEncoding = System.Text.Encoding.UTF8;
                         Console.WriteLine("\n\nDe totaalprijs bedraagt \u20AC" + totaalPrijs);
-
-                        //kies stoelen
-
 
                         //Keuze om te bevestigen of terug te gaan naar films overzicht
                         Console.WriteLine("\n\n[1] Bevestig reservering\n[2] Breek reservering af\n");
@@ -98,6 +130,17 @@ namespace Cinema
                                             newReservering.Add(aantalKaartjes.ToString());
                                             newReservering.Add(films[1]);
                                             newReservering.Add(datum);
+                                            
+                                            int counter2 = 0;
+                                            int counter3 = 0;
+                                            while (counter2 < aantalKaartjes)
+                                            {
+                                                newReservering.Add(stoelenGereserveerd[counter3]);
+                                                newReservering.Add(stoelenGereserveerd[counter3+1]);
+                                                counter3 += 2;
+                                                counter2 += 1;
+                                            }
+
                                             Reserveringen[Variables.username].Add(newReservering);
                                         }
                                     }
@@ -122,6 +165,17 @@ namespace Cinema
                                             newReservering.Add(aantalKaartjes.ToString());
                                             newReservering.Add(films[1]);
                                             newReservering.Add(datum);
+
+                                            int counter2 = 0;
+                                            int counter3 = 0;
+                                            while (counter2 <= aantalKaartjes)
+                                            {
+                                                newReservering.Add(stoelenGereserveerd[counter3]);
+                                                newReservering.Add(stoelenGereserveerd[counter3 + 1]);
+                                                counter3 += 2;
+                                                counter2 += 1;
+                                            }
+
                                             reserveringen.Add(newReservering);
                                             Reserveringen.Add(Variables.username, reserveringen);
                                         }

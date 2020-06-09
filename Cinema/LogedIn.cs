@@ -111,6 +111,15 @@ namespace Cinema
                     Console.WriteLine("Aantal kaartjes: " + item[2]);
                     Console.WriteLine("Starttijd: " + item[3]);
                     Console.WriteLine("Datum: " + item[4]);
+                    int counter = 5;
+                    string str = "Stoelen: ";
+                    while (item.Count > counter)
+                    {
+                        str += (item[counter] + item[counter+1]+" ");
+                        counter += 2;
+                    }
+                    Console.WriteLine(str);
+                    
 
                     Console.WriteLine("\n");
                 }
