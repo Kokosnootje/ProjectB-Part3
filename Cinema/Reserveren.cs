@@ -195,7 +195,7 @@ namespace Cinema
 
                             // Send mail to confirm reservation
                             Movies.MovieProgram db = new Movies.MovieProgram();
-                            // db.ConfirmationMail();
+                            db.ConfirmationMail();
                             Console.WriteLine("\n\nBedankt voor uw reservering. \nU heeft op " + datum + " de film " + item.title+ " gereserveerd. \nU kunt de reservering vinden bij 'Mijn Reserveringen' in het onderstaande menu. \nOok hebben wij u een bevestigingsmail gestuurd.\n");
                         }
 
