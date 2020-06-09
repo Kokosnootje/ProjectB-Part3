@@ -115,9 +115,7 @@ namespace Cinema
                             //Kijk of persoon al bestaat in reserveringen database
                             if (Reserveringen.ContainsKey(Variables.username) == true)
                             {
-                                //Indien dit het geval is, voeg nieuwe reservering toe aan persoon
-                                
-                                
+                                //Indien dit het geval is, voeg nieuwe reservering toe aan persoon            
                                 foreach (var zaal in calendar[datum])
                                 {
                                     foreach (var films in zaal.Value)
@@ -144,15 +142,12 @@ namespace Cinema
                                             Reserveringen[Variables.username].Add(newReservering);
                                         }
                                     }
-
                                 }
-
                             }
                             
                             //Maak anders persoon aan in database en voeg reservering toe
                             else
                             {
-                                
                                 foreach (var zaal in calendar[datum])
                                 {
                                     foreach (var films in zaal.Value)
@@ -182,7 +177,6 @@ namespace Cinema
                                     }
 
                                 }
-
                             }
 
                             //Schrijf terug naar json file
