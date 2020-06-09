@@ -70,7 +70,7 @@ namespace Cinema
                                 if (films[0] == filmNaam)
                                 {
                                     string Zaal = zaal.Key;
-                                    Zalen.removedStoelen(datum, films[1]);
+                                    Zalen.removedStoelen(datum, (films[1]));
                                 }
                             }
                         }
@@ -85,7 +85,14 @@ namespace Cinema
                             Console.WriteLine("\nKies stoel nummer "+ counter +": (bijvoorbeeld: 'A5')");
                             string antwoord = Console.ReadLine();
                             row = antwoord[0].ToString();
-                            chair = antwoord[1].ToString();
+                            if (antwoord.Length > 2)
+                            {
+                                chair = antwoord[1].ToString() + antwoord[2].ToString();
+                            }
+                            else
+                            {
+                                chair = antwoord[1].ToString();
+                            }
                             stoelenGereserveerd.Add(row);
                             stoelenGereserveerd.Add(chair);
                             counter += 1;
