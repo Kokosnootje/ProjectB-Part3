@@ -212,12 +212,24 @@ namespace Cinema
                             string filmMenuNumber = Console.ReadLine();
                             if (filmMenuNumber == "1")
                             {
-                                Console.WriteLine("\nHoe laat wilt u deze film inplannen? Gebruik het format [00:00]");
-                                string schedualMovieTime = Console.ReadLine();
-                                // showTheaters
+                                string schedualMovieTitle = movieList[schedualMovieNumber].title;
+                                string schedualMovieDuration = Convert.ToString(movieList[schedualMovieNumber].duration);
+                                Console.WriteLine("\nOp welke datum wilt u deze film inplannen? Gebruik het formaat [01/01/0000]");
+                                string schedualMovieDate = Console.ReadLine();
+                                // Laat zalen zien
                                 Console.WriteLine("\nIn welke zaal wilt u deze film inplannen?");
                                 string schedualMovieTheater = Console.ReadLine();
-                                // Do the rest
+                                Console.WriteLine("\nHoe laat wilt u deze film inplannen? Gebruik het formaat [00:00:00]");
+                                string schedualMovieTime = Console.ReadLine();
+                                TimeSpan schedualMovieEndTime = TimeSpan.Parse(schedualMovieTime) + movieList[schedualMovieNumber].duration;
+                                try
+                                {
+                                    Calendar.planFilm(schedualMovieDate, schedualMovieTheater, schedualMovieTitle, schedualMovieTime, Convert.ToString(schedualMovieEndTime));
+                                }
+                                catch
+                                {
+                                    Console.WriteLine("\nEr ging iets fout, probeer opnieuw");
+                                }
                                 schedualMovieAnswer = true;
                             }
                             else if (filmMenuNumber == "2")
