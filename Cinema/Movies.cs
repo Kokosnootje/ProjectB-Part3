@@ -305,7 +305,7 @@ namespace Cinema
                 // Mail reciever and the body of the mail
                 MailMessage mail = new MailMessage();
                 mail.From = new MailAddress("mailcinemaconfirmation@gmail.com");
-                mail.To.Add("jaspervangent@ziggo.nl");
+                mail.To.Add(Variables.username);
                 mail.Subject = "Reservering bevestiging";
 
                 //Json bestand met films openen en lezen
