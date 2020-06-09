@@ -20,7 +20,7 @@ namespace Cinema
                     // Run database
                     Movies.MovieProgram db = new Movies.MovieProgram();
                     //Films menu
-                    Console.WriteLine("\n[1] alle films bekijken\n[2] Film zoeken\n[3] Ga terug");
+                    Console.WriteLine("\n[1] Alle films bekijken\n[2] Film zoeken\n[3] Ga terug");
                     Console.Write("> ");
                     optieMenu = Console.ReadLine();
 
@@ -28,7 +28,20 @@ namespace Cinema
                     {
                         //Geef pagina met films weer
                         db.MovieShow();
-                        db.pickMovie();
+                        Console.WriteLine("\n\nKies een van de volgende opties:\n[1] Film bekijken\n[2] Film reserveren\n[3] Ga terug");
+                        string optieMenu3 = Console.ReadLine();
+                        if (optieMenu3 == "1")
+                        {
+                            db.pickMovie();
+                        }
+                        else if (optieMenu3 == "2")
+                        {
+                            Reserveren.Reserveer();
+                        }
+                        else if (optieMenu3 == "3")
+                        {
+                            LogedIn.LogedInMain();
+                        }
                     }
 
                     else if (optieMenu == "2")
@@ -97,7 +110,7 @@ namespace Cinema
                     Console.WriteLine("Theaterzaal: " + item[1]);
                     Console.WriteLine("Aantal kaartjes: " + item[2]);
                     Console.WriteLine("Starttijd: " + item[3]);
-                    Console.WriteLine("Dag van de week: " + item[4]);
+                    Console.WriteLine("Datum: " + item[4]);
 
                     Console.WriteLine("\n");
                 }
@@ -119,7 +132,7 @@ namespace Cinema
         }
         public static void LogedInAdmin()
         {
-            Console.WriteLine("\nKies een van de volgende opties om verder te gaan:\n[1] Films\n[2] Voeg film toe\n[3] Plan film in\n[4] Verwijder film\n[5] Reserveringen\n[6] Voeg reservering toe\n[7] Verwijder reservering\n[8] Snack toevoegen\n[9] Log uit");
+            Console.WriteLine("\nKies een van de volgende opties om verder te gaan:\n[1] Films\n[2] Voeg film toe\n[3] Plan film in\n[4] Verwijder film\n[5] Reserveringen\n[6] Voeg reservering toe\n[7] Verwijder reservering\n[8]Snack toevoegen\n[9] Snack verwijderen\n[10] Log uit");
             Console.Write("> ");
             string menuNumber = Console.ReadLine();
             if (menuNumber == "1")
@@ -215,6 +228,11 @@ namespace Cinema
                 snackdb.addSnack();
             }
             else if (menuNumber == "9")
+            {
+                Snacks.SnacksProgram snackdb = new Snacks.SnacksProgram();
+                snackdb.deleteSnack();
+            }
+            else if (menuNumber == "10")
             {
                 Console.WriteLine("Succesvol uitgelogd!");
                 Login.loginMain();

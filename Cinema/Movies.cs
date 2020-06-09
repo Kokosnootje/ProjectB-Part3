@@ -96,7 +96,7 @@ namespace Cinema
             {
                 JsonSerializer serializer = new JsonSerializer();
                 Movie[] newMovies = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Movies.json"));                
-                Console.WriteLine("Welke film wilt u reserveren?");
+                Console.WriteLine("Welke film wilt u bekijken?");
                 try
                 {
                     int menuNumber = Convert.ToInt32(Console.ReadLine()) - 1;
@@ -117,16 +117,19 @@ namespace Cinema
                         Variables.Film = menuNumber + 1;
 
                         //Menu voor verdere keuzes zoals reserveren
-                        Console.WriteLine("\nWat wilt u nu doen?\n[1] Film (" + newMovies[menuNumber].title + ") reserveren\n[2] Ga terug");
+                        Console.WriteLine("\nWat wilt u nu doen?\n[1] Ga terug");
                         string filmMenuNumber = Console.ReadLine();
                         if (filmMenuNumber == "1")
                         {
-                            Reserveren.Reserveer();
-                        }
-                        else if (filmMenuNumber == "2")
-                        {
-                            Mainmenu.Menu();
-                            
+                            if (Variables.isLoggedIn)
+                            {
+                                LogedIn.LogedInMain();
+                            }
+                            else
+                            {
+                                Mainmenu.Menu();
+                            }
+                                
                         }
                         else
                         {
