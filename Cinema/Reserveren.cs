@@ -189,7 +189,7 @@ namespace Cinema
 
                                             int counter2 = 0;
                                             int counter3 = 0;
-                                            while (counter2 <= aantalKaartjes)
+                                            while (counter2 < aantalKaartjes)
                                             {
                                                 newReservering.Add(stoelenGereserveerd[counter3] + stoelenGereserveerd[counter3 + 1]);
                                                 counter3 += 2;
@@ -198,6 +198,7 @@ namespace Cinema
 
                                             reserveringen.Add(newReservering);
                                             Reserveringen.Add(Variables.username, reserveringen);
+                                            
                                         }
                                     }
 
