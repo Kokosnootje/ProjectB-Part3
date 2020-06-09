@@ -110,7 +110,7 @@ namespace Cinema
                     Console.WriteLine("Theaterzaal: " + item[1]);
                     Console.WriteLine("Aantal kaartjes: " + item[2]);
                     Console.WriteLine("Starttijd: " + item[3]);
-                    Console.WriteLine("Dag van de week: " + item[4]);
+                    Console.WriteLine("Datum: " + item[4]);
 
                     Console.WriteLine("\n");
                 }

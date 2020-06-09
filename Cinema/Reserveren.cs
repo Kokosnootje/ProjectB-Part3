@@ -43,15 +43,14 @@ namespace Cinema
                         filmLijst.Add(films[0]);
                     }
                 }
-                Console.WriteLine("U heeft de volgende film gereserveerd: "+filmLijst[number]);
-
+                string filmNaam = filmLijst[number];
 
                 //Json bestand met films openen en lezen
                 JsonSerializer serializer = new JsonSerializer();
                 Movies.Movie[] newMovies = JsonConvert.DeserializeObject<Movies.Movie[]>(File.ReadAllText(@"Movies.json"));
                 foreach (var item in newMovies)
                 {
-                    if(item.id == Variables.Film)
+                    if(item.title == filmNaam)
                     {
 
                         
@@ -68,6 +67,9 @@ namespace Cinema
                         Console.OutputEncoding = System.Text.Encoding.UTF8;
                         Console.WriteLine("\n\nDe totaalprijs bedraagt \u20AC" + totaalPrijs);
 
+                        //kies stoelen
+
+
                         //Keuze om te bevestigen of terug te gaan naar films overzicht
                         Console.WriteLine("\n\n[1] Bevestig reservering\n[2] Breek reservering af\n");
                         int optie = Convert.ToInt32(Console.ReadLine());
@@ -76,36 +78,57 @@ namespace Cinema
 
                             //Deserialize json file
                             Reserveringen = JsonConvert.DeserializeObject<Dictionary<string, List<List<string>>>>(File.ReadAllText(@"Reserveringen.json"));
-                            string[] dagen = { "Zondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag"};
-                            List<string> dagenWeek = new List<string>(dagen);
-                            int huidigeDag = ((int)System.DateTime.Now.DayOfWeek);
-
-                            //Dag kiezen om te reserveren
-                            Console.WriteLine("\nKies een van de volgende dagen om te reserveren: "+ dagenWeek[huidigeDag+1] + " [1] " + dagenWeek[huidigeDag + 2] + " [2] " + dagenWeek[huidigeDag + 3] + " [3] \n\n");
-                            int day = Convert.ToInt32(Console.ReadLine());
+                            
 
                             //Kijk of persoon al bestaat in reserveringen database
                             if (Reserveringen.ContainsKey(Variables.username) == true)
                             {
                                 //Indien dit het geval is, voeg nieuwe reservering toe aan persoon
-                                newReservering.Add(item.title);
-                                newReservering.Add((item.theatreNumber).ToString());
-                                newReservering.Add(aantalKaartjes.ToString());
-                                newReservering.Add(item.startTime.ToString());
-                                newReservering.Add(dagenWeek[day]);
-                                Reserveringen[Variables.username].Add(newReservering);
+                                
+                                
+                                foreach (var zaal in calendar[datum])
+                                {
+                                    foreach (var films in zaal.Value)
+                                    {
+                                        if (films[0] == filmNaam)
+                                        {
+                                            newReservering.Add(item.title);
+                                            string Zaal = zaal.Key;
+                                            newReservering.Add(Zaal);
+                                            newReservering.Add(aantalKaartjes.ToString());
+                                            newReservering.Add(films[1]);
+                                            newReservering.Add(datum);
+                                            Reserveringen[Variables.username].Add(newReservering);
+                                        }
+                                    }
+
+                                }
+
                             }
                             
                             //Maak anders persoon aan in database en voeg reservering toe
                             else
                             {
-                                newReservering.Add(item.title);
-                                newReservering.Add((item.theatreNumber).ToString());
-                                newReservering.Add(aantalKaartjes.ToString());
-                                newReservering.Add(item.startTime.ToString());
-                                reserveringen.Add(newReservering);
-                                newReservering.Add(dagenWeek[day]);
-                                Reserveringen.Add(Variables.username, reserveringen);
+                                
+                                foreach (var zaal in calendar[datum])
+                                {
+                                    foreach (var films in zaal.Value)
+                                    {
+                                        if (films[0] == filmNaam)
+                                        {
+                                            newReservering.Add(item.title);
+                                            string Zaal = zaal.Key;
+                                            newReservering.Add(Zaal);
+                                            newReservering.Add(aantalKaartjes.ToString());
+                                            newReservering.Add(films[1]);
+                                            newReservering.Add(datum);
+                                            reserveringen.Add(newReservering);
+                                            Reserveringen.Add(Variables.username, reserveringen);
+                                        }
+                                    }
+
+                                }
+
                             }
 
                             //Schrijf terug naar json file
@@ -118,7 +141,7 @@ namespace Cinema
                             // Send mail to confirm reservation
                             Movies.MovieProgram db = new Movies.MovieProgram();
                             // db.ConfirmationMail();
-                            Console.WriteLine("\n\nBedankt voor uw reservering. U heeft op " + dagenWeek[day] + " de film " + item.title+ " gereserveerd om " + item.startTime + ". U kunt de reservering vinden bij 'Mijn Reserveringen' in het onderstaande menu. Ook hebben wij u een bevestigingsmail gestuurd.\n");
+                            Console.WriteLine("\n\nBedankt voor uw reservering. \nU heeft op " + datum + " de film " + item.title+ " gereserveerd. \nU kunt de reservering vinden bij 'Mijn Reserveringen' in het onderstaande menu. \nOok hebben wij u een bevestigingsmail gestuurd.\n");
                         }
 
                         if(optie == 2)
@@ -130,6 +153,10 @@ namespace Cinema
                                 Mainmenu.Menu();
                         }
 
+                        if (Variables.isLoggedIn)
+                            LogedIn.LogedInMain();
+                        else
+                            Mainmenu.Menu();
                     }
                 }
             }
@@ -142,7 +169,10 @@ namespace Cinema
                 }
                 else
                 {
-                    Login.loginMain();
+                    if (Variables.isLoggedIn)
+                        LogedIn.LogedInMain();
+                    else
+                        Mainmenu.Menu();
                 }
             } 
             
