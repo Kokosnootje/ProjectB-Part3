@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.Tracing;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -13,7 +14,7 @@ namespace Cinema
     class Zalen
     {
         
-        public static void removedStoelen(string datum, string starttijd)
+        public static void removedStoelen(string datum, string starttijd, string Zaal)
         {
             var reserveringen = JsonConvert.DeserializeObject<Dictionary<string, List<List<string>>>>(File.ReadAllText(@"Reserveringen.json"));
 
@@ -30,20 +31,29 @@ namespace Cinema
                         while (item.Count > stoelenCount)
                         {
                             //Console.WriteLine(item[stoelenCount] + item[stoelenCount + 1]);
-                            foreach (var rij in zalen["Zaal1"])
+                            foreach (var rij in zalen[Zaal])
                             {
-                                if (rij.Key == item[stoelenCount])
+                                if (rij.Key == item[stoelenCount][0].ToString())
                                 {
-                                    rij.Value.Remove(item[stoelenCount + 1]);
+                                    if (item[stoelenCount].Length > 2)
+                                    {
+                                        rij.Value.Remove((item[stoelenCount][1].ToString())+item[stoelenCount][2].ToString());
+                                        
+                                    }
+                                    else
+                                    {
+                                        rij.Value.Remove(item[stoelenCount][1].ToString());
+                                    }
+                                    
                                 }
                             }
-                            stoelenCount += 2;
+                            stoelenCount += 1;
                         }
                     }
                         
                 }
             }
-            foreach (var rij in zalen["Zaal1"])
+            foreach (var rij in zalen[Zaal])
             {
                 string str = "";
                 str += rij.Key;
@@ -54,6 +64,34 @@ namespace Cinema
                 Console.WriteLine(str);
             }
 
-        }       
+        }
+        public static void checkAvailability(string datum, string starttijd, string Zaal, string stoel)
+        {
+            var reserveringen = JsonConvert.DeserializeObject<Dictionary<string, List<List<string>>>>(File.ReadAllText(@"Reserveringen.json"));
+
+            var zalen = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, List<string>>>>(File.ReadAllText(@"zalen.json"));
+            Variables.stoelAvailable = true;
+            foreach (var person in reserveringen)
+            {
+                
+                foreach (var item in person.Value)
+                {
+                    if ((item[4] == datum) & (item[3] == starttijd) & (item[1] == Zaal))
+                    {
+                        
+                        if (item.Contains(stoel))
+                        {
+                            Variables.stoelAvailable = false;
+                        }
+                        else
+                        {
+                                
+                        }
+                    }
+                }
+                
+            }
+            
+        }
     }
 }

@@ -70,7 +70,7 @@ namespace Cinema
                                 if (films[0] == filmNaam)
                                 {
                                     string Zaal = zaal.Key;
-                                    Zalen.removedStoelen(datum, (films[1]));
+                                    Zalen.removedStoelen(datum, (films[1]), Zaal);
                                 }
                             }
                         }
@@ -92,10 +92,30 @@ namespace Cinema
                             else
                             {
                                 chair = antwoord[1].ToString();
+                            };
+                            foreach (var zaal in calendar[datum])
+                            {
+                                foreach (var films in zaal.Value)
+                                {
+                                    if (films[0] == filmNaam)
+                                    {
+                                        string Zaal = zaal.Key;
+                                        Zalen.checkAvailability(datum, (films[1]), Zaal, row + chair);
+                                        if (Variables.stoelAvailable)
+                                        {
+                                            stoelenGereserveerd.Add(row);
+                                            stoelenGereserveerd.Add(chair);
+                                            counter += 1;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("\nDeze stoel is niet beschikbaar. Probeer opnieuw");
+                                        }
+                                    }
+                                }
                             }
-                            stoelenGereserveerd.Add(row);
-                            stoelenGereserveerd.Add(chair);
-                            counter += 1;
+                            
+
                         }
                         
 
@@ -140,8 +160,7 @@ namespace Cinema
                                             int counter3 = 0;
                                             while (counter2 < aantalKaartjes)
                                             {
-                                                newReservering.Add(stoelenGereserveerd[counter3]);
-                                                newReservering.Add(stoelenGereserveerd[counter3+1]);
+                                                newReservering.Add(stoelenGereserveerd[counter3]+ stoelenGereserveerd[counter3 + 1]);
                                                 counter3 += 2;
                                                 counter2 += 1;
                                             }
@@ -172,8 +191,7 @@ namespace Cinema
                                             int counter3 = 0;
                                             while (counter2 <= aantalKaartjes)
                                             {
-                                                newReservering.Add(stoelenGereserveerd[counter3]);
-                                                newReservering.Add(stoelenGereserveerd[counter3 + 1]);
+                                                newReservering.Add(stoelenGereserveerd[counter3] + stoelenGereserveerd[counter3 + 1]);
                                                 counter3 += 2;
                                                 counter2 += 1;
                                             }
