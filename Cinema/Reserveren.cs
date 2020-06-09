@@ -17,11 +17,35 @@ namespace Cinema
             List<List<string>> reserveringen = new List<List<string>>();
             List<string> newReservering = new List<string>();
 
-            //Check of user is ingelogd
+            //Check of user is ingelogd 
             if (Variables.isLoggedIn)
             {
                 Console.WriteLine("\nU bent ingelogd en kunt reserveren\n\n");
-                
+
+                Console.WriteLine("\nWelke dag wilt u naar de film? (gebruik dit format -> 27/05/2020)\n");
+                string datum = Console.ReadLine();
+                Calendar.showfilms(datum);
+
+                Console.WriteLine("\nWelke film wilt u reserveren?\n");
+                string keuze = Console.ReadLine();
+                int number = Convert.ToInt32(keuze)-1;
+
+                var calendar = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, List<List<string>>>>>(File.ReadAllText(@"calendar.json"));
+
+                //haal titel op voor film die gereserveerd wordt
+                //werkt nog niet... titel van iedere film op de datum wordt gepakt
+                var filmLijst = new List<String>();
+                foreach (var zaal in calendar[datum]) 
+                {
+                   
+                    foreach (var films in zaal.Value)
+                    {
+                        filmLijst.Add(films[0]);
+                    }
+                }
+                Console.WriteLine("U heeft de volgende film gereserveerd: "+filmLijst[number]);
+
+
                 //Json bestand met films openen en lezen
                 JsonSerializer serializer = new JsonSerializer();
                 Movies.Movie[] newMovies = JsonConvert.DeserializeObject<Movies.Movie[]>(File.ReadAllText(@"Movies.json"));
@@ -29,6 +53,9 @@ namespace Cinema
                 {
                     if(item.id == Variables.Film)
                     {
+
+                        
+                       
                         //aantal kaartjes vaststellen
                         Console.WriteLine("Hoeveel kaartjes wilt u bestellen voor de film " + item.title + "?\n");
                         int aantalKaartjes = Convert.ToInt32(Console.ReadLine());
@@ -117,7 +144,7 @@ namespace Cinema
                 {
                     Login.loginMain();
                 }
-            }
+            } 
             
             
         }
