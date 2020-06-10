@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 
 namespace Cinema
 {
@@ -51,24 +52,31 @@ namespace Cinema
                 int cnt = 1;
                 string str = "";
                 str += rij.Key;
-                
-                for (int i = 0; i < 10; i++)
+                while (cnt <= 10) 
                 {
-                    try
-                    {
-                        if (rij.Value[i] == cnt.ToString())
-                            str += " " + "T";
-                        else
-                            str += "  ";
 
-                     
-                    }
-                    catch
+                    foreach (var stoel in rij.Value)
                     {
-                        str += "  ";
+                        if (Int16.Parse(stoel) == cnt)
+                        {
+                            str += " " + stoel;
+                            cnt++;
+                        }
+                        else
+                        {
+                            while (cnt < Int16.Parse(stoel))
+                            {
+                                str += " *";
+                                cnt++;
+                            }
+
+                        }
                     }
-                    
-                    cnt++;
+                    if (cnt <= 10)
+                    {
+                        cnt++;
+                        str += " *";
+                    }
                 }
 
                 /*foreach (var stoel in rij.Value)
