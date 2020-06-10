@@ -7,6 +7,7 @@ using System.Diagnostics.Tracing;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 
 namespace Cinema
 {
@@ -37,12 +38,13 @@ namespace Cinema
                                 {
                                     if (item[stoelenCount].Length > 2)
                                     {
-                                        rij.Value.Remove((item[stoelenCount][1].ToString())+item[stoelenCount][2].ToString());
+                                        rij.Value[Convert.ToInt32((item[stoelenCount][1].ToString() + item[stoelenCount][2].ToString()))-1] = "*";
                                         
                                     }
                                     else
                                     {
-                                        rij.Value.Remove(item[stoelenCount][1].ToString());
+                                        rij.Value[Convert.ToInt32((item[stoelenCount][1].ToString()))-1] = "*";
+                                        
                                     }
                                     
                                 }
@@ -55,12 +57,18 @@ namespace Cinema
             }
             foreach (var rij in zalen[Zaal])
             {
+
+                
                 string str = "";
                 str += rij.Key;
                 foreach (var stoel in rij.Value)
                 {
-                    str += " " + stoel;
+                    if (rij.Value.Contains(stoel))
+                        str += " " + stoel;
+                    else
+                        str += "  ";
                 }
+
                 Console.WriteLine(str);
             }
 
