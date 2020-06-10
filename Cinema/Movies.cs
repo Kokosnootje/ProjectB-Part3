@@ -7,6 +7,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Runtime.InteropServices;
+using System.ComponentModel;
+
 
 namespace Cinema
 {
@@ -255,17 +257,139 @@ namespace Cinema
                             {
                                 string schedualMovieTitle = movieList[schedualMovieNumber].title;
                                 string schedualMovieDuration = Convert.ToString(movieList[schedualMovieNumber].duration);
-                                Console.WriteLine("\nOp welke datum wilt u deze film inplannen? Gebruik het formaat [01/01/0000]");
-                                string schedualMovieDate = Console.ReadLine();
-                                // Laat zalen zien
-                                Console.WriteLine("\nIn welke zaal wilt u deze film inplannen?");
+                                List<string> datesToProcess = new List<string>();
+                                bool schedualAmountAnswer = false;
+                                while(!schedualAmountAnswer)
+                                {
+                                    Console.WriteLine("\nWilt u de film 1x inplannen of meerdere keren per week?\n[1] Losse inplanning\n[2] Meerdere inplanningen");
+                                    string schedualAmount = Console.ReadLine();
+                                    if (schedualAmount == "1")
+                                    {
+                                        Console.WriteLine("\nOp welke datum wilt u deze film inplannen? Gebruik het format [01/01/0000]");
+                                        datesToProcess.Add(Console.ReadLine());
+                                        schedualAmountAnswer = true;
+                                    }
+                                    else if (schedualAmount == "2")
+                                    {
+                                        Console.WriteLine("\nVanaf welke datum wilt u beginnen met inplannen? Gebruik het format [01/01/0000]");
+                                        string mulDate = Console.ReadLine();
+                                        try
+                                        {
+                                            if (DateTime.Parse(mulDate).Date < DateTime.Now.Date)
+                                            {
+                                                Console.WriteLine("\nDatum kan niet in het verleden zijn");
+                                                continue;
+                                            }
+                                        }
+                                        catch
+                                        {
+                                            Console.WriteLine("\nDatum is ongeldig");
+                                            continue;
+                                        }
+                                        Console.WriteLine("\nVoor hoeveel dagen wilt u de film inplannen? Voer een getal in tot en met 365");
+                                        string mulEndDate = Console.ReadLine();
+                                        if (Convert.ToInt32(mulEndDate) > 365 || Convert.ToInt32(mulEndDate) <= 0)
+                                        {
+                                            Console.WriteLine("\nAantal dagen klopt niet. Probeer opnieuw");
+                                            continue;
+                                        }
+                                        int weeks = (int) Math.Floor(Convert.ToDecimal(mulEndDate) / 7);
+                                        int days = Convert.ToInt32(mulEndDate) % 7;
+                                        Console.WriteLine("\nHoevaak per week wilt u deze film inplannen? Voer een getal in van 1 tot 7");
+                                        string mulAmount = Console.ReadLine();
+                                        DateTime nextDay = DateTime.Parse(mulDate);
+                                        if (mulAmount == "1")
+                                        {
+                                            Console.WriteLine($"\nFilm word {mulAmount}x per week ingeplanned en begint vanaf {mulDate} tot {DateTime.Parse(mulDate).AddDays(Convert.ToInt32(mulEndDate)).ToShortDateString()}");
+                                            Console.WriteLine($"\n{nextDay.ToShortDateString()}");
+                                            datesToProcess.Add(nextDay.ToShortDateString());
+                                            for (int i = 1; i <= weeks; i++)
+                                            {
+                                                nextDay = nextDay.AddDays(7);
+                                                Console.WriteLine($"\n{nextDay.ToShortDateString()}");
+                                                datesToProcess.Add(nextDay.ToShortDateString());
+                                            }
+                                        }
+                                        else if (mulAmount == "2" || mulAmount == "3" || mulAmount == "4" || mulAmount == "5" || mulAmount == "6")
+                                        {
+                                            Console.WriteLine("\nInplanmoment 1 word ingeplanned in zoveel dagen:");
+                                            Console.WriteLine($"\n{nextDay.ToShortDateString()}");
+                                            datesToProcess.Add(nextDay.ToShortDateString());
+                                            for (int i = 1; i <= weeks; i++)
+                                            {
+                                                nextDay = nextDay.AddDays(7);
+                                                Console.WriteLine($"\n{nextDay.ToShortDateString()}");
+                                                datesToProcess.Add(nextDay.ToShortDateString());
+                                            }
+                                            Console.WriteLine("\nOver hoeveel dagen na de startdatum moet de film nogmaals ingeplanned worden? Gebruik het format [1 tot 5] (1e dag is de begindatum)");
+                                            for (int i = 2; i <= Convert.ToInt32(mulAmount); i++)
+                                            {
+                                                Console.WriteLine($"\nInplanmoment {i} word ingeplanned in zoveel dagen:");
+                                                string schedualDay = Console.ReadLine();
+                                                List<string> usedDays = new List<string>();
+                                                if (schedualDay == "1" || schedualDay == "2" || schedualDay == "3" || schedualDay == "4" || schedualDay == "5")
+                                                    if (usedDays.Contains(schedualDay))
+                                                    {
+                                                        Console.WriteLine("\nDeze dag is al in gebruik");
+                                                        continue;
+                                                    }
+                                                    else
+                                                    {
+                                                        usedDays.Add(schedualDay);
+                                                        nextDay = DateTime.Parse(mulDate).AddDays(Convert.ToInt32(schedualDay));
+                                                        Console.WriteLine($"\n{nextDay.ToShortDateString()}");
+                                                        datesToProcess.Add(nextDay.ToShortDateString());
+                                                        while (nextDay < DateTime.Parse(mulDate).AddDays(Convert.ToInt32(mulEndDate) - 7))
+                                                        {
+                                                            nextDay = nextDay.AddDays(7);
+                                                            Console.WriteLine($"\n{nextDay.ToShortDateString()}");
+                                                            datesToProcess.Add(nextDay.ToShortDateString());
+                                                        }
+
+                                                    }
+                                                else
+                                                {
+                                                    Console.WriteLine("\nVul een juiste dag in");
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                        else if (mulAmount == "7")
+                                        {
+                                            Console.WriteLine($"\nFilm word elke dag ingeplanned en begint vanaf {mulDate} tot {DateTime.Parse(mulDate).AddDays(Convert.ToInt32(mulEndDate)).ToShortDateString()}");
+                                            Console.WriteLine($"\n{nextDay.ToShortDateString()}");
+                                            datesToProcess.Add(nextDay.ToShortDateString());
+                                            for (int i = 0; i <= Convert.ToInt32(mulEndDate); i++)
+                                            {
+                                                nextDay = nextDay.AddDays(1);
+                                                Console.WriteLine($"\n{nextDay.ToShortDateString()}");
+                                                datesToProcess.Add(nextDay.ToShortDateString());
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("\nVul een getal van 1 tot 7 in");
+                                        }
+                                        schedualAmountAnswer = true;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("\nVul 1 of 2 in");
+                                    }
+                                }
+                                
+                                Console.WriteLine("\nEr is keue uit de volgende zalen: Zaal1, Zaal2, Zaal3");
+                                Console.WriteLine("\nIn welke zaal wilt u deze film inplannen? Gebruik het format [Zaal1]");
                                 string schedualMovieTheater = Console.ReadLine();
-                                Console.WriteLine("\nHoe laat wilt u deze film inplannen? Gebruik het formaat [00:00:00]");
+                                Console.WriteLine("\nHoe laat wilt u deze film inplannen? Gebruik het format [00:00]");
                                 string schedualMovieTime = Console.ReadLine();
                                 TimeSpan schedualMovieEndTime = TimeSpan.Parse(schedualMovieTime) + movieList[schedualMovieNumber].duration;
                                 try
                                 {
-                                    Calendar.planFilm(schedualMovieDate, schedualMovieTheater, schedualMovieTitle, schedualMovieTime, Convert.ToString(schedualMovieEndTime));
+                                    foreach (string date in datesToProcess)
+                                    {
+                                        Calendar.planFilm(date, schedualMovieTheater, schedualMovieTitle, schedualMovieTime, Convert.ToString(schedualMovieEndTime));
+                                    }
                                 }
                                 catch
                                 {
