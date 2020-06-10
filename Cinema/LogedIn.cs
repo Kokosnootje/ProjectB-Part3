@@ -142,7 +142,7 @@ namespace Cinema
                 /// Movies
                 Console.Clear();
                 Console.WriteLine("Succesvol uitgelogd!");
-                Login.loginMain();
+                Mainmenu.Menu();
             }
             else
             {
