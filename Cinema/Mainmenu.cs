@@ -8,6 +8,7 @@ namespace Cinema
     {
         public static void Menu()
         {
+            Console.WriteLine("Welkom op de app van bioscoop *NAAM*");
             Console.WriteLine("\nKies een van de volgende opties om verder te gaan:\n[1] Films\n[2] Snacks menu\n[3] Contact\n[4] Mijn account");
             Console.Write("> ");
             string optieMenu = Console.ReadLine();

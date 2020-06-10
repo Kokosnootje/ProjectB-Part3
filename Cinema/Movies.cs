@@ -258,8 +258,8 @@ namespace Cinema
                 bool deleteMovieAnswer = false;
                 while (!deleteMovieAnswer)
                 {
-                    Console.WriteLine("Welke film moet verwijderd worden?:");
                     MovieShow();
+                    Console.WriteLine("Welke film moet verwijderd worden?:");
                     string answer = Console.ReadLine();
                     if (String.IsNullOrEmpty(answer) || !int.TryParse(answer, out deleteThis))
                     {
