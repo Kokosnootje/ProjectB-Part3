@@ -26,7 +26,7 @@ namespace Cinema
             {
                 foreach (var item in person.Value)
                 {
-                    if ((item[4] == datum)&(item[3] == starttijd))
+                    if ((item[4] == datum)&&(item[3] == starttijd))
                     {
                         int stoelenCount = 5;
                         while (item.Count > stoelenCount)
@@ -34,13 +34,14 @@ namespace Cinema
                             //Console.WriteLine(item[stoelenCount] + item[stoelenCount + 1]);
                             foreach (var rij in zalen[Zaal])
                             {
+                                
                                 if (rij.Key == item[stoelenCount][0].ToString())
                                 {
                                     if (item[stoelenCount].Length > 2)
                                     {
                                         rij.Value[Convert.ToInt32((item[stoelenCount][1].ToString() + item[stoelenCount][2].ToString()))-1] = "*";
                                     }
-                                    else
+                                    else if (item[stoelenCount].Length > 1)
                                     {
                                         rij.Value[Convert.ToInt32((item[stoelenCount][1].ToString()))-1] = "*";
                                     }
@@ -56,6 +57,7 @@ namespace Cinema
                 string str = "";
                 str += rij.Key;
                 foreach (var stoel in rij.Value)
+                  
                 {
                     if (rij.Value.Contains(stoel))
                         str += " " + stoel;
@@ -75,7 +77,7 @@ namespace Cinema
             {
                 foreach (var item in person.Value)
                 {
-                    if ((item[4] == datum) & (item[3] == starttijd) & (item[1] == Zaal))
+                    if ((item[4] == datum) && (item[3] == starttijd) && (item[1] == Zaal))
                     {
                         
                         if (item.Contains(stoel))
