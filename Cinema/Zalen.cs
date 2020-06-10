@@ -58,10 +58,12 @@ namespace Cinema
             foreach (var rij in zalen[Zaal])
             {
 
+
                 
                 string str = "";
                 str += rij.Key;
                 foreach (var stoel in rij.Value)
+                  
                 {
                     if (rij.Value.Contains(stoel))
                         str += " " + stoel;

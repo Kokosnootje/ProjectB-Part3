@@ -48,6 +48,7 @@ namespace Cinema
                     {
                         Console.WriteLine("Voer A.U.B geldige data in! (gebruik dit format -> 27/05/2020)\n");
                     }
+
                 }
                 Calendar.showfilms(datum);
 

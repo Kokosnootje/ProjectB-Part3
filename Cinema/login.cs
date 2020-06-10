@@ -64,6 +64,7 @@ namespace Cinema
         }
         public static void loginMain()
         {
+            Console.Clear();
             ///Variabelen
             string username;
             string password;
@@ -78,8 +79,7 @@ namespace Cinema
                 privileges = "",
             };
 
-            Variables.isLoggedIn = true;
-            Console.WriteLine(Variables.isLoggedIn);
+
             ///Het login programmaatje.
             while (true)
             {
@@ -95,8 +95,7 @@ namespace Cinema
                 {
                     Console.Write("Username\n> ");
                     username = Console.ReadLine();
-                    Console.Write("Password\n> ");
-                    System.Console.Write("password: ");
+                    System.Console.Write("password\n> ");
                     password = null;
                     while (true)
                     {
@@ -121,11 +120,14 @@ namespace Cinema
                             user.privileges = "user";
                             Variables.isLoggedIn = true;
                             Variables.username = entry.Key;
+
                             Console.Clear();
                             Console.WriteLine("login was succesvol");
+
                             LogedIn.LogedInMain();
                         }
                     }
+                    Console.WriteLine("\nCombinatie gebruikersnaam + wachtwoord niet gevonden");
                 }
 
 
@@ -156,11 +158,14 @@ namespace Cinema
                             user.username = entry.Key;
                             user.password = entry.Value;
                             user.privileges = "admin";
+
                             Console.Clear();
                             Console.WriteLine("login was succesvol");
+
                             LogedIn.LogedInAdmin();
                         }
                     }
+                    Console.WriteLine("\nCombinatie gebruikersnaam + wachtwoord niet gevonden");
                 }
 
 
@@ -263,13 +268,14 @@ namespace Cinema
                 else if (menuChoice == "4") ///Exit
                 {
                     ///Environment.Exit(-1);
-                    return;
+                    Mainmenu.Menu();
+
                 }
 
 
                 else
                 {
-                    Console.WriteLine("Please pick a valid option!");
+                    Console.WriteLine("Kies een valide optie A.U.B!");
                 }
             }
         }
