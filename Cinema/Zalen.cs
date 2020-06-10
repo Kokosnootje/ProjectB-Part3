@@ -39,26 +39,20 @@ namespace Cinema
                                     if (item[stoelenCount].Length > 2)
                                     {
                                         rij.Value[Convert.ToInt32((item[stoelenCount][1].ToString() + item[stoelenCount][2].ToString()))-1] = "*";
-                                        
                                     }
                                     else
                                     {
                                         rij.Value[Convert.ToInt32((item[stoelenCount][1].ToString()))-1] = "*";
-                                        
                                     }
-                                    
                                 }
                             }
                             stoelenCount += 1;
                         }
                     }
-                        
                 }
             }
             foreach (var rij in zalen[Zaal])
             {
-
-                
                 string str = "";
                 str += rij.Key;
                 foreach (var stoel in rij.Value)
@@ -68,10 +62,8 @@ namespace Cinema
                     else
                         str += "  ";
                 }
-
                 Console.WriteLine(str);
             }
-
         }
         public static void checkAvailability(string datum, string starttijd, string Zaal, string stoel)
         {
@@ -81,7 +73,6 @@ namespace Cinema
             Variables.stoelAvailable = true;
             foreach (var person in reserveringen)
             {
-                
                 foreach (var item in person.Value)
                 {
                     if ((item[4] == datum) & (item[3] == starttijd) & (item[1] == Zaal))
