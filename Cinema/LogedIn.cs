@@ -10,7 +10,6 @@ namespace Cinema
     {
         public static void LogedInMain()
         {
-            Console.Clear();
             Console.WriteLine("\nKies een van de volgende opties om verder te gaan:\n[1] Films\n[2] Snacks menu\n[3] Contact\n[4] Mijn reserveringen\n[5] Uitloggen");
             Console.Write("> ");
             string optieMenu = Console.ReadLine();

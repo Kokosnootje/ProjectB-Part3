@@ -26,7 +26,6 @@ namespace Cinema
     {
         public static void Main(string[] args)
         {
-            //Zalen.removedStoelen("27/05/2020", "11:00", "Zaal1");
             Calendar.runCalendar();
             Mainmenu.Menu();
         }

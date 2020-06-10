@@ -8,7 +8,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Runtime.InteropServices;
 using System.ComponentModel;
-
+using System.Diagnostics.CodeAnalysis;
 
 namespace Cinema
 {
@@ -259,6 +259,7 @@ namespace Cinema
                                 string schedualMovieDuration = Convert.ToString(movieList[schedualMovieNumber].duration);
                                 List<string> datesToProcess = new List<string>();
                                 bool schedualAmountAnswer = false;
+                                string mulDate = "";
                                 while(!schedualAmountAnswer)
                                 {
                                     Console.WriteLine("\nWilt u de film 1x inplannen of meerdere keren per week?\n[1] Losse inplanning\n[2] Meerdere inplanningen");
@@ -272,7 +273,7 @@ namespace Cinema
                                     else if (schedualAmount == "2")
                                     {
                                         Console.WriteLine("\nVanaf welke datum wilt u beginnen met inplannen? Gebruik het format [01/01/0000]");
-                                        string mulDate = Console.ReadLine();
+                                        mulDate = Console.ReadLine();
                                         try
                                         {
                                             if (DateTime.Parse(mulDate).Date < DateTime.Now.Date)
@@ -381,9 +382,64 @@ namespace Cinema
                                 Console.WriteLine("\nEr is keue uit de volgende zalen: Zaal1, Zaal2, Zaal3");
                                 Console.WriteLine("\nIn welke zaal wilt u deze film inplannen? Gebruik het format [Zaal1]");
                                 string schedualMovieTheater = Console.ReadLine();
-                                Console.WriteLine("\nHoe laat wilt u deze film inplannen? Gebruik het format [00:00]");
-                                string schedualMovieTime = Console.ReadLine();
-                                TimeSpan schedualMovieEndTime = TimeSpan.Parse(schedualMovieTime) + movieList[schedualMovieNumber].duration;
+
+                               
+                                string schedualMovieTime = "";
+                                bool inplannenMogelijk = false;
+                                while (!inplannenMogelijk)
+                                {
+                                    Console.WriteLine("\nHoe laat wilt u deze film inplannen? Gebruik het format [00:00]");
+                                    schedualMovieTime = Console.ReadLine();
+                                    TimeSpan start = TimeSpan.Parse(schedualMovieTime);
+                                    TimeSpan eind = start + movieList[schedualMovieNumber].duration;
+                                    
+
+                                    var calendar = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, List<List<string>>>>>(File.ReadAllText(@"calendar.json"));
+
+                                    foreach (var zaal in calendar[datesToProcess[0]])
+                                    {
+                                        
+                                        foreach (var films in zaal.Value)
+                                        {
+                                            
+                                            if (schedualMovieTheater == zaal.Key)
+                                            {
+                                                
+                                                TimeSpan startCalendarMovie = TimeSpan.Parse(films[1]);
+                                                TimeSpan eindCalendarMovie = TimeSpan.Parse(films[2]);
+                                                if ((start > startCalendarMovie) && (start < eindCalendarMovie) || (eind > startCalendarMovie) && (eind < eindCalendarMovie))
+                                                {
+                                                    inplannenMogelijk = false;
+                                                    Console.WriteLine("Deze tijd is niet mogelijk. Er staat al een andere film gepland in "+schedualMovieTheater+" op het gekozen tijdstip.\nProbeer opnieuw.");
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    TimeSpan schedualMovieEndTime = TimeSpan.Parse(schedualMovieTime) + movieList[schedualMovieNumber].duration;
+                                                    try
+                                                    {
+                                                        foreach (string date in datesToProcess)
+                                                        {
+                                                            Calendar.planFilm(date, schedualMovieTheater, schedualMovieTitle, schedualMovieTime, Convert.ToString(schedualMovieEndTime));
+                                                        }
+                                                    }
+                                                    catch
+                                                    {
+                                                        Console.WriteLine("\nEr ging iets fout, probeer opnieuw");
+                                                    }
+                                                    schedualMovieAnswer = true;
+                                                    inplannenMogelijk = true;
+                                                    break;
+                                                }
+                                            }
+                                                
+                                        }
+
+                                    }
+                                    
+                                }
+                                    
+                                /*TimeSpan schedualMovieEndTime = TimeSpan.Parse(schedualMovieTime) + movieList[schedualMovieNumber].duration;
                                 try
                                 {
                                     foreach (string date in datesToProcess)
@@ -395,7 +451,7 @@ namespace Cinema
                                 {
                                     Console.WriteLine("\nEr ging iets fout, probeer opnieuw");
                                 }
-                                schedualMovieAnswer = true;
+                                schedualMovieAnswer = true;*/
                             }
                             else if (filmMenuNumber == "2")
                             {
