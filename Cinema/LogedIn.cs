@@ -116,8 +116,8 @@ namespace Cinema
                     string str = "Stoelen: ";
                     while (item.Count > counter)
                     {
-                        str += (item[counter] + item[counter+1]+" ");
-                        counter += 2;
+                        str += (item[counter] + " ");
+                        counter += 1;
                     }
                     Console.WriteLine(str);
                     
