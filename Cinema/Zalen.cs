@@ -34,7 +34,9 @@ namespace Cinema
                             {
                                 if (rij.Key == item[stoelenCount])
                                 {
+                                    
                                     rij.Value.Remove(item[stoelenCount + 1]);
+                                    
                                 }
                             }
                             stoelenCount += 2;
@@ -45,12 +47,39 @@ namespace Cinema
             }
             foreach (var rij in zalen["Zaal1"])
             {
+                
+                int cnt = 1;
                 string str = "";
                 str += rij.Key;
-                foreach (var stoel in rij.Value)
+                
+                for (int i = 0; i < 10; i++)
                 {
-                    str += " " + stoel;
+                    try
+                    {
+                        if (rij.Value[i] == cnt.ToString())
+                            str += " " + "T";
+                        else
+                            str += "  ";
+
+                     
+                    }
+                    catch
+                    {
+                        str += "  ";
+                    }
+                    
+                    cnt++;
                 }
+
+                /*foreach (var stoel in rij.Value)
+                {
+                    if (rij.Value.Contains(cnt.ToString()))
+                        str += " " + stoel;
+                    else
+                        str += "  ";
+                }*/
+
+
                 Console.WriteLine(str);
             }
 
