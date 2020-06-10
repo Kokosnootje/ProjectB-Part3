@@ -5,6 +5,7 @@ using System.Net.Mail;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace Cinema
 {
@@ -17,8 +18,6 @@ namespace Cinema
             public string genre { get; set; }
             public TimeSpan duration { get; set; }
             public string language { get; set; }
-            public int theatreNumber { get; set; }
-            public string startTime { get; set; }
             public string rating { get; set; }
             public double price { get; set; }
         }
@@ -28,8 +27,8 @@ namespace Cinema
             public void MovieShow() //laat alles films zien die we hebben
             {
                 JsonSerializer serializer = new JsonSerializer();
-                Movie[] newMovies = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Movies.json"));
-                foreach (var item in newMovies)
+                Movie[] movieList = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Movies.json"));
+                foreach (var item in movieList)
                 {
                     Console.WriteLine("[" + item.id + "] " + "Title: " + item.title + " || " + "Genre: " + item.genre);
                 }
@@ -84,8 +83,8 @@ namespace Cinema
                     }
                 }
                 JsonSerializer serializer = new JsonSerializer();
-                Movie[] newMovies = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Movies.json"));
-                foreach (var item in newMovies)
+                Movie[] movieList = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Movies.json"));
+                foreach (var item in movieList)
                 {
                     if (filter == item.genre || item.title.Contains(filter) || item.language.Contains(filter))
                         Console.WriteLine("[" + item.id + "] " + "Title: " + item.title + " || " + "Genre: " + item.genre);
@@ -114,7 +113,7 @@ namespace Cinema
                     else
                     {
                         //Alles weergeven van gekozen film
-                        Console.WriteLine("\nTitle: " + newMovies[menuNumber].title + "\nGenre: " + newMovies[menuNumber].genre + "\nDuration: " + newMovies[menuNumber].duration + "\nLanguage: " + newMovies[menuNumber].language + "\nTheatre Number: " + newMovies[menuNumber].theatreNumber + "\nStart Time: " + newMovies[menuNumber].startTime + "\nRating: " + newMovies[menuNumber].rating + "\nPrice: " + newMovies[menuNumber].price);
+                        Console.WriteLine("\nTitle: " + newMovies[menuNumber].title + "\nGenre: " + newMovies[menuNumber].genre + "\nDuration: " + newMovies[menuNumber].duration + "\nLanguage: " + newMovies[menuNumber].language/* + "\nTheatre Number: " + newMovies[menuNumber].theatreNumber + "\nStart Time: " + newMovies[menuNumber].startTime*/ + "\nRating: " + newMovies[menuNumber].rating + "\nPrice: " + newMovies[menuNumber].price);
                         Variables.Film = menuNumber + 1;
 
                         //Menu voor verdere keuzes zoals reserveren
@@ -162,13 +161,13 @@ namespace Cinema
                 newMovie.Add("duration", Console.ReadLine());
                 Console.Write("In welke taal is de film?:\n >");
                 newMovie.Add("language", Console.ReadLine());
-                Console.Write("Wat is het zaal nummer van deze film?:\n >");
+                /*Console.Write("Wat is het zaal nummer van deze film?:\n >");
                 newMovie.Add("theatreNumber", Console.ReadLine());
                 Console.Write(" hoe laat start de film?: (gebruik dit format => 13:00:00)\n >");
-                newMovie.Add("startTime", Console.ReadLine());
+                newMovie.Add("startTime", Console.ReadLine());*/
                 Console.Write("Welke rating heeft deze film?: (Voorbeeld => PG13)\n >");
                 newMovie.Add("rating", Console.ReadLine());
-                Console.Write("hoe veel kost deze film?: (Voorbeeld => 12.99)\n >");
+                Console.Write("Hoe veel kost een kaartje voor deze film?: (Voorbeeld => 12.99)\n >");
                 newMovie.Add("price", Console.ReadLine());
 
                 movieList.Add(newMovie);
@@ -178,7 +177,79 @@ namespace Cinema
                     serializerz.Serialize(file, movieList);
                     Console.WriteLine("Film is toegevoegd.");
                 }
+            }
 
+            public void schedualMovie()
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                Movie[] movieList = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Movies.json"));
+                MovieShow();
+                Console.WriteLine("Kies een film om in te plannen. Voer het nummer van de film in.");
+                bool schedualMovieAnswer = false;
+                while(!schedualMovieAnswer)
+                {
+                    try
+                    {
+                        int schedualMovieNumber = Convert.ToInt32(Console.ReadLine()) - 1;
+
+                        if (schedualMovieNumber == movieList.Length)
+                        {
+                            // Terug naar menu
+                            schedualMovieAnswer = true;
+                            if (Variables.isLoggedIn)
+                                LogedIn.LogedInAdmin();
+                            else
+                                Mainmenu.Menu();
+                        }
+                        else
+                        {
+                            // Alles weergeven van gekozen film
+                            Console.WriteLine("\nTitle: " + movieList[schedualMovieNumber].title + "\nGenre: " + movieList[schedualMovieNumber].genre + "\nDuration: " + movieList[schedualMovieNumber].duration + "\nLanguage: " + movieList[schedualMovieNumber].language/* + "\nTheatre Number: " + newMovies[menuNumber].theatreNumber + "\nStart Time: " + newMovies[menuNumber].startTime*/ + "\nRating: " + movieList[schedualMovieNumber].rating + "\nPrice: " + movieList[schedualMovieNumber].price);
+                            Variables.Film = schedualMovieNumber + 1;
+
+                            // Bevestiging van inplannen
+                            Console.WriteLine("\nWat wilt u nu doen?\n[1] Film (" + movieList[schedualMovieNumber].title + ") inplannen\n[2] Ga terug");
+                            string filmMenuNumber = Console.ReadLine();
+                            if (filmMenuNumber == "1")
+                            {
+                                string schedualMovieTitle = movieList[schedualMovieNumber].title;
+                                string schedualMovieDuration = Convert.ToString(movieList[schedualMovieNumber].duration);
+                                Console.WriteLine("\nOp welke datum wilt u deze film inplannen? Gebruik het formaat [01/01/0000]");
+                                string schedualMovieDate = Console.ReadLine();
+                                // Laat zalen zien
+                                Console.WriteLine("\nIn welke zaal wilt u deze film inplannen?");
+                                string schedualMovieTheater = Console.ReadLine();
+                                Console.WriteLine("\nHoe laat wilt u deze film inplannen? Gebruik het formaat [00:00:00]");
+                                string schedualMovieTime = Console.ReadLine();
+                                TimeSpan schedualMovieEndTime = TimeSpan.Parse(schedualMovieTime) + movieList[schedualMovieNumber].duration;
+                                try
+                                {
+                                    Calendar.planFilm(schedualMovieDate, schedualMovieTheater, schedualMovieTitle, schedualMovieTime, Convert.ToString(schedualMovieEndTime));
+                                }
+                                catch
+                                {
+                                    Console.WriteLine("\nEr ging iets fout, probeer opnieuw");
+                                }
+                                schedualMovieAnswer = true;
+                            }
+                            else if (filmMenuNumber == "2")
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                Console.WriteLine("\nOngeldige invoer. Probeer opnieuw.\n");
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        // HAAL DIT WEG ZODRA APP KLAAR IS!
+                        Console.WriteLine(e);
+
+                        Console.WriteLine("\nOngeldige invoer. Probeer opnieuw.\n");
+                    }
+                }
             }
 
             public void deleteMovie()
@@ -234,7 +305,7 @@ namespace Cinema
                 // Mail reciever and the body of the mail
                 MailMessage mail = new MailMessage();
                 mail.From = new MailAddress("mailcinemaconfirmation@gmail.com");
-                mail.To.Add("jaspervangent@ziggo.nl");
+                mail.To.Add(Variables.username);
                 mail.Subject = "Reservering bevestiging";
 
                 //Json bestand met films openen en lezen
@@ -246,8 +317,8 @@ namespace Cinema
                     {
                         mail.Body = "Beste klant. Uw reservering is ontvangen en verwerkt. Laat deze mail zien in de bioscoop als toegangsbewijs. Geniet van de film!" +
                             "\n\nReservering voor film: "+ item.title + 
-                            "\n\nAf te rekenen bij kassa: €"+ Variables.totaalPrijs +
-                            "\n\nZaal nummer: " + item.theatreNumber;
+                            "\n\nAf te rekenen bij kassa: €"+ Variables.totaalPrijs/* +
+                            "\n\nZaal nummer: " + item.theatreNumber*/;
                     }
                 }
 
