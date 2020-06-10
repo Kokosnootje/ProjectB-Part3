@@ -8,13 +8,13 @@ namespace Cinema
     {
         public static void Menu()
         {
+            Console.Clear();
             Console.WriteLine("\nKies een van de volgende opties om verder te gaan:\n[1] Films\n[2] Snacks menu\n[3] Contact\n[4] Mijn account");
             Console.Write("> ");
             string optieMenu = Console.ReadLine();
 
             try
             {
-                int.Parse(optieMenu);
                 if (optieMenu == "1")
                 {
                     bool tempMenu = true;

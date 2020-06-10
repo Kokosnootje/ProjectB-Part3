@@ -84,7 +84,7 @@ namespace Cinema
             var list = new List<string> { filmTitel, start, eind };
             calendar[datum][zaal].Add(list);
             saveCalendar(calendar, false);
-            Console.WriteLine("Film is toegevoegd!");
+           
         }
 
 

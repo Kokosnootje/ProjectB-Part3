@@ -48,11 +48,11 @@ namespace Cinema
             }
             foreach (var rij in zalen["Zaal1"])
             {
-                
+
                 int cnt = 1;
                 string str = "";
                 str += rij.Key;
-                while (cnt <= 10) 
+                while (cnt <= 10)
                 {
 
                     foreach (var stoel in rij.Value)
