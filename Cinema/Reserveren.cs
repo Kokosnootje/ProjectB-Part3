@@ -23,7 +23,30 @@ namespace Cinema
                 Console.WriteLine("\nU bent ingelogd en kunt reserveren\n\n");
 
                 Console.WriteLine("\nWelke dag wilt u naar de film? (gebruik dit format -> 27/05/2020)\n");
-                string datum = Console.ReadLine();
+                string datum;
+                while (true)
+                {
+                    datum = Console.ReadLine();
+                    try
+                    {
+                        var date = Convert.ToDateTime(datum);
+                        if (datum == "Q")
+                        {
+                            LogedIn.LogedInMain();
+                        }
+                        else if (date < DateTime.Now)
+                        {
+                            Console.WriteLine("Je kan niet in het verleden reserveren. (voer een 'q' in om te annuleren)");
+                            Console.WriteLine("\nWelke dag wilt u naar de film? (gebruik dit format -> 27/05/2020)\n");
+                        }
+                        else
+                            break;
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Voer A.U.B geldige data in! (gebruik dit format -> 27/05/2020)\n");
+                    }
+                }
                 Calendar.showfilms(datum);
 
                 Console.WriteLine("\nWelke film wilt u reserveren?\n");
