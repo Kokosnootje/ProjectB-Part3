@@ -26,9 +26,8 @@ namespace Cinema
         public static void Main(string[] args)
         {
             Zalen.removedStoelen("27/05/2020", "11:00");
-            // Calendar.runCalendar();
-            // Mainmenu koppelen
-            // Mainmenu.Menu();
+            //Calendar.runCalendar();
+            //Mainmenu.Menu();
         }
     }
 }
