@@ -58,15 +58,18 @@ namespace Cinema
                 //haal titel op voor film die gereserveerd wordt
                 //werkt nog niet... titel van iedere film op de datum wordt gepakt
                 var filmLijst = new List<String>();
+                var zaalLijst = new List<String>();
                 foreach (var zaal in calendar[datum]) 
                 {
                    
                     foreach (var films in zaal.Value)
                     {
                         filmLijst.Add(films[0]);
+                        zaalLijst.Add(zaal.Key);
                     }
                 }
                 string filmNaam = filmLijst[number];
+                string zaalNaam = zaalLijst[number];
 
                 //Json bestand met films openen en lezen
                 JsonSerializer serializer = new JsonSerializer();
@@ -90,12 +93,14 @@ namespace Cinema
                         {
                             foreach (var films in zaal.Value)
                             {
-                                if (films[0] == filmNaam)
+                                if ((films[0] == filmNaam)&&(zaal.Key == zaalNaam))
                                 {
-                                    string Zaal = zaal.Key;
-                                    Zalen.removedStoelen(datum, (films[1]), Zaal);
+                                    Zalen.removedStoelen(datum, (films[1]), zaalNaam);
+                                 
                                 }
+                                
                             }
+
                         }
 
                         
@@ -115,7 +120,7 @@ namespace Cinema
                             else
                             {
                                 chair = antwoord[1].ToString();
-                            };
+                            }
                             foreach (var zaal in calendar[datum])
                             {
                                 foreach (var films in zaal.Value)
@@ -236,8 +241,8 @@ namespace Cinema
                             }
 
                             // Send mail to confirm reservation
-                            //Movies.MovieProgram db = new Movies.MovieProgram();
-                            //db.ConfirmationMail();
+                            Movies.MovieProgram db = new Movies.MovieProgram();
+                            db.ConfirmationMail();
                             Console.WriteLine("\n\nBedankt voor uw reservering. \nU heeft op " + datum + " de film " + item.title+ " gereserveerd. \nU kunt de reservering vinden bij 'Mijn Reserveringen' in het onderstaande menu. \nOok hebben wij u een bevestigingsmail gestuurd.\n");
                         }
 

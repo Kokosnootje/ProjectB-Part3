@@ -311,17 +311,7 @@ namespace Cinema
                 //Json bestand met films openen en lezen
                 JsonSerializer serializer = new JsonSerializer();
                 Movies.Movie[] newMovies = JsonConvert.DeserializeObject<Movies.Movie[]>(File.ReadAllText(@"Movies.json"));
-                foreach (var item in newMovies)
-                {
-                    if (item.id == Variables.Film)
-                    {
-                        mail.Body = "Beste klant. Uw reservering is ontvangen en verwerkt. Laat deze mail zien in de bioscoop als toegangsbewijs. Geniet van de film!" +
-                            "\n\nReservering voor film: "+ item.title + 
-                            "\n\nAf te rekenen bij kassa: €"+ Variables.totaalPrijs/* +
-                            "\n\nZaal nummer: " + item.theatreNumber*/;
-                    }
-                }
-
+                mail.Body = "Beste klant. Uw reservering is ontvangen en verwerkt. Laat deze mail zien in de bioscoop als toegangsbewijs. Geniet van de film!";
                 SmtpServer.Send(mail);
             }
         }

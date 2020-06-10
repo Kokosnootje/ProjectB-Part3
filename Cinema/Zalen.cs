@@ -34,6 +34,7 @@ namespace Cinema
                             //Console.WriteLine(item[stoelenCount] + item[stoelenCount + 1]);
                             foreach (var rij in zalen[Zaal])
                             {
+                                
                                 if (rij.Key == item[stoelenCount][0].ToString())
                                 {
                                     if (item[stoelenCount].Length > 2)
