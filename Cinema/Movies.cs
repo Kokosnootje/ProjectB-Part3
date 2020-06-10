@@ -44,37 +44,39 @@ namespace Cinema
                 string menuChoice = Console.ReadLine();
                 if (menuChoice == "1")
                 {
-                    List<string> genres = new List<string>();
+
                     Console.WriteLine("Welk genre wilt u zien?:");
-                    Console.WriteLine("WTF!!!!!");
+                    List<string> genres = new List<string>();
                     foreach (var movie in movieList)
                     {
                         if (!genres.Contains(movie.genre))
-                            genres.Add(movie.genre);                    
+                            genres.Add(movie.genre);
                     }
                     int i = 1;
                     foreach (string genre in genres)
-                    {                                                
+                    {
                         Console.WriteLine($"[{i}] {genre}");
                         i++;
-                    }                   
+                    }
                     while (true)
                     {
                         Console.WriteLine();
                         filter = Console.ReadLine();
-                        try 
+                        try
                         {
                             filter = genres[short.Parse(filter) - 1];
                             break;
-                       }
-                        catch { Console.WriteLine("Voer A.U.B. een valide input in"); }                       
+                        }
+                        catch { Console.WriteLine("Voer A.U.B. een valide input in"); }
                     }
 
                     foreach (var movie in movieList)
                     {
                         if (movie.genre == filter)
-                            Console.WriteLine(movie.title);
+                            Console.WriteLine("[" + movie.id + "] " + "Title: " + movie.title + " || " + "Genre: " + movie.genre);
                     }
+                    Console.WriteLine("Druk op enter als u klaar bent");
+                    Console.ReadLine();
 
 
 
@@ -82,31 +84,53 @@ namespace Cinema
                 else if (menuChoice == "2")
                 {
                     Console.WriteLine("Type de naam of een gedeelte daar van hier in");
-                    Console.Write("> ");
                     filter = Console.ReadLine();
+
+                    foreach (var movie in movieList)
+                    {
+                        if (movie.title.Contains(filter))
+                            Console.WriteLine("[" + movie.id + "] " + "Title: " + movie.title + " || " + "Genre: " + movie.genre);
+                    }
+                    Console.WriteLine("Druk op enter als u klaar bent");
+                    Console.ReadLine();
+
                 }
                 else if (menuChoice == "3")
                 {
-                    Console.WriteLine("In welke taal wilt u een film zien?:\n[1] Engels\n[2] Nederlands");
-                    Console.Write("> ");
-                    filter = Console.ReadLine();
-                    if (filter == "1")
+                    List<string> languages = new List<string>();
+                    foreach (var movie in movieList)
                     {
-                        filter = "English";
+                        if (!languages.Contains(movie.language))
+                            languages.Add(movie.language);
                     }
-                    else if (filter == "2")
+                    int i = 1;
+                    foreach (string language in languages)
                     {
-                        filter = "Dutch";
+                        Console.WriteLine($"[{i}] {language}");
+                        i++;
                     }
-                }
-                JsonSerializer serializer = new JsonSerializer();
-                movieList = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Movies.json"));
-                foreach (var item in movieList)
-                {
-                    if (filter == item.genre || item.title.Contains(filter) || item.language.Contains(filter))
-                        Console.WriteLine("[" + item.id + "] " + "Title: " + item.title + " || " + "Genre: " + item.genre);
-                }
+                    while (true)
+                    {
+                        Console.WriteLine();
+                        filter = Console.ReadLine();
+                        try
+                        {
+                            filter = languages[short.Parse(filter) - 1];
+                            break;
+                        }
+                        catch { Console.WriteLine("Voer A.U.B. een valide input in"); }
+                    }
 
+                    foreach (var movie in movieList)
+                    {
+                        if (movie.language == filter)
+                        {
+                            Console.WriteLine("[" + movie.id + "] " + "Title: " + movie.title + " || " + "Genre: " + movie.genre);
+                        }
+                    }
+                    Console.WriteLine("Druk op enter als u klaar bent");
+                    Console.ReadLine();               
+                }
             }
 
             public void pickMovie()
