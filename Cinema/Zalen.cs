@@ -7,6 +7,7 @@ using System.Diagnostics.Tracing;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 
 namespace Cinema
 {
@@ -55,12 +56,46 @@ namespace Cinema
             }
             foreach (var rij in zalen[Zaal])
             {
+                
+                int cnt = 1;
                 string str = "";
                 str += rij.Key;
-                foreach (var stoel in rij.Value)
+                while (cnt <= 10) 
                 {
-                    str += " " + stoel;
+
+                    foreach (var stoel in rij.Value)
+                    {
+                        if (Int16.Parse(stoel) == cnt)
+                        {
+                            str += " " + stoel;
+                            cnt++;
+                        }
+                        else
+                        {
+                            while (cnt < Int16.Parse(stoel))
+                            {
+                                str += " *";
+                                cnt++;
+                            }
+
+                        }
+                    }
+                    if (cnt <= 10)
+                    {
+                        cnt++;
+                        str += " *";
+                    }
                 }
+
+                /*foreach (var stoel in rij.Value)
+                {
+                    if (rij.Value.Contains(cnt.ToString()))
+                        str += " " + stoel;
+                    else
+                        str += "  ";
+                }*/
+
+
                 Console.WriteLine(str);
             }
 
