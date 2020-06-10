@@ -120,7 +120,10 @@ namespace Cinema
                             user.privileges = "user";
                             Variables.isLoggedIn = true;
                             Variables.username = entry.Key;
-                            Console.WriteLine("\nlogin was succesvol");
+
+                            Console.Clear();
+                            Console.WriteLine("login was succesvol");
+
                             LogedIn.LogedInMain();
                         }
                     }
@@ -155,7 +158,10 @@ namespace Cinema
                             user.username = entry.Key;
                             user.password = entry.Value;
                             user.privileges = "admin";
-                            Console.WriteLine("\nlogin was succesvol");
+
+                            Console.Clear();
+                            Console.WriteLine("login was succesvol");
+
                             LogedIn.LogedInAdmin();
                         }
                     }

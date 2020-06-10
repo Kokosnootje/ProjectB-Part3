@@ -26,7 +26,7 @@ namespace Cinema
             {
                 foreach (var item in person.Value)
                 {
-                    if ((item[4] == datum)&(item[3] == starttijd))
+                    if ((item[4] == datum)&&(item[3] == starttijd))
                     {
                         int stoelenCount = 5;
                         while (item.Count > stoelenCount)
@@ -34,16 +34,17 @@ namespace Cinema
                             //Console.WriteLine(item[stoelenCount] + item[stoelenCount + 1]);
                             foreach (var rij in zalen[Zaal])
                             {
+                                
                                 if (rij.Key == item[stoelenCount][0].ToString())
                                 {
                                     if (item[stoelenCount].Length > 2)
                                     {
-                                        rij.Value.Remove((item[stoelenCount][1].ToString())+item[stoelenCount][2].ToString());
+                                        rij.Value[Convert.ToInt32((item[stoelenCount][1].ToString() + item[stoelenCount][2].ToString()))-1] = "*";
                                         
                                     }
-                                    else
+                                    else if (item[stoelenCount].Length > 1)
                                     {
-                                        rij.Value.Remove(item[stoelenCount][1].ToString());
+                                        rij.Value[Convert.ToInt32((item[stoelenCount][1].ToString()))-1] = "*";
                                     }
                                     
                                 }
@@ -57,44 +58,18 @@ namespace Cinema
             foreach (var rij in zalen[Zaal])
             {
 
-                int cnt = 1;
+
+                
                 string str = "";
                 str += rij.Key;
-                while (cnt <= 10)
+                foreach (var stoel in rij.Value)
+                  
                 {
-
-                    foreach (var stoel in rij.Value)
-                    {
-                        if (Int16.Parse(stoel) == cnt)
-                        {
-                            str += " " + stoel;
-                            cnt++;
-                        }
-                        else
-                        {
-                            while (cnt < Int16.Parse(stoel))
-                            {
-                                str += " *";
-                                cnt++;
-                            }
-
-                        }
-                    }
-                    if (cnt <= 10)
-                    {
-                        cnt++;
-                        str += " *";
-                    }
-                }
-
-                /*foreach (var stoel in rij.Value)
-                {
-                    if (rij.Value.Contains(cnt.ToString()))
+                    if (rij.Value.Contains(stoel))
                         str += " " + stoel;
                     else
                         str += "  ";
-                }*/
-
+                }
 
                 Console.WriteLine(str);
             }
@@ -111,7 +86,7 @@ namespace Cinema
                 
                 foreach (var item in person.Value)
                 {
-                    if ((item[4] == datum) & (item[3] == starttijd) & (item[1] == Zaal))
+                    if ((item[4] == datum) && (item[3] == starttijd) && (item[1] == Zaal))
                     {
                         
                         if (item.Contains(stoel))
