@@ -114,29 +114,84 @@ namespace Cinema
             {
                 ///Geeft alle gereserveerde films weer
                 var reserveringen = JsonConvert.DeserializeObject<Dictionary<string, List<List<string>>>>(File.ReadAllText(@"Reserveringen.json"));
-                foreach (var item in reserveringen[Variables.username])
+                bool resAnswer = false;
+                while (!resAnswer)
                 {
-                    Console.WriteLine("\n"+item[0]);
-                    Console.WriteLine("====================");
-                    Console.WriteLine("Film: "+item[0]);
-                    Console.WriteLine("Theaterzaal: " + item[1]);
-                    Console.WriteLine("Aantal kaartjes: " + item[2]);
-                    Console.WriteLine("Starttijd: " + item[3]);
-                    Console.WriteLine("Datum: " + item[4]);
-                    int counter = 5;
-                    string str = "Stoelen: ";
-                    while (item.Count > counter)
+                    int num = 1;
+                    foreach (var item in reserveringen[Variables.username])
                     {
-                        str += (item[counter] + " ");
-                        counter += 1;
+                        Console.WriteLine($"\n[{num}] {item[0]}");
+                        Console.WriteLine("====================");
+                        Console.WriteLine($"Film: {item[0]}");
+                        Console.WriteLine($"Theaterzaal: {item[1]}");
+                        Console.WriteLine($"Aantal kaartjes: {item[2]}");
+                        Console.WriteLine($"Starttijd: {item[3]}");
+                        Console.WriteLine($"Datum: {item[4]}");
+                        int counter = 5;
+                        string str = "Stoelen: ";
+                        while (item.Count > counter)
+                        {
+                            str += (item[counter] + " ");
+                            counter += 1;
+                        }
+                        Console.WriteLine($"{str}\n");
+                        num++;
                     }
-                    Console.WriteLine(str);
-                    
+                    Console.WriteLine($"\nKies een reservering om te verwijderen of kies {num} om terug te gaan");
+                    string a = Console.ReadLine();
+                    int showResAnswer = 0;
+                    if(int.TryParse(a, out showResAnswer))
+                    {
+                        showResAnswer = Convert.ToInt32(a);
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nVoer een nummer in");
+                        continue;
+                    }
 
-                    Console.WriteLine("\n");
+                    if (showResAnswer > 0 && showResAnswer < num)
+                    {
+                        bool delAnswer = false;
+                        while (!delAnswer)
+                        {
+                            Console.WriteLine($"\nWeet u zeker dat u uw reservering van {reserveringen[Variables.username][showResAnswer - 1][0]} wilt verwijderen?\n[1] Ja\n[2] Nee");
+                            reserveringen[Variables.username].RemoveAt(showResAnswer - 1);
+                            string confirmDelete = Console.ReadLine();
+                            if (confirmDelete == "1")
+                            {
+                                using (StreamWriter file = File.CreateText(@"Reserveringen.json"))
+                                {
+                                    JsonSerializer serializerz = new JsonSerializer();
+                                    serializerz.Serialize(file, reserveringen);
+                                    Console.WriteLine("\nReservering is verwijderd.");
+                                }
+                                delAnswer = true;
+                                resAnswer = true;
+                                LogedInMain();
+                            }
+                            else if (confirmDelete == "2")
+                            {
+                                delAnswer = true;
+                                resAnswer = true;
+                                LogedInMain();
+                            }
+                            else
+                            {
+                                Console.WriteLine("\nVoer 1 of 2 in");
+                            }
+                        }
+                    }
+                    else if (showResAnswer == num)
+                    {
+                        resAnswer = true;
+                        LogedInMain();
+                    }
+                    else
+                    {
+                        Console.WriteLine($"\nVoer een nummer tussen 1 en {num} in");
+                    }
                 }
-                LogedInMain();
-            
             }
             else if (optieMenu == "5")
             {
