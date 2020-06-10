@@ -90,7 +90,7 @@ namespace Cinema
         //Als het programma geopend word kan deze functie gebruikt worden om de agenda te updaten en aan te vullen met nieuwe data
         {      
             var calendar = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, List<List<string>>>>>(File.ReadAllText(@"calendar.json"));
-            saveCalendar(calendar, true);                       
+            saveCalendar(calendar, true);          
         }
     }
 }
