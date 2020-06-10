@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Runtime.InteropServices;
 
 namespace Cinema
 {
@@ -36,31 +37,47 @@ namespace Cinema
 
             public void filterMovie()
             {
+                Movie[] movieList = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Movies.json"));
                 string filter = "";
                 Console.WriteLine("Zoeken op:\n[1] Genre\n[2] Titel\n[3] Taal");
                 Console.Write("> ");
                 string menuChoice = Console.ReadLine();
                 if (menuChoice == "1")
                 {
-                    Console.WriteLine("Welk genre wilt u zien?:\n[1] Action\n[2] Adventure\n[3] Cartoon\n[4] Horror");
-                    Console.Write("> ");
-                    filter = Console.ReadLine();
-                    if (filter == "1")
+                    List<string> genres = new List<string>();
+                    Console.WriteLine("Welk genre wilt u zien?:");
+                    Console.WriteLine("WTF!!!!!");
+                    foreach (var movie in movieList)
                     {
-                        filter = "Action";
+                        if (!genres.Contains(movie.genre))
+                            genres.Add(movie.genre);                    
                     }
-                    else if (filter == "2")
+                    int i = 1;
+                    foreach (string genre in genres)
+                    {                                                
+                        Console.WriteLine($"[{i}] {genre}");
+                        i++;
+                    }                   
+                    while (true)
                     {
-                        filter = "Adventure";
+                        Console.WriteLine();
+                        filter = Console.ReadLine();
+                        try 
+                        {
+                            filter = genres[short.Parse(filter) - 1];
+                            break;
+                       }
+                        catch { Console.WriteLine("Voer A.U.B. een valide input in"); }                       
                     }
-                    else if (filter == "3")
+
+                    foreach (var movie in movieList)
                     {
-                        filter = "Cartoon";
+                        if (movie.genre == filter)
+                            Console.WriteLine(movie.title);
                     }
-                    else if (filter == "4")
-                    {
-                        filter = "Horror";
-                    }
+
+
+
                 }
                 else if (menuChoice == "2")
                 {
@@ -83,7 +100,7 @@ namespace Cinema
                     }
                 }
                 JsonSerializer serializer = new JsonSerializer();
-                Movie[] movieList = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Movies.json"));
+                movieList = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Movies.json"));
                 foreach (var item in movieList)
                 {
                     if (filter == item.genre || item.title.Contains(filter) || item.language.Contains(filter))
