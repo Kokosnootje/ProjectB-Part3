@@ -78,8 +78,6 @@ namespace Cinema
         {
             //Deze functie zet een film op de calendar, kan nog niet checken op overlap! Hieronder staat een voorbeeld
             //planFilm("26/05/2020", "Zaal1", "boy doez big money", "09:32", "23:59");
-            Console.WriteLine("#NOTE*Bryans slimme check voor overlap ontbreekt nog in de functie!*");
-
             var calendar = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, List<List<string>>>>>(File.ReadAllText(@"calendar.json"));
             var list = new List<string> { filmTitel, start, eind };
             calendar[datum][zaal].Add(list);
