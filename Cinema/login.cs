@@ -169,7 +169,9 @@ namespace Cinema
                     username = "";
                     password = "";
                     var emailval = false;
-                    while (true)
+                    login = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(@"users.json"));
+                    
+                        while (true)
                     {
 
                         while (!emailval)
@@ -185,8 +187,16 @@ namespace Cinema
                             var tempUsername = Console.ReadLine();
                             if (RegexUtilities.IsValidEmail(username) && username == tempUsername)
                                 emailval = true;
+                            else if (login.ContainsKey(username) == false)
+                            {
+                                Console.WriteLine("Dit account bestaat al!");
+                            }
+                            else if (!RegexUtilities.IsValidEmail(username))
+                            {
+                                Console.WriteLine($"Dit is geen valide email adres: {username}\n");
+                            }
                             else
-                                Console.WriteLine($"Dit is geen valide email adres: {username}\nOf de ingevoerde gebruikersnamen komen niet overeen");
+                                Console.WriteLine("de ingevoerde gebruikersnamen komen niet overeen");
                         }
 
                         Console.Write("\nWachtwoord\n> ");
