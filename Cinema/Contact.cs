@@ -21,9 +21,15 @@ namespace Cinema
                 {
                     // Terug naar menu
                     if (Variables.isLoggedIn)
+                    {
+                        Console.Clear();
                         LogedIn.LogedInMain();
+                    }
                     else
+                    {
+                        Console.Clear();
                         Mainmenu.Menu();
+                    }
                 }
                 else
                 {
