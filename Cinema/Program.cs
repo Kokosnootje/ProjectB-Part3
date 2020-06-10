@@ -19,6 +19,7 @@ namespace Cinema
         public static string username = "";
         public static int Film = 0;
         public static double totaalPrijs = 0;
+        public static bool stoelAvailable = true;
     }
 
     class Program
