@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Runtime.InteropServices;
+using System.ComponentModel;
+
 
 namespace Cinema
 {
@@ -36,60 +39,100 @@ namespace Cinema
 
             public void filterMovie()
             {
+                Movie[] movieList = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Movies.json"));
                 string filter = "";
                 Console.WriteLine("Zoeken op:\n[1] Genre\n[2] Titel\n[3] Taal");
                 Console.Write("> ");
                 string menuChoice = Console.ReadLine();
                 if (menuChoice == "1")
                 {
-                    Console.WriteLine("Welk genre wilt u zien?:\n[1] Action\n[2] Adventure\n[3] Cartoon\n[4] Horror");
-                    Console.Write("> ");
-                    filter = Console.ReadLine();
-                    if (filter == "1")
+
+                    Console.WriteLine("Welk genre wilt u zien?:");
+                    List<string> genres = new List<string>();
+                    foreach (var movie in movieList)
                     {
-                        filter = "Action";
+                        if (!genres.Contains(movie.genre))
+                            genres.Add(movie.genre);
                     }
-                    else if (filter == "2")
+                    int i = 1;
+                    foreach (string genre in genres)
                     {
-                        filter = "Adventure";
+                        Console.WriteLine($"[{i}] {genre}");
+                        i++;
                     }
-                    else if (filter == "3")
+                    while (true)
                     {
-                        filter = "Cartoon";
+                        Console.WriteLine();
+                        filter = Console.ReadLine();
+                        try
+                        {
+                            filter = genres[short.Parse(filter) - 1];
+                            break;
+                        }
+                        catch { Console.WriteLine("Voer A.U.B. een valide input in"); }
                     }
-                    else if (filter == "4")
+
+                    foreach (var movie in movieList)
                     {
-                        filter = "Horror";
+                        if (movie.genre == filter)
+                            Console.WriteLine("[" + movie.id + "] " + "Title: " + movie.title + " || " + "Genre: " + movie.genre);
                     }
+                    Console.WriteLine("Druk op enter als u klaar bent");
+                    Console.ReadLine();
+
+
+
                 }
                 else if (menuChoice == "2")
                 {
                     Console.WriteLine("Type de naam of een gedeelte daar van hier in");
-                    Console.Write("> ");
                     filter = Console.ReadLine();
+
+                    foreach (var movie in movieList)
+                    {
+                        if (movie.title.Contains(filter))
+                            Console.WriteLine("[" + movie.id + "] " + "Title: " + movie.title + " || " + "Genre: " + movie.genre);
+                    }
+                    Console.WriteLine("Druk op enter als u klaar bent");
+                    Console.ReadLine();
+
                 }
                 else if (menuChoice == "3")
                 {
-                    Console.WriteLine("In welke taal wilt u een film zien?:\n[1] Engels\n[2] Nederlands");
-                    Console.Write("> ");
-                    filter = Console.ReadLine();
-                    if (filter == "1")
+                    List<string> languages = new List<string>();
+                    foreach (var movie in movieList)
                     {
-                        filter = "English";
+                        if (!languages.Contains(movie.language))
+                            languages.Add(movie.language);
                     }
-                    else if (filter == "2")
+                    int i = 1;
+                    foreach (string language in languages)
                     {
-                        filter = "Dutch";
+                        Console.WriteLine($"[{i}] {language}");
+                        i++;
                     }
-                }
-                JsonSerializer serializer = new JsonSerializer();
-                Movie[] movieList = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Movies.json"));
-                foreach (var item in movieList)
-                {
-                    if (filter == item.genre || item.title.Contains(filter) || item.language.Contains(filter))
-                        Console.WriteLine("[" + item.id + "] " + "Title: " + item.title + " || " + "Genre: " + item.genre);
-                }
+                    while (true)
+                    {
+                        Console.WriteLine();
+                        filter = Console.ReadLine();
+                        try
+                        {
+                            filter = languages[short.Parse(filter) - 1];
+                            break;
+                        }
+                        catch { Console.WriteLine("Voer A.U.B. een valide input in"); }
+                    }
 
+                    foreach (var movie in movieList)
+                    {
+                        if (movie.language == filter)
+                        {
+                            Console.WriteLine("[" + movie.id + "] " + "Title: " + movie.title + " || " + "Genre: " + movie.genre);
+                        }
+                    }
+                    Console.WriteLine("Druk op enter als u klaar bent");
+                    Console.ReadLine();               
+                }
             }
 
             public void pickMovie()
@@ -214,17 +257,139 @@ namespace Cinema
                             {
                                 string schedualMovieTitle = movieList[schedualMovieNumber].title;
                                 string schedualMovieDuration = Convert.ToString(movieList[schedualMovieNumber].duration);
-                                Console.WriteLine("\nOp welke datum wilt u deze film inplannen? Gebruik het formaat [01/01/0000]");
-                                string schedualMovieDate = Console.ReadLine();
-                                // Laat zalen zien
-                                Console.WriteLine("\nIn welke zaal wilt u deze film inplannen?");
+                                List<string> datesToProcess = new List<string>();
+                                bool schedualAmountAnswer = false;
+                                while(!schedualAmountAnswer)
+                                {
+                                    Console.WriteLine("\nWilt u de film 1x inplannen of meerdere keren per week?\n[1] Losse inplanning\n[2] Meerdere inplanningen");
+                                    string schedualAmount = Console.ReadLine();
+                                    if (schedualAmount == "1")
+                                    {
+                                        Console.WriteLine("\nOp welke datum wilt u deze film inplannen? Gebruik het format [01/01/0000]");
+                                        datesToProcess.Add(Console.ReadLine());
+                                        schedualAmountAnswer = true;
+                                    }
+                                    else if (schedualAmount == "2")
+                                    {
+                                        Console.WriteLine("\nVanaf welke datum wilt u beginnen met inplannen? Gebruik het format [01/01/0000]");
+                                        string mulDate = Console.ReadLine();
+                                        try
+                                        {
+                                            if (DateTime.Parse(mulDate).Date < DateTime.Now.Date)
+                                            {
+                                                Console.WriteLine("\nDatum kan niet in het verleden zijn");
+                                                continue;
+                                            }
+                                        }
+                                        catch
+                                        {
+                                            Console.WriteLine("\nDatum is ongeldig");
+                                            continue;
+                                        }
+                                        Console.WriteLine("\nVoor hoeveel dagen wilt u de film inplannen? Voer een getal in tot en met 365");
+                                        string mulEndDate = Console.ReadLine();
+                                        if (Convert.ToInt32(mulEndDate) > 365 || Convert.ToInt32(mulEndDate) <= 0)
+                                        {
+                                            Console.WriteLine("\nAantal dagen klopt niet. Probeer opnieuw");
+                                            continue;
+                                        }
+                                        int weeks = (int) Math.Floor(Convert.ToDecimal(mulEndDate) / 7);
+                                        int days = Convert.ToInt32(mulEndDate) % 7;
+                                        Console.WriteLine("\nHoevaak per week wilt u deze film inplannen? Voer een getal in van 1 tot 7");
+                                        string mulAmount = Console.ReadLine();
+                                        DateTime nextDay = DateTime.Parse(mulDate);
+                                        if (mulAmount == "1")
+                                        {
+                                            Console.WriteLine($"\nFilm word {mulAmount}x per week ingeplanned en begint vanaf {mulDate} tot {DateTime.Parse(mulDate).AddDays(Convert.ToInt32(mulEndDate)).ToShortDateString()}");
+                                            Console.WriteLine($"\n{nextDay.ToShortDateString()}");
+                                            datesToProcess.Add(nextDay.ToShortDateString());
+                                            for (int i = 1; i <= weeks; i++)
+                                            {
+                                                nextDay = nextDay.AddDays(7);
+                                                Console.WriteLine($"\n{nextDay.ToShortDateString()}");
+                                                datesToProcess.Add(nextDay.ToShortDateString());
+                                            }
+                                        }
+                                        else if (mulAmount == "2" || mulAmount == "3" || mulAmount == "4" || mulAmount == "5" || mulAmount == "6")
+                                        {
+                                            Console.WriteLine("\nInplanmoment 1 word ingeplanned in zoveel dagen:");
+                                            Console.WriteLine($"\n{nextDay.ToShortDateString()}");
+                                            datesToProcess.Add(nextDay.ToShortDateString());
+                                            for (int i = 1; i <= weeks; i++)
+                                            {
+                                                nextDay = nextDay.AddDays(7);
+                                                Console.WriteLine($"\n{nextDay.ToShortDateString()}");
+                                                datesToProcess.Add(nextDay.ToShortDateString());
+                                            }
+                                            Console.WriteLine("\nOver hoeveel dagen na de startdatum moet de film nogmaals ingeplanned worden? Gebruik het format [1 tot 5] (1e dag is de begindatum)");
+                                            for (int i = 2; i <= Convert.ToInt32(mulAmount); i++)
+                                            {
+                                                Console.WriteLine($"\nInplanmoment {i} word ingeplanned in zoveel dagen:");
+                                                string schedualDay = Console.ReadLine();
+                                                List<string> usedDays = new List<string>();
+                                                if (schedualDay == "1" || schedualDay == "2" || schedualDay == "3" || schedualDay == "4" || schedualDay == "5")
+                                                    if (usedDays.Contains(schedualDay))
+                                                    {
+                                                        Console.WriteLine("\nDeze dag is al in gebruik");
+                                                        continue;
+                                                    }
+                                                    else
+                                                    {
+                                                        usedDays.Add(schedualDay);
+                                                        nextDay = DateTime.Parse(mulDate).AddDays(Convert.ToInt32(schedualDay));
+                                                        Console.WriteLine($"\n{nextDay.ToShortDateString()}");
+                                                        datesToProcess.Add(nextDay.ToShortDateString());
+                                                        while (nextDay < DateTime.Parse(mulDate).AddDays(Convert.ToInt32(mulEndDate) - 7))
+                                                        {
+                                                            nextDay = nextDay.AddDays(7);
+                                                            Console.WriteLine($"\n{nextDay.ToShortDateString()}");
+                                                            datesToProcess.Add(nextDay.ToShortDateString());
+                                                        }
+
+                                                    }
+                                                else
+                                                {
+                                                    Console.WriteLine("\nVul een juiste dag in");
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                        else if (mulAmount == "7")
+                                        {
+                                            Console.WriteLine($"\nFilm word elke dag ingeplanned en begint vanaf {mulDate} tot {DateTime.Parse(mulDate).AddDays(Convert.ToInt32(mulEndDate)).ToShortDateString()}");
+                                            Console.WriteLine($"\n{nextDay.ToShortDateString()}");
+                                            datesToProcess.Add(nextDay.ToShortDateString());
+                                            for (int i = 0; i <= Convert.ToInt32(mulEndDate); i++)
+                                            {
+                                                nextDay = nextDay.AddDays(1);
+                                                Console.WriteLine($"\n{nextDay.ToShortDateString()}");
+                                                datesToProcess.Add(nextDay.ToShortDateString());
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("\nVul een getal van 1 tot 7 in");
+                                        }
+                                        schedualAmountAnswer = true;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("\nVul 1 of 2 in");
+                                    }
+                                }
+                                
+                                Console.WriteLine("\nEr is keue uit de volgende zalen: Zaal1, Zaal2, Zaal3");
+                                Console.WriteLine("\nIn welke zaal wilt u deze film inplannen? Gebruik het format [Zaal1]");
                                 string schedualMovieTheater = Console.ReadLine();
-                                Console.WriteLine("\nHoe laat wilt u deze film inplannen? Gebruik het formaat [00:00:00]");
+                                Console.WriteLine("\nHoe laat wilt u deze film inplannen? Gebruik het format [00:00]");
                                 string schedualMovieTime = Console.ReadLine();
                                 TimeSpan schedualMovieEndTime = TimeSpan.Parse(schedualMovieTime) + movieList[schedualMovieNumber].duration;
                                 try
                                 {
-                                    Calendar.planFilm(schedualMovieDate, schedualMovieTheater, schedualMovieTitle, schedualMovieTime, Convert.ToString(schedualMovieEndTime));
+                                    foreach (string date in datesToProcess)
+                                    {
+                                        Calendar.planFilm(date, schedualMovieTheater, schedualMovieTitle, schedualMovieTime, Convert.ToString(schedualMovieEndTime));
+                                    }
                                 }
                                 catch
                                 {
@@ -311,17 +476,7 @@ namespace Cinema
                 //Json bestand met films openen en lezen
                 JsonSerializer serializer = new JsonSerializer();
                 Movies.Movie[] newMovies = JsonConvert.DeserializeObject<Movies.Movie[]>(File.ReadAllText(@"Movies.json"));
-                foreach (var item in newMovies)
-                {
-                    if (item.id == Variables.Film)
-                    {
-                        mail.Body = "Beste klant. Uw reservering is ontvangen en verwerkt. Laat deze mail zien in de bioscoop als toegangsbewijs. Geniet van de film!" +
-                            "\n\nReservering voor film: "+ item.title + 
-                            "\n\nAf te rekenen bij kassa: €"+ Variables.totaalPrijs/* +
-                            "\n\nZaal nummer: " + item.theatreNumber*/;
-                    }
-                }
-
+                mail.Body = "Beste klant. Uw reservering is ontvangen en verwerkt. Laat deze mail zien in de bioscoop als toegangsbewijs. Geniet van de film!";
                 SmtpServer.Send(mail);
             }
         }
