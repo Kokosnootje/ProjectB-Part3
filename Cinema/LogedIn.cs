@@ -211,7 +211,7 @@ namespace Cinema
         public static void LogedInAdmin()
         {
             Console.Clear();
-            Console.WriteLine("\nKies een van de volgende opties om verder te gaan:\n[1] Films\n[2] Voeg film toe\n[3] Plan film in\n[4] Verwijder film\n[5] Reserveringen\n[6] Voeg reservering toe\n[7] Verwijder reservering\n[8] Snack toevoegen\n[9] Snack verwijderen\n[10] Log uit");
+            Console.WriteLine("\nKies een van de volgende opties om verder te gaan:\n[1] Films\n[2] Voeg film toe\n[3] Plan film in\n[4] Verwijder film\n[5]Pas film aan\n[6] Reserveringen\n[7] Voeg reservering toe\n[8] Verwijder reservering\n[9] Snack toevoegen\n[10] Snack verwijderen\n[11] Log uit");
             Console.Write("> ");
             string menuNumber = Console.ReadLine();
             if (menuNumber == "1")
@@ -276,6 +276,21 @@ namespace Cinema
             }
             else if (menuNumber == "5")
             {
+                // Delete movie function
+                Console.Clear();
+                Movies.MovieProgram db = new Movies.MovieProgram();
+                db.EditMovie();
+                Console.WriteLine("Press ESC to go to Home");
+                if (Console.ReadKey().Key != ConsoleKey.Escape)
+                {
+                }
+                else
+                {
+                    LogedIn.LogedInAdmin();
+                }
+            }
+            else if (menuNumber == "6")
+            {
                 // Reservations Pagina
                 Console.Clear();
                 Console.WriteLine("Op deze pagina zijn alle reserveringen te zien");
@@ -288,7 +303,7 @@ namespace Cinema
                     LogedIn.LogedInAdmin();
                 }
             }
-            else if (menuNumber == "6")
+            else if (menuNumber == "7")
             {
                 Console.Clear();
                 // Reservations Pagina
@@ -306,7 +321,7 @@ namespace Cinema
                 }
 
             }
-            else if (menuNumber == "7")
+            else if (menuNumber == "8")
             {
                 Console.Clear();
                 // Reservations Pagina
@@ -320,21 +335,21 @@ namespace Cinema
                     LogedIn.LogedInAdmin();
                 }
             }
-            else if (menuNumber == "8")
+            else if (menuNumber == "9")
             {
                 Console.Clear();
                 Snacks.SnacksProgram snackdb = new Snacks.SnacksProgram();
                 snackdb.addSnack();
                 LogedIn.LogedInAdmin();
             }
-            else if (menuNumber == "9")
+            else if (menuNumber == "10")
             {
                 Console.Clear();
                 Snacks.SnacksProgram snackdb = new Snacks.SnacksProgram();
                 snackdb.deleteSnack();
                 LogedIn.LogedInAdmin();
             }
-            else if (menuNumber == "10")
+            else if (menuNumber == "11")
             {
                 Console.Clear();
                 Console.WriteLine("Succesvol uitgelogd!");
