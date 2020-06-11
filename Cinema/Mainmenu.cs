@@ -126,9 +126,6 @@ namespace Cinema
             }
             catch(Exception e)
             {
-                // HAAL DIT WEG ZODRA APP KLAAR IS!
-                Console.WriteLine(e);
-
                 // Wanneer er iets ingevoerd word wat niet klopt.
                 Console.WriteLine("\nOngeldige invoer. Probeer opnieuw.");
                 Mainmenu.Menu();
