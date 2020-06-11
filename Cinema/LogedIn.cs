@@ -351,13 +351,13 @@ namespace Cinema
                                     }
                                     delAnswer = true;
                                     resAnswer = true;
-                                    LogedInMain();
+                                    LogedInAdmin();
                                 }
                                 else if (confirmDelete == "2")
                                 {
                                     delAnswer = true;
                                     resAnswer = true;
-                                    LogedInMain();
+                                    LogedInAdmin();
                                 }
                                 else
                                 {
