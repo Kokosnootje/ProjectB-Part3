@@ -39,7 +39,6 @@ namespace Cinema
                             string optieMenu3 = Console.ReadLine();
                             if (optieMenu3 == "1")
                             {
-                                Console.Clear();
                                 db.pickMovie();
                             }
                             else if (optieMenu3 == "2")
@@ -127,9 +126,6 @@ namespace Cinema
             }
             catch(Exception e)
             {
-                // HAAL DIT WEG ZODRA APP KLAAR IS!
-                Console.WriteLine(e);
-
                 // Wanneer er iets ingevoerd word wat niet klopt.
                 Console.WriteLine("\nOngeldige invoer. Probeer opnieuw.");
                 Mainmenu.Menu();
