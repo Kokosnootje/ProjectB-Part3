@@ -81,7 +81,8 @@ namespace Cinema
 
 
             ///Het login programmaatje.
-            while (true)
+            bool stop = false;
+            while (!stop)
             {
                 Console.WriteLine("\n[1] Login\n" +
                                   "[2] Admin Login\n" +
@@ -123,7 +124,7 @@ namespace Cinema
 
                             Console.Clear();
                             Console.WriteLine("login was succesvol");
-
+                            stop = true;
                             LogedIn.LogedInMain();
                         }
                     }
@@ -161,7 +162,7 @@ namespace Cinema
 
                             Console.Clear();
                             Console.WriteLine("login was succesvol");
-
+                            stop = true;
                             LogedIn.LogedInAdmin();
                         }
                     }
@@ -176,9 +177,8 @@ namespace Cinema
                     var emailval = false;
                     login = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(@"users.json"));
                     
-                        while (true)
+                    while (true)
                     {
-
                         while (!emailval)
                         {
                             Console.WriteLine("\nVoer een geldig emailadres in. (voer enkel een 'q' in om te annuleren)");
@@ -276,6 +276,7 @@ namespace Cinema
                 else
                 {
                     Console.WriteLine("Kies een valide optie A.U.B!");
+                    Console.Clear();
                 }
             }
         }

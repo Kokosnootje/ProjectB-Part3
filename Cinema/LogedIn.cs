@@ -85,14 +85,19 @@ namespace Cinema
                     }
                     else if (optieSnacksMenu == "2")
                     {
-                        // Exit
+                        Environment.Exit(1);
                     }
                     else
                     {
-                        // Wanneer de input niet tussen 1 en 4 ligt
+                        // Wanneer de input niet 1 of 2 is
                         Console.Clear();
                         Console.WriteLine("\nGelieve een nummer tussen 1 en 2 in te toetsen");
-                        snackdb.SnacksShow();
+                        // Terug naar menu
+                        if (Variables.isLoggedIn)
+                            LogedIn.LogedInMain();
+                        else
+                            Console.Clear();
+                        Mainmenu.Menu();
                     }
                 }
                 catch
@@ -100,7 +105,12 @@ namespace Cinema
                     // Wanneer de input geen int is
                     Console.Clear();
                     Console.WriteLine("\nEr is iets fout gegaan. Probeer opnieuw.");
-                    snackdb.SnacksShow();
+                    // Terug naar menu
+                    if (Variables.isLoggedIn)
+                        LogedIn.LogedInMain();
+                    else
+                        Console.Clear();
+                    Mainmenu.Menu();
                 }
 
             }
@@ -112,11 +122,13 @@ namespace Cinema
             }
             else if (optieMenu == "4")
             {
+                
                 ///Geeft alle gereserveerde films weer
                 var reserveringen = JsonConvert.DeserializeObject<Dictionary<string, List<List<string>>>>(File.ReadAllText(@"Reserveringen.json"));
                 bool resAnswer = false;
                 while (!resAnswer)
                 {
+                    Console.Clear();
                     int num = 1;
                     foreach (var item in reserveringen[Variables.username])
                     {
