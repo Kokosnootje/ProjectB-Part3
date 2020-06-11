@@ -211,7 +211,7 @@ namespace Cinema
         public static void LogedInAdmin()
         {
             Console.Clear();
-            Console.WriteLine("\nKies een van de volgende opties om verder te gaan:\n[1] Films\n[2] Voeg film toe\n[3] Plan film in\n[4] Verwijder film\n[5] Reserveringen\n[6] Snack toevoegen\n[7] Snack verwijderen\n[8] Log uit");
+            Console.WriteLine("\nKies een van de volgende opties om verder te gaan:\n[1] Films\n[2] Voeg film toe\n[3] Plan film in\n[4] Verwijder film\n[5] Pas film aan\n[6] Reserveringen\n[7] Snack toevoegen\n[8] Snack verwijderen\n[9] Log uit");
             Console.Write("> ");
             string menuNumber = Console.ReadLine();
             if (menuNumber == "1")
@@ -276,6 +276,21 @@ namespace Cinema
             }
             else if (menuNumber == "5")
             {
+                // Edit movie function
+                Console.Clear();
+                Movies.MovieProgram db = new Movies.MovieProgram();
+                db.EditMovie();
+                Console.WriteLine("Press ESC to go to Home");
+                if (Console.ReadKey().Key != ConsoleKey.Escape)
+                {
+                }
+                else
+                {
+                    LogedIn.LogedInAdmin();
+                }
+            }
+            else if (menuNumber == "6")
+            {
                 // Reservations Pagina
                 Console.Clear();
                 ///Geeft alle gereserveerde films weer
@@ -318,7 +333,6 @@ namespace Cinema
                             Console.WriteLine("\nVoer een nummer in");
                             continue;
                         }
-
                         if (showResAnswer > 0 && showResAnswer < num)
                         {
                             bool delAnswer = false;
@@ -376,21 +390,21 @@ namespace Cinema
                     }
                 }
             }
-            else if (menuNumber == "6")
+            else if (menuNumber == "7")
             {
                 Console.Clear();
                 Snacks.SnacksProgram snackdb = new Snacks.SnacksProgram();
                 snackdb.addSnack();
                 LogedIn.LogedInAdmin();
             }
-            else if (menuNumber == "7")
+            else if (menuNumber == "8")
             {
                 Console.Clear();
                 Snacks.SnacksProgram snackdb = new Snacks.SnacksProgram();
                 snackdb.deleteSnack();
                 LogedIn.LogedInAdmin();
             }
-            else if (menuNumber == "8")
+            else if (menuNumber == "9")
             {
                 Console.Clear();
                 Console.WriteLine("Succesvol uitgelogd!");
@@ -403,5 +417,5 @@ namespace Cinema
                 LogedIn.LogedInAdmin();
             }
         }
-        }
     }
+}

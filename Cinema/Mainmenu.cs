@@ -39,7 +39,6 @@ namespace Cinema
                             string optieMenu3 = Console.ReadLine();
                             if (optieMenu3 == "1")
                             {
-                                Console.Clear();
                                 db.pickMovie();
                             }
                             else if (optieMenu3 == "2")
