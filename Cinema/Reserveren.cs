@@ -276,10 +276,11 @@ namespace Cinema
                 }
                 else
                 {
-                    if (Variables.isLoggedIn)
-                        LogedIn.LogedInMain();
-                    else
-                        Mainmenu.Menu();
+                    Console.Clear();
+                    //Geef inlog pagina weer
+                    Console.WriteLine("\nDit is de account pagina. Kies een van de volgende opties:");
+                    Login.loginMain();
+                    //Aanroepen account.cs
                 }
             } 
             
