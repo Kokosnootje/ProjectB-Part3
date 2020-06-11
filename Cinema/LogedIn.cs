@@ -211,7 +211,7 @@ namespace Cinema
         public static void LogedInAdmin()
         {
             Console.Clear();
-            Console.WriteLine("\nKies een van de volgende opties om verder te gaan:\n[1] Films\n[2] Voeg film toe\n[3] Plan film in\n[4] Verwijder film\n[5] Pas film aan\n[6] Reserveringen\n[7] Voeg reservering toe\n[8] Verwijder reservering\n[9] Snack toevoegen\n[10] Snack verwijderen\n[11] Log uit");
+            Console.WriteLine("\nKies een van de volgende opties om verder te gaan:\n[1] Films\n[2] Voeg film toe\n[3] Plan film in\n[4] Verwijder film\n[5] Pas film aan\n[6] Reserveringen\n[7] Snack toevoegen\n[8] Snack verwijderen\n[9] Log uit");
             Console.Write("> ");
             string menuNumber = Console.ReadLine();
             if (menuNumber == "1")
@@ -276,7 +276,7 @@ namespace Cinema
             }
             else if (menuNumber == "5")
             {
-                // Delete movie function
+                // Edit movie function
                 Console.Clear();
                 Movies.MovieProgram db = new Movies.MovieProgram();
                 db.EditMovie();
@@ -293,63 +293,118 @@ namespace Cinema
             {
                 // Reservations Pagina
                 Console.Clear();
-                Console.WriteLine("Op deze pagina zijn alle reserveringen te zien");
-                Console.WriteLine("Press ESC to go to Home");
-                if (Console.ReadKey().Key != ConsoleKey.Escape)
+                ///Geeft alle gereserveerde films weer
+                var reserveringen = JsonConvert.DeserializeObject<Dictionary<string, List<List<string>>>>(File.ReadAllText(@"Reserveringen.json"));
+                bool resAnswer = false;
+                while (!resAnswer)
                 {
-                }
-                else
-                {
-                    LogedIn.LogedInAdmin();
+                    foreach (var user in reserveringen)
+                    {
+                        int num = 1;
+                        Console.WriteLine($"\nAlle reserveringen van {user.Key}:");
+                        foreach (var item in reserveringen[user.Key])
+                        {
+                            Console.WriteLine($"\n[{num}] {item[0]}");
+                            Console.WriteLine("====================");
+                            Console.WriteLine($"Film: {item[0]}");
+                            Console.WriteLine($"Theaterzaal: {item[1]}");
+                            Console.WriteLine($"Aantal kaartjes: {item[2]}");
+                            Console.WriteLine($"Starttijd: {item[3]}");
+                            Console.WriteLine($"Datum: {item[4]}");
+                            int counter = 5;
+                            string str = "Stoelen: ";
+                            while (item.Count > counter)
+                            {
+                                str += (item[counter] + " ");
+                                counter += 1;
+                            }
+                            Console.WriteLine($"{str}\n");
+                            num++;
+                        }
+                        Console.WriteLine($"\nKies een reservering om te verwijderen, kies {num} om naar de volgende gebruiker te gaan of kies {num + 1} om terug naar het menu te gaan");
+                        string a = Console.ReadLine();
+                        int showResAnswer = 0;
+                        if (int.TryParse(a, out showResAnswer))
+                        {
+                            showResAnswer = Convert.ToInt32(a);
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nVoer een nummer in");
+                            continue;
+                        }
+                        if (showResAnswer > 0 && showResAnswer < num)
+                        {
+                            bool delAnswer = false;
+                            while (!delAnswer)
+                            {
+                                Console.WriteLine($"\nWeet u zeker dat u van gebruiker: {user.Key} de reservering van {reserveringen[user.Key][showResAnswer - 1][0]} wilt verwijderen?\n[1] Ja\n[2] Nee");
+                                reserveringen[user.Key].RemoveAt(showResAnswer - 1);
+                                string confirmDelete = Console.ReadLine();
+                                if (confirmDelete == "1")
+                                {
+                                    using (StreamWriter file = File.CreateText(@"Reserveringen.json"))
+                                    {
+                                        JsonSerializer serializerz = new JsonSerializer();
+                                        serializerz.Serialize(file, reserveringen);
+                                        Console.WriteLine("\nReservering is verwijderd.");
+                                    }
+                                    delAnswer = true;
+                                    resAnswer = true;
+                                    LogedInMain();
+                                }
+                                else if (confirmDelete == "2")
+                                {
+                                    delAnswer = true;
+                                    resAnswer = true;
+                                    LogedInMain();
+                                }
+                                else
+                                {
+                                    Console.WriteLine("\nVoer 1 of 2 in");
+                                }
+                            }
+                        }
+                        else if (showResAnswer == num)
+                        {
+                            continue;
+                        }
+                        else if (showResAnswer == num + 1)
+                        {
+                            resAnswer = true;
+                            LogedInMain();
+                        }
+                        else
+                        {
+                            Console.WriteLine($"\nVoer een nummer tussen 1 en {num} in");
+                        }
+                    }
+
+                    Console.WriteLine("Press ESC to go to Home");
+                    if (Console.ReadKey().Key != ConsoleKey.Escape)
+                    {
+                    }
+                    else
+                    {
+                        LogedIn.LogedInAdmin();
+                    }
                 }
             }
             else if (menuNumber == "7")
-            {
-                Console.Clear();
-                // Reservations Pagina
-                Console.WriteLine("Op deze pagina kunt u reserveringen toevoegen");                             
-                
-                
-                
-                Console.WriteLine("Druk op ESC om terug te gaan");
-                if (Console.ReadKey().Key != ConsoleKey.Escape)
-                {
-                }
-                else
-                {
-                    LogedIn.LogedInAdmin();
-                }
-
-            }
-            else if (menuNumber == "8")
-            {
-                Console.Clear();
-                // Reservations Pagina
-                Console.WriteLine("Op deze pagina kunt u reserveringen verwijderen");
-                Console.WriteLine("Druk op ESC om terug te gaan");
-                if (Console.ReadKey().Key != ConsoleKey.Escape)
-                {
-                }
-                else
-                {
-                    LogedIn.LogedInAdmin();
-                }
-            }
-            else if (menuNumber == "9")
             {
                 Console.Clear();
                 Snacks.SnacksProgram snackdb = new Snacks.SnacksProgram();
                 snackdb.addSnack();
                 LogedIn.LogedInAdmin();
             }
-            else if (menuNumber == "10")
+            else if (menuNumber == "8")
             {
                 Console.Clear();
                 Snacks.SnacksProgram snackdb = new Snacks.SnacksProgram();
                 snackdb.deleteSnack();
                 LogedIn.LogedInAdmin();
             }
-            else if (menuNumber == "11")
+            else if (menuNumber == "9")
             {
                 Console.Clear();
                 Console.WriteLine("Succesvol uitgelogd!");
@@ -362,5 +417,5 @@ namespace Cinema
                 LogedIn.LogedInAdmin();
             }
         }
-        }
     }
+}
