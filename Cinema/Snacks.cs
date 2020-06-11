@@ -66,8 +66,8 @@ namespace Cinema
                 bool deleteSnackAnswer = false;
                 while (!deleteSnackAnswer)
                 {
-                    Console.WriteLine("Welke snack moet verwijderd worden?:");
                     SnacksShow();
+                    Console.WriteLine("Welke snack moet verwijderd worden?:");
                     string answer = Console.ReadLine();
                     if (String.IsNullOrEmpty(answer) || !int.TryParse(answer, out deleteThis))
                     {
