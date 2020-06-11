@@ -8,6 +8,7 @@ namespace Cinema
     {
         public static void contact()
         {
+            Console.Clear();
             // Geef contact info weer
             Console.WriteLine("\nDit is de Contact pagina van de bioscoop.\n\nAdres\nWeena 455\n3013AL Rotterdam\n\nOpeningstijden\nma - zo: 10.00 - 22.00\n\nTelefoon\n010-456-13-52");
 

@@ -46,7 +46,7 @@ namespace Cinema
                 string menuChoice = Console.ReadLine();
                 if (menuChoice == "1")
                 {
-
+                    Console.Clear();
                     Console.WriteLine("Welk genre wilt u zien?:");
                     List<string> genres = new List<string>();
                     foreach (var movie in movieList)
@@ -69,7 +69,10 @@ namespace Cinema
                             filter = genres[short.Parse(filter) - 1];
                             break;
                         }
-                        catch { Console.WriteLine("Voer A.U.B. een valide input in"); }
+                        catch 
+                        {
+                            Console.WriteLine("Voer A.U.B. een valide input in");
+                        }
                     }
 
                     foreach (var movie in movieList)
@@ -137,9 +140,11 @@ namespace Cinema
 
             public void pickMovie()
             {
+                Console.Clear();
                 JsonSerializer serializer = new JsonSerializer();
-                Movie[] newMovies = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Movies.json"));                
-                Console.WriteLine("Welke film wilt u bekijken?");
+                Movie[] newMovies = JsonConvert.DeserializeObject<Movie[]>(File.ReadAllText(@"Movies.json"));
+                MovieShow();
+                Console.WriteLine($"Welke film wilt u bekijken? Druk op {newMovies.Length+1} om terug te gaan naar het menu");
                 try
                 {
                     int menuNumber = Convert.ToInt32(Console.ReadLine()) - 1;

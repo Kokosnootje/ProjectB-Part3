@@ -43,16 +43,21 @@ namespace Cinema
                             }
                             else if (optieMenu3 == "2")
                             {
-                              Reserveren.Reserveer();
+                                Reserveren.Reserveer();
                             }
                             else if (optieMenu3 == "3")
                             {
                                 Mainmenu.Menu();
                             }
+                            else
+                            {
+                                Console.WriteLine("Voer een getal in");
+                            }
                         }
 
                         else if (optieMenu == "2")
                         {
+                            tempMenu = false;
                             Console.Clear();
                             db.filterMovie();
                         }
@@ -60,6 +65,7 @@ namespace Cinema
 
                         else if (optieMenu == "3")
                         {
+                            tempMenu = false;
                             Console.Clear();
                             Mainmenu.Menu();
                         }
@@ -84,14 +90,14 @@ namespace Cinema
                         }
                         else if (optieSnacksMenu == "2")
                         {
-                            // Exit
+                            Environment.Exit(1);
                         }
                         else
                         {
                             Console.Clear();
-                            // Wanneer de input niet tussen 1 en 4 ligt
+                            // Wanneer de input niet 1 of 2 is
                             Console.WriteLine("\nGelieve een nummer tussen 1 en 2 in te toetsen");
-                            snackdb.SnacksShow();
+                            Mainmenu.Menu();
                         }
                     }
                     catch
@@ -99,7 +105,7 @@ namespace Cinema
                         Console.Clear();
                         // Wanneer de input geen int is
                         Console.WriteLine("\nEr is iets fout gegaan. Probeer opnieuw.");
-                        snackdb.SnacksShow();
+                        Mainmenu.Menu();
                     }
                 }
                 else if (optieMenu == "3")
@@ -124,7 +130,7 @@ namespace Cinema
                     Mainmenu.Menu();
                 }
             }
-            catch(Exception e)
+            catch
             {
                 // Wanneer er iets ingevoerd word wat niet klopt.
                 Console.WriteLine("\nOngeldige invoer. Probeer opnieuw.");
