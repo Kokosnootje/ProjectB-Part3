@@ -13,7 +13,7 @@ namespace Cinema
 
             // Kijk of gebruiker terug wilt naar het menu
             string optieContact;
-            Console.WriteLine("\n\nWilt u terug naar het menu?\n[1] Ja\n[2] Nee");
+            Console.WriteLine("\n\nKies een van de volgende opties:\n[1] Terug");
             optieContact = Console.ReadLine();
             try
             {
@@ -21,18 +21,20 @@ namespace Cinema
                 {
                     // Terug naar menu
                     if (Variables.isLoggedIn)
+                    {
+                        Console.Clear();
                         LogedIn.LogedInMain();
+                    }
                     else
+                    {
+                        Console.Clear();
                         Mainmenu.Menu();
-                }
-                else if (optieContact == "2")
-                {
-                    // Exit
+                    }
                 }
                 else
                 {
                     // Wanneer de input niet tussen 1 en 4 ligt
-                    Console.WriteLine("\nGelieve een nummer tussen 1 en 4 in te toetsen");
+                    Console.WriteLine("\nGelieve een geldig nummer in te toetsen.");
                     contact();
                 }
             }

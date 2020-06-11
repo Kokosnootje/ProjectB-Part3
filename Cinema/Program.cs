@@ -19,13 +19,15 @@ namespace Cinema
         public static string username = "";
         public static int Film = 0;
         public static double totaalPrijs = 0;
+        public static bool stoelAvailable = true;
     }
 
     class Program
     {
         public static void Main(string[] args)
         {
-            // Mainmenu koppelen
+            //Zalen.removedStoelen("27/05/2020", "11:00", "Zaal1");
+            Calendar.runCalendar();
             Mainmenu.Menu();
         }
     }
