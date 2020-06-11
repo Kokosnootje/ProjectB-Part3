@@ -455,6 +455,70 @@ namespace Cinema
                     }
                 }
             }
+            public void EditMovie()
+            {
+                MovieShow();
+                Console.WriteLine("Welke film wil je bewerken?");
+                string answer = Console.ReadLine();
+                int deleteThis = 0;
+                bool deleteMovieAnswer = false;
+                while (!deleteMovieAnswer)
+                {
+                    if (String.IsNullOrEmpty(answer) || !int.TryParse(answer, out deleteThis))
+                    {
+                        Console.WriteLine("Vul een getal in.");
+                    }
+                    else
+                    {
+                        deleteThis = Convert.ToInt32(answer);
+                        JsonSerializer serializer = new JsonSerializer();
+                        List<Dictionary<string, string>> movieList = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(File.ReadAllText(@"Movies.json"));
+
+                        if (deleteThis > movieList.Count || deleteThis <= 0)
+                        {
+                            Console.WriteLine("Getal komt niet overeen met een filmnummer. Probeer opnieuw.");
+                        }
+                        else
+                        {
+                            movieList.RemoveAt(deleteThis - 1);
+
+                            using (StreamWriter file = File.CreateText(@"Movies.json"))
+                            {
+                                JsonSerializer serializerz = new JsonSerializer();
+                                serializerz.Serialize(file, movieList);
+                            }
+                            deleteMovieAnswer = true;
+                        }
+                    }
+                }
+                List<Dictionary<string, string>> newMovieList = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(File.ReadAllText(@"Movies.json"));
+                Dictionary<string, string> newMovie = new Dictionary<string, string>();
+                newMovie.Add("id", Convert.ToString(answer));
+                Console.Write("Wat is de titel van de film?:\n >");
+                newMovie.Add("title", Console.ReadLine());
+                Console.Write("Wat is het genre?:\n >");
+                newMovie.Add("genre", Console.ReadLine());
+                Console.Write("hoe lang duurt de film?: (gebruik dit format => 00:00:00)\n >");
+                newMovie.Add("duration", Console.ReadLine());
+                Console.Write("In welke taal is de film?:\n >");
+                newMovie.Add("language", Console.ReadLine());
+                /*Console.Write("Wat is het zaal nummer van deze film?:\n >");
+                newMovie.Add("theatreNumber", Console.ReadLine());
+                Console.Write(" hoe laat start de film?: (gebruik dit format => 13:00:00)\n >");
+                newMovie.Add("startTime", Console.ReadLine());*/
+                Console.Write("Welke rating heeft deze film?: (Voorbeeld => PG13)\n >");
+                newMovie.Add("rating", Console.ReadLine());
+                Console.Write("Hoe veel kost een kaartje voor deze film?: (Voorbeeld => 12.99)\n >");
+                newMovie.Add("price", Console.ReadLine());
+
+                newMovieList.Add(newMovie);
+                using (StreamWriter file = File.CreateText(@"Movies.json"))
+                {
+                    JsonSerializer serializerz = new JsonSerializer();
+                    serializerz.Serialize(file, newMovieList);
+                    Console.WriteLine("Film is aangepast.");
+                }
+            }
 
             public void ConfirmationMail()
             {
