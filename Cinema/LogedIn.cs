@@ -211,7 +211,7 @@ namespace Cinema
         public static void LogedInAdmin()
         {
             Console.Clear();
-            Console.WriteLine("\nKies een van de volgende opties om verder te gaan:\n[1] Films\n[2] Voeg film toe\n[3] Plan film in\n[4] Verwijder film\n[5]Pas film aan\n[6] Reserveringen\n[7] Voeg reservering toe\n[8] Verwijder reservering\n[9] Snack toevoegen\n[10] Snack verwijderen\n[11] Log uit");
+            Console.WriteLine("\nKies een van de volgende opties om verder te gaan:\n[1] Films\n[2] Voeg film toe\n[3] Plan film in\n[4] Verwijder film\n[5] Pas film aan\n[6] Reserveringen\n[7] Voeg reservering toe\n[8] Verwijder reservering\n[9] Snack toevoegen\n[10] Snack verwijderen\n[11] Log uit");
             Console.Write("> ");
             string menuNumber = Console.ReadLine();
             if (menuNumber == "1")
