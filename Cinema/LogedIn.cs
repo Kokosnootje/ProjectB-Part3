@@ -384,7 +384,7 @@ namespace Cinema
                         else if (showResAnswer == num + 1)
                         {
                             resAnswer = true;
-                            LogedInMain();
+                            LogedInAdmin();
                         }
                         else
                         {
@@ -398,7 +398,7 @@ namespace Cinema
                     }
                     else
                     {
-                        LogedIn.LogedInAdmin();
+                        LogedInAdmin();
                     }
                 }
             }
