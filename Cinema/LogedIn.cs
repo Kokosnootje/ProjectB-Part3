@@ -11,7 +11,7 @@ namespace Cinema
         public static void LogedInMain()
         {
             Console.Clear();
-            Console.WriteLine("\nKies een van de volgende opties om verder te gaan:\n[1] Films\n[2] Snacks menu\n[3] Contact\n[4] Mijn reserveringen\n[5] Uitloggen");
+            Console.WriteLine("\nKies een van de volgende opties om verder te gaan:\n[1] Films\n[2] Snacks menu\n[3] Contact\n[4] Mijn reserveringen\n[5] Bekijk reviews\n[6] Review toevoegen[7] Uitloggen");
             Console.Write("> ");
             string optieMenu = Console.ReadLine();
             if (optieMenu == "1")
@@ -194,6 +194,51 @@ namespace Cinema
                 }
             }
             else if (optieMenu == "5")
+            {
+                /// reviews bekijken
+                Reviews.ReviewProgram reviewdb = new Reviews.ReviewProgram();
+                reviewdb.ShowReviews();
+                string number;
+                Console.WriteLine("\n\nWilt u terug naar het menu?\n[1] Ja\n[2] Nee");
+                number = Console.ReadLine();
+                try
+                {
+                    if (number == "1")
+                    {
+                        // Terug naar menu
+                        if (Variables.isLoggedIn)
+                            LogedIn.LogedInMain();
+                        else
+                            Console.Clear();
+                        Mainmenu.Menu();
+                    }
+                    else if (number == "2")
+                    {
+                        // Exit
+                    }
+                    else
+                    {
+                        // Wanneer de input niet tussen 1 en 4 ligt
+                        Console.Clear();
+                        Console.WriteLine("\nGelieve een nummer tussen 1 en 2 in te toetsen");
+                        reviewdb.ShowReviews();
+                    }
+                }
+                catch
+                {
+                    // Wanneer de input geen int is
+                    Console.Clear();
+                    Console.WriteLine("\nEr is iets fout gegaan. Probeer opnieuw.");
+                    reviewdb.ShowReviews();
+                }
+            }
+            else if (optieMenu == "6")
+            {
+                /// review toevoegen
+                Reviews.ReviewProgram reviewdb = new Reviews.ReviewProgram();
+                reviewdb.addReview();
+            }
+            else if (optieMenu == "7")
             {
                 /// Movies
                 Console.Clear();

@@ -1,0 +1,14 @@
+[
+  {
+    "id": "1",
+    "user": "user",
+    "movie": "Test",
+    "rating": "4"
+  },
+  {
+    "id": "2",
+    "user": "user",
+    "movie": "Test2",
+    "rating": "3"
+  }
+]
